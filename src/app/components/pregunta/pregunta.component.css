@@ -1,0 +1,15 @@
+.thead-col {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+}
+
+.btn-edit {
+    color: seashell;
+    background-color: #8bb9dd;
+    border-color: #8bb9dd;
+}
+
+.invalid, .feedback {
+    color: red;
+}

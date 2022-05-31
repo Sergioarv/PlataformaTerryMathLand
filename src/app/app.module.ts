@@ -6,23 +6,27 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { HomeComponent } from './components/home/home.component';
-import { GameComponent } from './components/game/game.component';
+import { InicioComponent } from './components/inicio/inicio.component';
+import { JuegoComponent } from './components/juego/juego.component';
+import { PreguntaComponent } from './components/pregunta/pregunta.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    HomeComponent,
-    GameComponent
+    InicioComponent,
+    JuegoComponent,
+    PreguntaComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     ToastrModule.forRoot()
   ],
   providers: [],
