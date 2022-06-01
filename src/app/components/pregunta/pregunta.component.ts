@@ -15,9 +15,9 @@ export class PreguntaComponent implements OnInit {
 
   public cargando = false;
 
-  filterForm = new FormGroup({
-    numPregunta: new FormControl(),
-    enunciado: new FormControl()
+  filtrarForm = new FormGroup({
+    numPregunta: new FormControl('', [Validators.pattern('^[0-9]|[1-2][0-9]$')]),
+    enunciado: new FormControl(),
   });
 
   constructor(
@@ -25,30 +25,38 @@ export class PreguntaComponent implements OnInit {
     private toastrService: ToastrService,
   ) {
     this.listPregunta = [];
-   }
+  }
 
   ngOnInit(): void {
     this.filter();
   }
 
-  filter(idPregunta?: any, enunciado?: any): void {
-this.cargando = true;
-      this.preguntaService.filtrarPregunta(idPregunta ? idPregunta : null, enunciado ? enunciado : null).subscribe(resp => {
-        this.listPregunta = resp.data;
-        if(resp.success){
-          this.toastrService.success(resp.message,'Proceso exitoso', { timeOut: 2000, closeButton: true});
-        }else{
-          this.toastrService.error(resp.message,'Proceso fallido', { timeOut: 2000, closeButton: true});
-        }
-        this.cargando = false;
-      });
+  filter(): void {
+
+    console.log(this.filtrarForm.valid);
+
+    const idPregunta = this.filtrarForm.controls['numPregunta'].value;
+    const enunciado = this.filtrarForm.controls['enunciado'].value;
+
+    this.cargando = true;
+
+    this.preguntaService.filtrarPregunta(idPregunta ? idPregunta : null, enunciado ? enunciado : null).subscribe(resp => {
+      this.listPregunta = resp.data;
+      if (resp.success) {
+        this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 5000, closeButton: true });
+      } else {
+        this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+      }
+      this.cargando = false;
+    }, error => {
+      this.toastrService.error(error.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+      this.cargando = false;
+    });
   }
 
   limpiar(): void {
-
-    this.filterForm.get('ruta')?.setValue("");
-    this.filterForm.get('conector')?.setValue("");
-    this.filterForm.get('fecha')?.setValue(null);
+    this.filtrarForm.get('numPregunta')?.setValue("");
+    this.filtrarForm.get('enunciado')?.setValue("");
   }
 
 }

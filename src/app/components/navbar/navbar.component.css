@@ -17,3 +17,10 @@
     background-color: #0064be;
     border-color: rgb(65, 105, 225, 0.0);
 }
+
+.contenedor .navbar {
+    padding-inline-end: 2%;
+    padding-inline-start: 2%;
+    margin-top: 15px;
+    width: fit-content;
+}

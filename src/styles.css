@@ -1,1 +1,20 @@
+.contenedor {
+    padding-inline-end: 2%;
+    padding-inline-start: 2%;
+    margin-top: 15px;
+    width: fit-content;
+}
 
+.table {
+    display: table;
+    border-collapse: collapse;
+    width: 100%!important;
+    min-width: fit-content;
+    max-width: max-content;
+}
+
+.table .tr .td{
+    width: 100%!important;
+    min-width: fit-content;
+    max-width: max-content;
+}
