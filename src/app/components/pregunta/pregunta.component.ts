@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Pregunta } from 'src/app/models/Pregunta';
+import { Pregunta } from 'src/app/models/pregunta';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 import { ToastrService } from 'ngx-toastr';
 
