@@ -1,0 +1,19 @@
+.far, .fa-paper-plane {
+    color: #ff6600;
+}
+
+.logo {
+    color: #0064be;
+}
+
+.btn, .btn-primary {
+    color: #0064be;
+    background-color: rgb(65, 105, 225, 0.0);
+    border-color: rgb(65, 105, 225, 0.0);
+}
+
+.active button {
+    color: whitesmoke;
+    background-color: #0064be;
+    border-color: rgb(65, 105, 225, 0.0);
+}

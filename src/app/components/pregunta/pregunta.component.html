@@ -1,0 +1,88 @@
+<div class="container" style="margin-top: 15px; width: 100%;">
+    <div class="card" style="width: 100%">
+        <div class="card-header">
+            <h5>busquedaAvanzada</h5>
+        </div>
+        <div class="card-body">
+            <form class="form-group" [formGroup]="filterForm">
+                <div class="row">
+                    <div class="col-4">
+                        <label>Numero de pregunta:</label>
+                        <input type="text" class="form-control" formControlName="numPregunta" required
+                            (change)="filter()">
+                    </div>
+                    <div class="col-4">
+                        <label>Enunciado:</label>
+                        <select class="form-control" formControlName="enunciado" required (change)="filter()">
+                            <option selected value="">Seleccionar estudiante</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary" (click)="filter()">Buscar</button>
+                        &nbsp;
+                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <!-- Tabla del listado -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-4">
+                    <h5 class="card-title">Lista de preguntas</h5>
+                </div>
+                <div class="col-8">
+                    <button class="btn btn-primary" routerLink='/vuelos/create'
+                        style="float: right; width: 10rem;">Editar preguntas</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover">
+                <caption>Lista de preguntas</caption>
+                <thead class="thead-col">
+                    <tr>
+                        <th scope="col">Numero</th>
+                        <th scope="col">Enunciado</th>
+                        <th scope="col">Opcion A</th>
+                        <th scope="col">Opcion B</th>
+                        <th scope="col">Opcion C</th>
+                        <th scope="col">Opcion D</th>
+                        <th scope="col" style="width: 200px; max-width: max-content;">
+                            Imagen</th>
+                        <th scope="col">Operaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pregunta of listPregunta">
+                        <td>{{ pregunta.idpregunta }}</td>
+                        <td>{{ pregunta.enunciado }}</td>
+                        <td>{{ pregunta.opciones[0].enunciadoopcion}}</td>
+                        <td>{{ pregunta.opciones[1].enunciadoopcion}}</td>
+                        <td>{{ pregunta.opciones[2].enunciadoopcion}}</td>
+                        <td>{{ pregunta.opciones[3].enunciadoopcion}}</td>
+                        <td>
+                            <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail" alt="{{ pregunta.urlImg }}" style="width: 50 px;">
+                        <td>
+                            <button class="btn btn-edit"><em class="far fa-edit"></em>
+                            </button>&nbsp; &nbsp;
+                            <button class="btn btn-danger"><em class="far fa-trash-alt"></em></button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listPregunta.length == 0">
+                        <td colspan="8">
+                            <p style="text-align: center; font-size: x-large; color: red;">
+                                {{"Lista vacia"}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
