@@ -13,6 +13,8 @@ export class PreguntaComponent implements OnInit {
 
   listPregunta: Pregunta[];
 
+  public cargando = false;
+
   filterForm = new FormGroup({
     numPregunta: new FormControl(),
     enunciado: new FormControl()
@@ -30,7 +32,7 @@ export class PreguntaComponent implements OnInit {
   }
 
   filter(idPregunta?: any, enunciado?: any): void {
-
+this.cargando = true;
       this.preguntaService.filtrarPregunta(idPregunta ? idPregunta : null, enunciado ? enunciado : null).subscribe(resp => {
         this.listPregunta = resp.data;
         if(resp.success){
@@ -38,6 +40,7 @@ export class PreguntaComponent implements OnInit {
         }else{
           this.toastrService.error(resp.message,'Proceso fallido', { timeOut: 2000, closeButton: true});
         }
+        this.cargando = false;
       });
   }
 
