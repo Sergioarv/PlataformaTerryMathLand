@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { NgxLoadingModule } from 'ngx-loading';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { InicioComponent } from './components/inicio/inicio.component';
@@ -27,6 +28,7 @@ import { PreguntaComponent } from './components/pregunta/pregunta.component';
     BrowserAnimationsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxLoadingModule,
     ToastrModule.forRoot()
   ],
   providers: [],
