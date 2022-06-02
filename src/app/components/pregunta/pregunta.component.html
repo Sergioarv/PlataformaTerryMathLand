@@ -1,12 +1,12 @@
 <div class="contenedor">
 
     <ngx-loading [show]="cargando"
-        [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff'  }">
+        [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff', fullScreenBackdrop: true }">
     </ngx-loading>
 
     <div class="card">
         <div class="card-header">
-            <h5>busquedaAvanzada</h5>
+            <h5>Busqueda Avanzada</h5>
         </div>
         <div class="card-body">
             <form class="form-group" [formGroup]="filtrarForm">
@@ -76,7 +76,12 @@
                             <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail" alt="{{ pregunta.urlImg }}"
                                 style="width: 50 px;">
                         <td>
-                            <button class="btn btn-edit"><em class="far fa-edit"></em> Editar
+                            <!--<button class="btn btn-edit"><em class="far fa-edit"></em> Editar
+                            </button> -->
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-edit" data-toggle="modal"
+                                data-target="#editarPregunta" (click)="seleccionarEditar(pregunta)">
+                                <em class="far fa-edit"></em> Editar
                             </button>
                         </td>
                     </tr>
@@ -88,6 +93,73 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarPreguntaLabel">Editar Pregunta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group" [formGroup]="editarPreguntaForm">
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Numero de pregunta:</label>
+                                <input type="text" class="form-control" formControlName="numePregunta" value="{{ seleccionEditar.idpregunta }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Enunciado:</label>
+                                <textarea type="text" class="form-control" formControlName="enumPregunta" value="{{ seleccionEditar.enunciado }}"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion A:</label>
+                                <input type="text" class="form-control" formControlName="opcionA" value="{{ seleccionEditar.opciones[0].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion B:</label>
+                                <input type="text" class="form-control" formControlName="opcionB" value="{{ seleccionEditar.opciones[1].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion C:</label>
+                                <input type="text" class="form-control" formControlName="opcionC" value="{{ seleccionEditar.opciones[2].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion D:</label>
+                                <input type="text" class="form-control" formControlName="opcionD" value="{{ seleccionEditar.opciones[3].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Imagen:</label>
+                                <input type="text" class="form-control" formControlName="urlImg" value="{{ seleccionEditar.urlImg }}">
+                                <img src="{{ seleccionEditar.urlImg }}" class="rounded img-thumbnail" alt="{{ seleccionEditar.urlImg }}"
+                                style="width: 50 px;">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" [disabled]="!editarPreguntaForm.valid">Save changes</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -2,7 +2,9 @@
     padding-inline-end: 2%;
     padding-inline-start: 2%;
     margin-top: 15px;
-    width: fit-content;
+    width: 100%!important;
+    min-width: fit-content;
+    max-width: 100%;
 }
 
 .table {
@@ -10,11 +12,15 @@
     border-collapse: collapse;
     width: 100%!important;
     min-width: fit-content;
-    max-width: max-content;
+    max-width: 100%;
 }
 
-.table .tr .td{
-    width: 100%!important;
-    min-width: fit-content;
-    max-width: max-content;
+.table tbody td{
+    width: fit-content;
+    min-width: 100%;
+    max-width: min-content;
+}
+
+.table thead th{
+    width: 350px;
 }
