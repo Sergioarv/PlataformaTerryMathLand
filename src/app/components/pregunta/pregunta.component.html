@@ -1,5 +1,4 @@
 <div class="contenedor">
-
     <ngx-loading [show]="cargando"
         [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff', fullScreenBackdrop: true }">
     </ngx-loading>
@@ -53,7 +52,7 @@
                 <caption>Lista de preguntas</caption>
                 <thead class="thead-col">
                     <tr>
-                        <th scope="col">Numero</th>
+                        <th scope="col" style="width: fit-content;">Numero</th>
                         <th scope="col">Enunciado</th>
                         <th scope="col">Opcion A</th>
                         <th scope="col">Opcion B</th>
@@ -72,9 +71,11 @@
                         <td>{{ pregunta.opciones[1].enunciadoopcion}}</td>
                         <td>{{ pregunta.opciones[2].enunciadoopcion}}</td>
                         <td>{{ pregunta.opciones[3].enunciadoopcion}}</td>
-                        <td>
+                        <td style="width: 1024px;">
+                            <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
                             <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail" alt="{{ pregunta.urlImg }}"
-                                style="width: 50 px;">
+                                style="width: 100%;">
+                            </div>
                         <td>
                             <!--<button class="btn btn-edit"><em class="far fa-edit"></em> Editar
                             </button> -->
@@ -147,17 +148,20 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <label>Imagen:</label>
+                                <label>Imagen:</label><br>
                                 <input type="text" class="form-control" formControlName="urlImg" value="{{ seleccionEditar.urlImg }}">
-                                <img src="{{ seleccionEditar.urlImg }}" class="rounded img-thumbnail" alt="{{ seleccionEditar.urlImg }}"
-                                style="width: 50 px;">
+                                <br>
+                                <div *ngIf=" seleccionEditar.urlImg != 'https://i.imgur.com/JX1T90I.png'" style="text-align: center;;">
+                                    <img src="{{ seleccionEditar.urlImg }}" class="rounded img-thumbnail" alt="{{ seleccionEditar.urlImg }}"
+                                style="height: 400px;">
+                                </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" [disabled]="!editarPreguntaForm.valid">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" [disabled]="!editarPreguntaForm.valid">Guardar</button>
                 </div>
             </div>
         </div>

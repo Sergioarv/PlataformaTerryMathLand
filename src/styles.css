@@ -2,25 +2,40 @@
     padding-inline-end: 2%;
     padding-inline-start: 2%;
     margin-top: 15px;
-    width: 100%!important;
+    width: 100% !important;
     min-width: fit-content;
     max-width: 100%;
+}
+
+.contenedor .card .card-header{
+    background-color: rgb(216, 216, 216);
+}
+
+.contenedor-nav {
+    width: 100% !important;
+    min-width: 100%;
+    max-width: 100%;
+}
+
+.contenedor-nav nav{
+    min-width: 940px;
 }
 
 .table {
     display: table;
     border-collapse: collapse;
-    width: 100%!important;
+    width: 100% !important;
     min-width: fit-content;
     max-width: 100%;
 }
 
-.table tbody td{
+.table thead th {
+    width: 200px;
+    min-width: 50px;
+}
+
+.table tbody td {
     width: fit-content;
     min-width: 100%;
     max-width: min-content;
-}
-
-.table thead th{
-    width: 350px;
 }
