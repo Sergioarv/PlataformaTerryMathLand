@@ -13,6 +13,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { JuegoComponent } from './components/juego/juego.component';
 import { PreguntaComponent } from './components/pregunta/pregunta.component';
+import { EditarPreguntaComponent } from './components/pregunta/editar/editar.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { PreguntaComponent } from './components/pregunta/pregunta.component';
     NavbarComponent,
     InicioComponent,
     JuegoComponent,
-    PreguntaComponent
+    PreguntaComponent,
+    EditarPreguntaComponent
   ],
   imports: [
     BrowserModule,
