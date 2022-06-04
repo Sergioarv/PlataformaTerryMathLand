@@ -1,30 +1,31 @@
-<div class="container" style="margin-top: 15px; width: 100%;">
+<div class="contenedor">
+    <ngx-loading [show]="cargando"
+        [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff', fullScreenBackdrop: true }">
+    </ngx-loading>
 
-    <ngx-loading [show]="cargando" [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff'  }" ></ngx-loading>
-
-    <div class="card" style="width: 100%">
+    <div class="card">
         <div class="card-header">
-            <h5>busquedaAvanzada</h5>
+            <h5>Busqueda Avanzada</h5>
         </div>
         <div class="card-body">
-            <form class="form-group" [formGroup]="filterForm">
+            <form class="form-group" [formGroup]="filtrarForm">
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-s-12 col-lg-6">
                         <label>Numero de pregunta:</label>
-                        <input type="text" class="form-control" formControlName="numPregunta" required
-                            (change)="filter()">
+                        <input type="text" class="form-control" formControlName="numPregunta"
+                            placeholder="Ingrese el numero de pregunta a buscar">
                     </div>
-                    <div class="col-4">
+                    <div class="col-s-12 col-lg-6">
                         <label>Enunciado:</label>
-                        <select class="form-control" formControlName="enunciado" required (change)="filter()">
-                            <option selected value="">Seleccionar estudiante</option>
-                        </select>
+                        <input type="text" class="form-control" formControlName="enunciado"
+                            placeholder="Ingrese el enunciado a buscar">
                     </div>
                 </div>
                 <br>
                 <div class="row">
                     <div class="col-12">
-                        <button class="btn btn-primary" (click)="filter()">Buscar</button>
+                        <button class="btn btn-primary" (click)="filter()"
+                            [disabled]="!filtrarForm.valid">Buscar</button>
                         &nbsp;
                         <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
                     </div>
@@ -41,17 +42,17 @@
                     <h5 class="card-title">Lista de preguntas</h5>
                 </div>
                 <div class="col-8">
-                    <button class="btn btn-primary" routerLink='/vuelos/create'
+                    <button class="btn btn-primary" routerLink='/pregunta/editar'
                         style="float: right; width: 10rem;">Editar preguntas</button>
                 </div>
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover table-responsive" style="overflow-x: scroll;">
                 <caption>Lista de preguntas</caption>
                 <thead class="thead-col">
                     <tr>
-                        <th scope="col">Numero</th>
+                        <th scope="col" style="width: fit-content;">Numero</th>
                         <th scope="col">Enunciado</th>
                         <th scope="col">Opcion A</th>
                         <th scope="col">Opcion B</th>
@@ -70,12 +71,19 @@
                         <td>{{ pregunta.opciones[1].enunciadoopcion}}</td>
                         <td>{{ pregunta.opciones[2].enunciadoopcion}}</td>
                         <td>{{ pregunta.opciones[3].enunciadoopcion}}</td>
+                        <td style="width: 1024px;">
+                            <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
+                            <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail" alt="{{ pregunta.urlImg }}"
+                                style="width: 100%;">
+                            </div>
                         <td>
-                            <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail" alt="{{ pregunta.urlImg }}" style="width: 50 px;">
-                        <td>
-                            <button class="btn btn-edit"><em class="far fa-edit"></em>
-                            </button>&nbsp; &nbsp;
-                            <button class="btn btn-danger"><em class="far fa-trash-alt"></em></button>
+                            <!--<button class="btn btn-edit"><em class="far fa-edit"></em> Editar
+                            </button> -->
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-edit" data-toggle="modal"
+                                data-target="#editarPregunta" (click)="seleccionarEditar(pregunta)">
+                                <em class="far fa-edit"></em> Editar
+                            </button>
                         </td>
                     </tr>
                     <tr *ngIf="listPregunta.length == 0">
@@ -86,6 +94,76 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editarPreguntaLabel">Editar Pregunta</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group" [formGroup]="editarPreguntaForm">
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Numero de pregunta:</label>
+                                <input type="text" class="form-control" formControlName="numePregunta" value="{{ seleccionEditar.idpregunta }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Enunciado:</label>
+                                <textarea type="text" rows="3" class="form-control" formControlName="enumPregunta" value="{{ seleccionEditar.enunciado }}"></textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion A:</label>
+                                <input type="text" class="form-control" formControlName="opcionA" value="{{ seleccionEditar.opciones[0].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion B:</label>
+                                <input type="text" class="form-control" formControlName="opcionB" value="{{ seleccionEditar.opciones[1].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion C:</label>
+                                <input type="text" class="form-control" formControlName="opcionC" value="{{ seleccionEditar.opciones[2].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Opcion D:</label>
+                                <input type="text" class="form-control" formControlName="opcionD" value="{{ seleccionEditar.opciones[3].enunciadoopcion }}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <label>Imagen:</label><br>
+                                <input type="text" class="form-control" formControlName="urlImg" value="{{ seleccionEditar.urlImg }}">
+                                <br>
+                                <div *ngIf=" seleccionEditar.urlImg != 'https://i.imgur.com/JX1T90I.png'" style="text-align: center;;">
+                                    <img src="{{ seleccionEditar.urlImg }}" class="rounded img-thumbnail" alt="{{ seleccionEditar.urlImg }}"
+                                style="height: 400px;">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" [disabled]="!editarPreguntaForm.valid">Guardar</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

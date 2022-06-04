@@ -13,6 +13,12 @@ export class PreguntaService {
     private http: HttpClient
   ) { }
 
+  obtenerPreguntas(): Observable<any> {
+    const URL = GlobalConstant.URL_ENDPOINT + PreguntaConstant.URL_PREGUNTA;
+
+    return this.http.get<any>(URL);
+  }
+
   filtrarPregunta(idPregunta: any, enunciado: any): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + PreguntaConstant.URL_PREGUNTA + PreguntaConstant.URL_PREGUNTA_FILTRO;
 
