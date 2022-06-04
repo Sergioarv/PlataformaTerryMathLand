@@ -19,7 +19,7 @@ export class PreguntaComponent implements OnInit {
   regNumeros = '^[0-9]|[1-2][0-9]$';
   regTextoUnaLinea = '^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+';
 
-  public cargando = false;
+  cargando = false;
 
   filtrarForm = new FormGroup({
     numPregunta: new FormControl('', [Validators.pattern(this.regNumeros)]),
@@ -53,8 +53,6 @@ export class PreguntaComponent implements OnInit {
   }
 
   filter(): void {
-
-    console.log(this.filtrarForm.valid);
 
     const idPregunta = this.filtrarForm.controls['numPregunta'].value;
     const enunciado = this.filtrarForm.controls['enunciado'].value;

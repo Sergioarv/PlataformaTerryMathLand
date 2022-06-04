@@ -14,6 +14,7 @@ import { InicioComponent } from './components/inicio/inicio.component';
 import { JuegoComponent } from './components/juego/juego.component';
 import { PreguntaComponent } from './components/pregunta/pregunta.component';
 import { EditarPreguntaComponent } from './components/pregunta/editar/editar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { EditarPreguntaComponent } from './components/pregunta/editar/editar.com
     ReactiveFormsModule,
     HttpClientModule,
     NgxLoadingModule,
+    NgbModule,
     ToastrModule.forRoot()
   ],
   providers: [],
