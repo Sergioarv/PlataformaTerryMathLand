@@ -13,3 +13,11 @@
 .invalid, .feedback {
     color: red;
 }
+
+.table {
+    display: table;
+    border-collapse: collapse;
+    width: 100% ;
+    min-width: fit-content;
+    max-width: 100%;
+}

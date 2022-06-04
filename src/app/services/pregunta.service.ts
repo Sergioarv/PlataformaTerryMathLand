@@ -21,7 +21,7 @@ export class PreguntaService {
 
   filtrarPregunta(idPregunta: any, enunciado: any): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + PreguntaConstant.URL_PREGUNTA + PreguntaConstant.URL_PREGUNTA_FILTRO;
-
+    
     let params = '';
 
     params = idPregunta ? (params.length > 0 ? params.concat('&id=').concat(idPregunta) : params.concat('?id=').concat(idPregunta)) : params;

@@ -13,7 +13,6 @@ export class InicioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.toastrService.success('mensajes.vueloEliminado','proceso Exitoso', { timeOut: 2000, closeButton: true});
   }
 
 }
