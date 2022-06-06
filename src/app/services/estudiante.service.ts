@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { EstudianteConstant } from '../utils/constants/estudiante.constants';
 import { GlobalConstant } from '../utils/constants/global.constants';
 
 @Injectable({
@@ -13,13 +12,14 @@ export class EstudianteService {
     private http: HttpClient
   ) { }
 
-  public filtrarEstudiante(nombre: any): Observable<any> {
+  public filtrarEstudiante(nombre: any, fechaEntrega: any): Observable<any> {
 
-    const URL = GlobalConstant.URL_ENDPOINT + EstudianteConstant.URL_ESTUDIANTE + EstudianteConstant.URL_ESTUDIANTE_FILTRO;
+    const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE_FILTRO;
     console.log("Peticion", nombre, URL);
     let params = '';
 
-    params = nombre ? params.concat('?nombre=').concat(nombre) : params;
+    params = nombre ? (params.length > 0 ? params.concat('&nombre=').concat(nombre) : params.concat('?nombre=').concat(nombre)) : params;
+    params = fechaEntrega ? (params.length > 0 ? params.concat('&fecha=').concat(fechaEntrega) : params.concat('?fecha=').concat(fechaEntrega)) : params;
 
     return this.http.get<any>(URL + params);
   }

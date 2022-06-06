@@ -1,9 +1,9 @@
 import { Solucion } from "./solucion";
 
 export class Respuesta {
-    idrespuesta = '';
+    idrespuesta: string = '';
     soluciones: Solucion[] = [];
-    acertadas = '';
-    nota = '';
-    fecha : Date = new Date();
+    acertadas: string = '';
+    nota: string = '';
+    fecha: Date = new Date();
 }

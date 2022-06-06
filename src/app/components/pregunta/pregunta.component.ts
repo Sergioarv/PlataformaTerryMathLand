@@ -49,10 +49,10 @@ export class PreguntaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.filter();
+    this.filtrar();
   }
 
-  filter(): void {
+  filtrar(): void {
 
     const idPregunta = this.filtrarForm.controls['numPregunta'].value;
     const enunciado = this.filtrarForm.controls['enunciado'].value;
@@ -76,7 +76,7 @@ export class PreguntaComponent implements OnInit {
   limpiar(): void {
     this.filtrarForm.get('numPregunta')?.setValue("");
     this.filtrarForm.get('enunciado')?.setValue("");
-    this.filter();
+    this.filtrar();
   }
 
   seleccionarEditar(pregunta: Pregunta){
