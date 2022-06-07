@@ -21,3 +21,21 @@
     min-width: fit-content;
     max-width: 100%;
 }
+
+input#date-input{
+    display: inline-block;
+    position: relative;
+}
+
+input#date-input::-webkit-calendar-picker-indicator {
+    background: transparent;
+    color: transparent;
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: auto;
+}

@@ -17,7 +17,7 @@
                     </div>
                     <div class="col-s-12 col-lg-6">
                         <label>Fecha de respuesta:</label>
-                        <input type="date" class="form-control" formControlName="fechaEntrega"
+                        <input type="date" id="date-input" class="form-control" formControlName="fechaEntrega"
                             max="{{ fechaActual | date: 'yyyy-MM-dd'}}" onkeydown="return false">
                     </div>
                 </div>
@@ -27,7 +27,8 @@
                         <button class="btn btn-primary" (click)="filtrar()"
                             [disabled]="!filtrarForm.valid">Buscar</button>
                         &nbsp;
-                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>&nbsp;
+                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                        &nbsp;
                         <button class="btn btn-info" (click)="borrarFecha()">Borrar fecha</button>
                     </div>
                 </div>
@@ -43,10 +44,8 @@
                     <h5 class="card-title">Lista de estudiantes</h5>
                 </div>
                 <div class="col-8">
-                    <button type="button" class="btn btn-primary" data-toggle="modal" style="width: fit-content; float: right;"
-                    data-target="#agregarEstudiante">
-                    <em class="fa-solid fa-person-circle-plus"></em> Agregar
-                </button>
+                    <button type="button" class="btn btn-primary" (click)="open(content)" style="float: right;">
+                        <em class="fa-solid fa-person-circle-plus"></em>&nbsp;Agregar Estudiante</button>
                 </div>
             </div>
         </div>
@@ -71,14 +70,15 @@
                             : 'yyyy-MM-dd' }}</td>
                         <td>
                             <button type="button" class="btn btn-edit" data-toggle="modal" style="width: fit-content;"
-                                data-target="#editarEstudiante" (click)="seleccionarEditar(estudiante)">
+                                data-target="#editarEstudiante" (click)="seleccionarEditar(estudiante, contentEdit)">
                                 <em class="far fa-edit"></em> Editar
                             </button>
                             &nbsp;
                             <button type="button" class="btn btn-danger" data-toggle="modal" style="width: fit-content;"
-                            data-target="#editarEstudiante" (click)="seleccionarEditar(estudiante)">
-                            <em class="fas fa-trash-alt"></em> Eliminar
-                        </button>
+                                data-target="#eliminarEstudiante"
+                                (click)="seleccionarEliminar(estudiante, contentEliminar)">
+                                <em class="fas fa-trash-alt"></em> Eliminar
+                            </button>
                         </td>
                     </tr>
                     <tr *ngIf="listaEstudiante.length == 0">
@@ -92,105 +92,112 @@
         </div>
     </div>
 
-        <!-- Modal agregar -->
-        <div class="modal fade" id="agregarEstudiante" tabindex="-1" aria-labelledby="agregarEstudianteLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="agregarEstudianteLabel">Agregar Estudiante</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-group" [formGroup]="editarEstudianteForm">
-                        <div class="row">
-                            <div class="col-12" hidden>
-                                <label>id Estudiante:</label>
-                                <input type="text" class="form-control" formControlName="idEstudiante">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label>Nombre:</label>
-                                <input type="text" class="form-control" formControlName="nombre">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary"
-                        [disabled]="!editarEstudianteForm.valid">Guardar</button>
-                </div>
-            </div>
+
+    <!-- Modal agregar -->
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Agregar Estudiante</h5>
         </div>
-    </div>
+        <div class="modal-body">
+            <form class="form-group" [formGroup]="agregarEstudianteForm">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Nombre:</label>
+                        <input type="text" class="form-control" formControlName="nombre" required>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="agregarEstudiante()"
+                [disabled]="!agregarEstudianteForm.valid">Guardar</button>
+            <button type="button" class="btn btn-danger" (click)="resetearAgregarEstudianteForm()">Cancelar</button>
+        </div>
+    </ng-template>
 
     <!-- Modal editar -->
-    <div class="modal fade" id="editarEstudiante" tabindex="-1" aria-labelledby="editarEstudianteLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editarEstudianteLabel">Editar Estudiante</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form class="form-group" [formGroup]="editarEstudianteForm">
-                        <div class="row">
-                            <div class="col-12">
-                                <label>id Estudiante:</label>
-                                <input type="text" class="form-control" formControlName="idEstudiante"
-                                    value="{{ seleccionEditar.idusuario }}">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label>Nombre:</label>
-                                <input type="text" class="form-control" formControlName="nombre"
-                                    value="{{ seleccionEditar.nombre }}">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label>Respuestas:</label>
-                                <select class="form-control" formControlName="respuesta"
-                                    (change)="seleccionarRespuesta()">
-                                    <option selected value=''>{{ seleccionEditar.respuestas.length == 0 ? 'No hay
-                                        respuetas' : 'Seleccione una respuesta' }}</option>
-                                    <option *ngFor="let resp of seleccionEditar.respuestas; let i = index"
-                                        value="{{ i }}">
-                                        Respuesta numero {{ i + 1}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label>Nota:</label>
-                                <input type="text" class="form-control" formControlName="nota"
-                                    value="{{ notaRespuesta }}">
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <label>Fecha:</label>
-                                <input type="date" class="form-control" formControlName="fecha"
-                                    value="{{ fechaRespuesta | date : 'yyyy-MM-dd' }}">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary"
-                        [disabled]="!editarEstudianteForm.valid">Guardar</button>
-                </div>
-            </div>
+    <ng-template #contentEdit let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Editar Estudiante</h5>
         </div>
-    </div>
+        <div class="modal-body">
+            <form class="form-group" [formGroup]="editarEstudianteForm">
+                <div class="row">
+                    <div class="col-12">
+                        <label>id Estudiante:</label>
+                        <input type="text" class="form-control" formControlName="idEstudiante"
+                            value="{{ seleccionEditar.idusuario }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Nombre:</label>
+                        <input type="text" class="form-control" formControlName="nombre" required
+                            value="{{ seleccionEditar.nombre }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Respuestas:</label>
+                        <select class="form-control" formControlName="respuesta" (change)="seleccionarRespuesta()">
+                            <option selected value=''>{{ seleccionEditar.respuestas.length == 0 ? 'No hay
+                                respuetas' : 'Seleccione una respuesta' }}</option>
+                            <option *ngFor="let resp of seleccionEditar.respuestas; let i = index" value="{{ i }}">
+                                Respuesta numero {{ i + 1}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Nota:</label>
+                        <input type="text" class="form-control" formControlName="nota" value="{{ notaRespuesta }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Fecha:</label>
+                        <input type="date" class="form-control" formControlName="fecha"
+                            value="{{ fechaRespuesta | date : 'yyyy-MM-dd' }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="editarEstudiante()"
+                [disabled]="!editarEstudianteForm.valid">Guardar</button>
+            <button type="button" class="btn btn-danger" (click)="resetearEditarEstudianteForm()">Cancelar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal Eliminar -->
+    <ng-template #contentEliminar let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Eliminar Estudiante</h5>
+        </div>
+        <div class="modal-body">
+            <form class="form-group" [formGroup]="eliminarEstudianteForm">
+                <div class="row">
+                    <div class="col-12">
+                        <label>id Estudiante:</label>
+                        <input type="text" class="form-control" formControlName="idEstudiante"
+                            value="{{ seleccionEliminar.idusuario }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Nombre:</label>
+                        <input type="text" class="form-control" formControlName="nombre"
+                            value="{{ seleccionEliminar.nombre }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success"
+                (click)="eliminarEstudiante(seleccionEliminar)">Confirmar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                (click)="resetearEliminarEstudianteForm()">Cancelar</button>
+        </div>
+    </ng-template>
 </div>
