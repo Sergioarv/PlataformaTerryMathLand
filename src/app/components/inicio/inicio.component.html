@@ -1,16 +1,65 @@
 <br>
 <div class="contenedor">
   <div class="row">
-    <div class="col-s-12 col-m-6 col-lg-4">
-      <div class="card" style="width: 18rem;">
-        <img src="..." class="card-img-top" alt="...">
+    <div class="col-sm-6 col-md-3">
+      <div class="card" style="text-align: center;">
+        <a [routerLink]="['/estudiante']">
+          <div class="card-header">
+            <img
+              src="https://cdn-icons.flaticon.com/png/512/2995/premium/2995620.png?token=exp=1654377294~hmac=b03863e4b2a436f6fa16db815a31b6d9"
+              alt="flaticon">
+          </div>
+        </a>
         <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-          <a href="#" class="btn btn-primary"> <em class="far fa-trash-alt"></em> Go somewhere</a>
+          <h5 class="card-title">Gestionar Estudiantes</h5>
+          <p class="card-text">Agregar, listar y modificar los estudiantes.</p>
+          <a [routerLink]="['/estudiante']" class="btn btn-primary"><em class="fa-solid fa-user"></em> Estudiantes</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+      <div class="card" style="text-align: center;">
+        <a [routerLink]="['/pregunta']">
+          <div class="card-header">
+            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470846.png" alt="flaticon">
+          </div>
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">Gestionar Preguntas</h5>
+          <p class="card-text">Agregar, listar y modificar las preguntas.</p>
+          <a [routerLink]="['/pregunta']" class="btn btn-primary"><em class="fa-solid fa-clipboard"></em> Preguntas</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div class="card" style="text-align: center;">
+        <a [routerLink]="['/pregunta']">
+          <div class="card-header">
+            <img src="https://cdn-icons-png.flaticon.com/512/3063/3063525.png" alt="flaticon">
+          </div>
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">Gestionar Soluciones</h5>
+          <p class="card-text">Listar y graficar soluciones de estudiantes.</p>
+          <a [routerLink]="['/respuesta']" class="btn btn-primary"><em class="fa-solid fa-chart-area"></em>
+            Soluciones</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-md-3">
+      <div class="card" style="text-align: center;">
+        <a [routerLink]="['/juego']">
+          <div class="card-header">
+            <img src="https://cdn-icons-png.flaticon.com/512/1924/1924432.png" alt="flaticon">
+          </div>
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">Juego</h5>
+          <p class="card-text">Ingresar a Juego.</p>
+          <a [routerLink]="['/juego']" class="btn btn-primary"><em class="fa-solid fa-puzzle-piece"></em> Juego</a>
         </div>
       </div>
     </div>
   </div>
-
 </div>

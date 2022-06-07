@@ -1,3 +1,33 @@
+@media(max-width: 575.98px){
+    * {
+        font-size: large;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    * {
+        font-size: medium;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) { 
+    * {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) { 
+    * {
+        font-size: medium;
+    }
+ }
+
+@media (min-width: 1200px) {  
+    * {
+        font-size: large;
+    }
+}
+
 .contenedor {
     padding-inline-end: 2%;
     padding-inline-start: 2%;
@@ -9,6 +39,8 @@
 
 .contenedor .card .card-header{
     background-color: rgb(216, 216, 216);
+    border: 1;
+    border-color: black;
 }
 
 .contenedor-nav {
@@ -39,3 +71,4 @@
     min-width: 100%;
     max-width: min-content;
 }
+

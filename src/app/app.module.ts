@@ -15,6 +15,8 @@ import { JuegoComponent } from './components/juego/juego.component';
 import { PreguntaComponent } from './components/pregunta/pregunta.component';
 import { EditarPreguntaComponent } from './components/pregunta/editar/editar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { EstudianteComponent } from './components/estudiante/estudiante.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     InicioComponent,
     JuegoComponent,
     PreguntaComponent,
-    EditarPreguntaComponent
+    EditarPreguntaComponent,
+    EstudianteComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +38,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModule,
     ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   exports: [
     AppComponent
   ],

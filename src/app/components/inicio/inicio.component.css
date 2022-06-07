@@ -1,0 +1,12 @@
+.contenedor a {
+    color: black;
+}
+
+.contenedor .btn {
+    color: whitesmoke;
+}
+
+.contenedor .card-header img {
+    text-align: center;
+    width: 70%;
+}
