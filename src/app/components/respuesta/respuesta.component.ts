@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Estudiante } from 'src/app/models/estudiante';
 import { Respuesta } from 'src/app/models/respuesta';
+import { Solucion } from 'src/app/models/solucion';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { RespuestaService } from 'src/app/services/respuesta.service';
 
@@ -17,8 +19,13 @@ export class RespuestaComponent implements OnInit {
 
   listaRespuestas: Respuesta[];
   listaEstudiantes: Estudiante[];
+listaSoluciones: Solucion[];
+
+seleccionRespuesta: Respuesta;
 
   fechaActual:Date = new Date();
+
+  closeResult = '';
 
   filtrarForm = new FormGroup({
     estudiantes: new FormControl(''),
@@ -28,10 +35,18 @@ export class RespuestaComponent implements OnInit {
   constructor(
     private respuestaService: RespuestaService,
     private toastrService: ToastrService,
-    private estudianteService: EstudianteService
+    private estudianteService: EstudianteService,
+    private modalService: NgbModal,
+    private config: NgbModalConfig
   ) {
     this.listaRespuestas = [];
     this.listaEstudiantes = [];
+    this.listaSoluciones = [];
+
+    this.seleccionRespuesta = new Respuesta();
+
+    config.backdrop = 'static';
+    config.keyboard = false;
    }
 
   ngOnInit(): void {
@@ -83,6 +98,12 @@ export class RespuestaComponent implements OnInit {
     });
   }
 
+  seleccionarRespuesta(respuesta: any){
+
+    this.seleccionRespuesta = respuesta;
+    this.listaSoluciones = this.seleccionRespuesta.soluciones;
+  }
+
   borrarFecha() {
     this.filtrarForm.get('fecha')?.setValue(null);
   }
@@ -91,5 +112,24 @@ export class RespuestaComponent implements OnInit {
     this.filtrarForm.get('estudiante')?.setValue('');
     this.filtrarForm.get('fecha')?.setValue(null);
     this.filtrar();
+  }
+
+  open(content: any) {
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', backdropClass: 'light-blue-backdrop' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    },  (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

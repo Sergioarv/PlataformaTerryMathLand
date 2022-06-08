@@ -1,3 +1,13 @@
+.btn-edit {
+    color: seashell;
+    background-color: #60a6dc;
+    border-color: #60a6dc;
+}
+
+.invalid, .feedback {
+    color: red;
+}
+
 .table {
     display: table;
 }
