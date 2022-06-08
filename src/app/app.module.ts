@@ -17,6 +17,7 @@ import { EditarPreguntaComponent } from './components/pregunta/editar/editar.com
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { DatePipe } from '@angular/common';
+import { RespuestaComponent } from './components/respuesta/respuesta.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { DatePipe } from '@angular/common';
     JuegoComponent,
     PreguntaComponent,
     EditarPreguntaComponent,
-    EstudianteComponent
+    EstudianteComponent,
+    RespuestaComponent
   ],
   imports: [
     BrowserModule,

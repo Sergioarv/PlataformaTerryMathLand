@@ -1,0 +1,83 @@
+<div class="contenedor">
+    <ngx-loading [show]="cargando"
+        [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff', fullScreenBackdrop: true }">
+    </ngx-loading>
+
+    <div class="card">
+        <div class="card-header">
+            <h5>Busqueda Avanzada</h5>
+        </div>
+        <div class="card-body">
+            <form class="form-group" [formGroup]="filtrarForm">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <label>Estudiante</label>
+                        <select class="form-control" formControlName="estudiantes">
+                            <option selected value=''>{{ listaEstudiantes.length == 0 ? 'No hay estudiantes' : 'Seleccione un estudiante' }}</option>
+                            <option *ngFor="let estudiante of listaEstudiantes" value="{{ estudiante.idusuario }}">{{ estudiante.nombre }}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <label>Fecha de respuesta:</label>
+                        <input type="date" id="date-input" class="form-control" formControlName="fecha"
+                            max="{{ fechaActual | date: 'yyyy-MM-dd'}}" onkeydown="return false">
+                    </div>
+                </div>
+                &nbsp;
+                <div class="row">
+                    <div class="col-s-12 col-lg-6">
+                        <button class="btn btn-primary" (click)="filtrar()"
+                            [disabled]="!filtrarForm.valid">Buscar</button>
+                        &nbsp;
+                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                        &nbsp;
+                        <button class="btn btn-info" (click)="borrarFecha()">Borrar fecha</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- bla de listado -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="card-tittle">Lista de resultados</h5>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-responsive" style="overflow-x: scroll;">
+                <caption>Lista de resultados</caption>
+                <thead class="thead-col">
+                    <tr>
+                        <th scope="col" style="max-width: 50px;">Id</th>
+                        <th scope="col">Aciertos</th>
+                        <th scope="col">Nota</th>
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Funciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let respuesta of listaRespuestas">
+                        <td>{{ respuesta.idrespuesta }}</td>
+                        <td>{{ respuesta.acertadas }}</td>
+                        <td>{{ respuesta.nota }}</td>
+                        <td>{{ respuesta.fecha | date : 'yyyy-MM-dd' }}</td>
+                        <td>
+                            <button type="button" class="btn btn-primary">
+                                <em class="far fa-edit"></em> Graficar
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listaRespuestas.length == 0">
+                        <td colspan="5">
+                            <p style="text-align: center; font-size: x-large; color: red;">
+                                {{"Lista vacia"}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
