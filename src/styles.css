@@ -63,7 +63,7 @@
 
 .table thead th {
     width: 200px;
-    min-width: 50px;
+    min-width: 30px;
 }
 
 .table tbody td {
@@ -72,3 +72,26 @@
     max-width: min-content;
 }
 
+.thead-col {
+    color: #fff;
+    background-color: #343a40;
+    border-color: #454d55;
+}
+
+input#date-input{
+    display: inline-block;
+    position: relative;
+}
+
+input#date-input::-webkit-calendar-picker-indicator {
+    background: transparent;
+    color: transparent;
+    position: absolute;
+    cursor: pointer;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    height: auto;
+    width: auto;
+}

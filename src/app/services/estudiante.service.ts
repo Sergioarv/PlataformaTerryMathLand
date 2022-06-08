@@ -11,6 +11,12 @@ export class EstudianteService {
     private http: HttpClient
   ) { }
 
+  public obtenerEstudiantes(): Observable<any> {
+    const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE;
+
+    return this.http.get<any>(URL);
+  }
+
   public filtrarEstudiante(nombre: any, fechaEntrega: any): Observable<any> {
 
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE_FILTRO;

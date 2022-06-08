@@ -10,12 +10,12 @@
         <div class="card-body">
             <form class="form-group" [formGroup]="filtrarForm">
                 <div class="row">
-                    <div class="col-s-12 col-lg-6">
+                    <div class="col-sm-12 col-lg-6">
                         <label>Nombre:</label>
                         <input type="text" class="form-control" formControlName="nombre"
                             placeholder="Ingrese el nombre a buscar">
                     </div>
-                    <div class="col-s-12 col-lg-6">
+                    <div class="col-sm-12 col-lg-6">
                         <label>Fecha de respuesta:</label>
                         <input type="date" id="date-input" class="form-control" formControlName="fechaEntrega"
                             max="{{ fechaActual | date: 'yyyy-MM-dd'}}" onkeydown="return false">
