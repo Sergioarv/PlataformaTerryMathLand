@@ -4,7 +4,6 @@ import { Pregunta } from 'src/app/models/pregunta';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 import { ToastrService } from 'ngx-toastr';
 import { Opcion } from 'src/app/models/opcion';
-import { concat } from 'rxjs';
 
 @Component({
   selector: 'app-pregunta',

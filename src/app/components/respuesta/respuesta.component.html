@@ -13,14 +13,16 @@
                     <div class="col-sm-12 col-lg-6">
                         <label>Estudiante</label>
                         <select class="form-control" formControlName="estudiantes" (change)="filtrar()">
-                            <option selected value=''>{{ listaEstudiantes.length == 0 ? 'No hay estudiantes' : 'Seleccione un estudiante' }}</option>
-                            <option *ngFor="let estudiante of listaEstudiantes" value="{{ estudiante.idusuario }}">{{ estudiante.nombre }}</option>
+                            <option selected value=''>{{ listaEstudiantes.length == 0 ? 'No hay estudiantes' :
+                                'Seleccione un estudiante' }}</option>
+                            <option *ngFor="let estudiante of listaEstudiantes" value="{{ estudiante.idusuario }}">{{
+                                estudiante.nombre }}</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-lg-6">
                         <label>Fecha de respuesta:</label>
-                        <input type="date" id="date-input" class="form-control" formControlName="fecha" (change)="filtrar()"
-                            max="{{ fechaActual | date: 'yyyy-MM-dd'}}" onkeydown="return false">
+                        <input type="date" id="date-input" class="form-control" formControlName="fecha"
+                            (change)="filtrar()" max="{{ fechaActual | date: 'yyyy-MM-dd'}}" onkeydown="return false">
                     </div>
                 </div>
                 &nbsp;
@@ -60,6 +62,7 @@
                         <th scope="col">Aciertos</th>
                         <th scope="col">Nota</th>
                         <th scope="col">Fecha</th>
+                        <th scope="col">Ver solucion</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -68,6 +71,12 @@
                         <td>{{ respuesta.acertadas }}</td>
                         <td>{{ respuesta.nota }}</td>
                         <td>{{ respuesta.fecha | date : 'yyyy-MM-dd' }}</td>
+                        <td>
+                            <button type="button" class="btn btn-edit" data-toggle="modal"
+                                data-target="#solucionesModal" (click)="seleccionarRespuesta(respuesta)">
+                                <em class="fa-solid fa-question"></em> Ver Solucion
+                            </button>
+                        </td>
                     </tr>
                     <tr *ngIf="listaRespuestas.length == 0">
                         <td colspan="5">
@@ -79,4 +88,43 @@
             </table>
         </div>
     </div>
+
+    <!-- Modal soluciones -->
+    <div class="modal fade" id="solucionesModal" tabindex="-1" aria-labelledby="solucionesModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="solucionesModalLabel">Solucion de Estudiante</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="form-group">
+
+                        <div class="row" *ngFor="let solucion of listaSoluciones; let i = index">
+                            <div class="col-12">
+                                <label>Enunciado de Pregunta {{ i + 1 }}:</label>
+                                <textarea type="text" class="form-control" value="{{ solucion.enunciadoPre }}" disabled></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label>Respuesta correcta {{ i + 1 }}:</label>
+                                <input type="text" class="form-control" value="{{ solucion.respuestaPre }}" disabled>
+                            </div>
+                            <div class="col-12">
+                                <label>Respuesta del estudiante {{ i + 1 }}:</label>
+                                <input type="text" class="form-control" value="{{ solucion.respuestaEst }}" disabled>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

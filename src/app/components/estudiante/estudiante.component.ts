@@ -132,7 +132,7 @@ export class EstudianteComponent implements OnInit {
     actualizarEst.idusuario = this.editarEstudianteForm.controls['idEstudiante'].value;
     actualizarEst.nombre = this.editarEstudianteForm.controls['nombre'].value;
 
-    this.estudianteService.actualizar(actualizarEst).subscribe( resp => {
+    this.estudianteService.actualizar(actualizarEst).subscribe( (resp:any) => {
       if(resp.success){
         this.toastrService.success(resp.message, 'Proceso exitoso', {timeOut: 4000, closeButton: true});
         this.cargando = false;
@@ -142,7 +142,8 @@ export class EstudianteComponent implements OnInit {
         this.toastrService.error(resp.message, 'Proceso fallido', {timeOut: 4000, closeButton: true});
         this.cargando = false;
       }
-    }, error => {
+    },
+    (error: any) => {
       this.toastrService.error(error.message, 'Proceso fallido', {timeOut: 4000, closeButton: true});
       this.cargando = false;
     });
