@@ -12,14 +12,14 @@
                 <div class="row">
                     <div class="col-sm-12 col-lg-6">
                         <label>Estudiante</label>
-                        <select class="form-control" formControlName="estudiantes">
+                        <select class="form-control" formControlName="estudiantes" (change)="filtrar()">
                             <option selected value=''>{{ listaEstudiantes.length == 0 ? 'No hay estudiantes' : 'Seleccione un estudiante' }}</option>
                             <option *ngFor="let estudiante of listaEstudiantes" value="{{ estudiante.idusuario }}">{{ estudiante.nombre }}</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-lg-6">
                         <label>Fecha de respuesta:</label>
-                        <input type="date" id="date-input" class="form-control" formControlName="fecha"
+                        <input type="date" id="date-input" class="form-control" formControlName="fecha" (change)="filtrar()"
                             max="{{ fechaActual | date: 'yyyy-MM-dd'}}" onkeydown="return false">
                     </div>
                 </div>
@@ -37,12 +37,17 @@
             </form>
         </div>
     </div>
-    <!-- bla de listado -->
+    <!-- tabla de listado -->
     <div class="card">
         <div class="card-header">
             <div class="row">
-                <div class="col-12">
+                <div class="col-sm-12 col-md-4">
                     <h5 class="card-tittle">Lista de resultados</h5>
+                </div>
+                <div class="col-sm-12 col-md-8">
+                    <button type="button" class="btn btn-primary" style="float: right;">
+                        <em class="far fa-edit"></em> Graficar
+                    </button>
                 </div>
             </div>
         </div>
@@ -55,7 +60,6 @@
                         <th scope="col">Aciertos</th>
                         <th scope="col">Nota</th>
                         <th scope="col">Fecha</th>
-                        <th scope="col">Funciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,11 +68,6 @@
                         <td>{{ respuesta.acertadas }}</td>
                         <td>{{ respuesta.nota }}</td>
                         <td>{{ respuesta.fecha | date : 'yyyy-MM-dd' }}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary">
-                                <em class="far fa-edit"></em> Graficar
-                            </button>
-                        </td>
                     </tr>
                     <tr *ngIf="listaRespuestas.length == 0">
                         <td colspan="5">

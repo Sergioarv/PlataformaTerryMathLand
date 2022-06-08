@@ -83,11 +83,13 @@ export class RespuestaComponent implements OnInit {
     });
   }
 
-  limpiar(){
-
+  borrarFecha() {
+    this.filtrarForm.get('fecha')?.setValue(null);
   }
 
-  borrarFecha(){
-
+  limpiar(): void {
+    this.filtrarForm.get('estudiante')?.setValue('');
+    this.filtrarForm.get('fecha')?.setValue(null);
+    this.filtrar();
   }
 }

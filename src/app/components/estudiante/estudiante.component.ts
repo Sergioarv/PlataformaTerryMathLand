@@ -207,9 +207,8 @@ export class EstudianteComponent implements OnInit {
   }
 
   limpiar(): void {
-    console.log("limpiando");
     this.filtrarForm.get('nombre')?.setValue('');
-    this.filtrarForm.get('fechaEntrega')?.value(null);
+    this.filtrarForm.get('fechaEntrega')?.setValue(null);
     this.filtrar();
   }
 
