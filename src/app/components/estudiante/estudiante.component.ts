@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Estudiante } from 'src/app/models/estudiante';
@@ -59,6 +60,7 @@ export class EstudianteComponent implements OnInit {
     private estudianteService: EstudianteService,
     private toastrService: ToastrService,
     private dateFormat: DatePipe,
+    private route: Router,
     private modalService: NgbModal,
     config: NgbModalConfig
   ) {
@@ -201,6 +203,11 @@ export class EstudianteComponent implements OnInit {
       this.notaRespuesta = this.seleccionEditar.respuestas[resp].nota;
       this.fechaRespuesta = this.seleccionEditar.respuestas[resp].fecha;
     }
+  }
+
+  verRespuesta(estudiante: any){
+    localStorage.setItem('idEstudiante', estudiante.idusuario);
+    this.route.navigate(['/respuesta']);
   }
 
   borrarFecha() {

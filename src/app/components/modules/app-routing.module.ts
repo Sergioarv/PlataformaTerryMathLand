@@ -15,6 +15,7 @@ const routes: Routes = [
   { path: 'pregunta/editar', component: EditarPreguntaComponent },
   { path: 'estudiante', component: EstudianteComponent },
   { path: 'respuesta', component: RespuestaComponent },
+  { path: '**', redirectTo: 'inicio', pathMatch: 'full'}
 ];
 
 @NgModule({

@@ -53,6 +53,20 @@ seleccionRespuesta: Respuesta;
     this.filtrar(true);
   }
 
+  verificarEstudianteId() {
+    const idEstudiante = localStorage.getItem('idEstudiante');
+    if(idEstudiante != null){
+      this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
+
+      this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe( resp => {
+        this.listaRespuestas = resp.data;
+
+        localStorage.removeItem('idEstudiante');
+      });
+
+    }
+  }
+
   filtrar(inicio?: boolean){
 
     this.cargando = true;
@@ -70,7 +84,7 @@ seleccionRespuesta: Respuesta;
           this.obtenerEstudiantes();
         }
       }else{
-        this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+        this.toastrService.warning(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
         this.cargando = false;
       }
     }, error => {
@@ -86,8 +100,9 @@ seleccionRespuesta: Respuesta;
       this.listaEstudiantes = resp.data;
 
       if(resp.success){
-        this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
+        //this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
         this.cargando = false;
+        this.verificarEstudianteId();
       }else{
         this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true});
         this.cargando = false;
@@ -99,7 +114,6 @@ seleccionRespuesta: Respuesta;
   }
 
   seleccionarRespuesta(respuesta: any){
-
     this.seleccionRespuesta = respuesta;
     this.listaSoluciones = this.seleccionRespuesta.soluciones;
   }
@@ -109,7 +123,7 @@ seleccionRespuesta: Respuesta;
   }
 
   limpiar(): void {
-    this.filtrarForm.get('estudiante')?.setValue('');
+    this.filtrarForm.get('estudiantes')?.setValue("");
     this.filtrarForm.get('fecha')?.setValue(null);
     this.filtrar();
   }

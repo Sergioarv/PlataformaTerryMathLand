@@ -14,7 +14,7 @@
                         <label>Nombre:</label>
                         <input type="text" class="form-control" formControlName="nombre" [pattern]="regNombre"
                             placeholder="Ingrese el nombre a buscar">
-                            <div class="invalid-feedback">Por favor verifique el nombre</div>
+                        <div class="invalid-feedback">Por favor verifique el nombre</div>
                     </div>
                     <div class="col-sm-12 col-lg-6">
                         <label>Fecha de respuesta:</label>
@@ -60,6 +60,7 @@
                         <th scope="col">Ultima nota</th>
                         <th scope="col">Fecha ultima nota</th>
                         <th scope="col">Funciones</th>
+                        <th scope="col">Respuestas</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -80,6 +81,13 @@
                                 (click)="seleccionarEliminar(estudiante, contentEliminar)">
                                 <em class="fas fa-trash-alt"></em> Eliminar
                             </button>
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-secondary" style="width: fit-content;"
+                                [hidden]="estudiante.respuestas.length == 0" (click)="verRespuesta(estudiante)">
+                                <em class="fas fa-trash-alt"></em> Ver Respuestas
+                            </button>
+                            <p [hidden]="estudiante.respuestas.length != 0">No tiene respuestas</p>
                         </td>
                     </tr>
                     <tr *ngIf="listaEstudiante.length == 0">
@@ -136,13 +144,14 @@
                         <label>Nombre:</label>
                         <input type="text" class="form-control" formControlName="nombre" required [pattern]="regNombre"
                             value="{{ seleccionEditar.nombre }}">
-                            <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
+                        <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <label>Respuestas:</label>
-                        <select class="form-control" formControlName="respuesta" (change)="seleccionarRespuesta()" novalidate>
+                        <select class="form-control" formControlName="respuesta" (change)="seleccionarRespuesta()"
+                            novalidate>
                             <option selected value=''>{{ seleccionEditar.respuestas.length == 0 ? 'No hay
                                 respuetas' : 'Seleccione una respuesta' }}</option>
                             <option *ngFor="let resp of seleccionEditar.respuestas; let i = index" value="{{ i }}">

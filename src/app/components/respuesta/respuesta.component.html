@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-sm-12 col-md-8">
                     <button type="button" class="btn btn-primary" style="float: right;">
-                        <em class="far fa-edit"></em> Graficar
+                        <em class="far fa-edit"></em> Graficas
                     </button>
                 </div>
             </div>
@@ -105,15 +105,16 @@
                         <div class="row" *ngFor="let solucion of listaSoluciones; let i = index">
                             <div class="col-12">
                                 <label>Enunciado de Pregunta {{ i + 1 }}:</label>
-                                <textarea type="text" class="form-control" value="{{ solucion.enunciadoPre }}" disabled></textarea>
+                                <textarea type="text" class="form-control" value="{{ solucion.enunciadoPre }}"  onkeydown="return false"></textarea>
                             </div>
                             <div class="col-12">
                                 <label>Respuesta correcta {{ i + 1 }}:</label>
-                                <input type="text" class="form-control" value="{{ solucion.respuestaPre }}" disabled>
+                                <input type="text" class="form-control" value="{{ solucion.respuestaPre }}"  onkeydown="return false">
                             </div>
                             <div class="col-12">
                                 <label>Respuesta del estudiante {{ i + 1 }}:</label>
-                                <input type="text" class="form-control" value="{{ solucion.respuestaEst }}" disabled>
+                                <input type="text" class="form-control" value="{{ solucion.respuestaEst }}" onkeydown="return false"
+                                [ngClass]="{'correcto': solucion.respuestaPre == solucion.respuestaEst, 'incorrecto': solucion.respuestaPre != solucion.respuestaEst }" >
                             </div>
                         </div>
                     </form>
