@@ -8,17 +8,19 @@
             <h5>Busqueda Avanzada</h5>
         </div>
         <div class="card-body">
-            <form class="form-group" [formGroup]="filtrarForm">
+            <form class="form-group was-validated" [formGroup]="filtrarForm">
                 <div class="row">
                     <div class="col-s-12 col-lg-6">
                         <label>Numero de pregunta:</label>
                         <input type="text" class="form-control" formControlName="numPregunta"
-                            placeholder="Ingrese el numero de pregunta a buscar">
+                            placeholder="Ingrese el numero de pregunta a buscar" [pattern]="regNumeros">
+                        <div class="invalid-feedback">Ingresar solo números de dos digitas hasta el 25 </div>
                     </div>
                     <div class="col-s-12 col-lg-6">
                         <label>Enunciado:</label>
                         <input type="text" class="form-control" formControlName="enunciado"
-                            placeholder="Ingrese el enunciado a buscar">
+                            placeholder="Ingrese el enunciado a buscar" [pattern]="regTextoUnaLinea">
+                        <div class="invalid-feedback">Ingresar solo números de dos digitas hasta el 25 </div>
                     </div>
                 </div>
                 <br>
@@ -73,12 +75,12 @@
                         <td>{{ pregunta.opciones[3].enunciadoopcion}}</td>
                         <td style="width: 1024px;">
                             <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
-                            <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail" alt="{{ pregunta.urlImg }}"
-                                style="width: 100%;">
+                                <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
+                                    alt="{{ pregunta.urlImg }}" style="width: 100%;">
                             </div>
                         <td>
-                            <button type="button" class="btn btn-edit" data-toggle="modal"
-                                data-target="#editarPregunta" (click)="seleccionarEditar(pregunta)">
+                            <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editarPregunta"
+                                (click)="seleccionarEditar(pregunta)">
                                 <em class="far fa-edit"></em> Editar
                             </button>
                         </td>
@@ -106,59 +108,77 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group" [formGroup]="editarPreguntaForm">
+                    <form class="form-group was-validated" [formGroup]="editarPreguntaForm">
                         <div class="row">
                             <div class="col-12">
                                 <label>Numero de pregunta:</label>
-                                <input type="text" class="form-control" formControlName="numePregunta" value="{{ seleccionEditar.idpregunta }}">
+                                <input type="text" class="form-control" formControlName="numePregunta">
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label>Enunciado:</label>
-                                <textarea type="text" rows="3" class="form-control" formControlName="enumPregunta" value="{{ seleccionEditar.enunciado }}"></textarea>
+                                <textarea type="text" class="form-control" formControlName="enumPregunta" required
+                                    [pattern]="regTextoUnaLinea"></textarea>
+                                <div class="invalid-feedback">Por favor ingrese una pregunta o no ponga espacios antes y
+                                    despues del texto</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label>Opcion A:</label>
-                                <input type="text" class="form-control" formControlName="opcionA" value="{{ seleccionEditar.opciones[0].enunciadoopcion }}">
+                                <input type="text" class="form-control" formControlName="opcionA" required
+                                    [pattern]="regTextoUnaLinea">
+                                <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
+                                    despues del texto</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label>Opcion B:</label>
-                                <input type="text" class="form-control" formControlName="opcionB" value="{{ seleccionEditar.opciones[1].enunciadoopcion }}">
+                                <input type="text" class="form-control" formControlName="opcionB" required
+                                    [pattern]="regTextoUnaLinea">
+                                <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
+                                    despues del texto</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label>Opcion C:</label>
-                                <input type="text" class="form-control" formControlName="opcionC" value="{{ seleccionEditar.opciones[2].enunciadoopcion }}">
+                                <input type="text" class="form-control" formControlName="opcionC" required
+                                    [pattern]="regTextoUnaLinea">
+                                <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
+                                    despues del texto</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label>Opcion D:</label>
-                                <input type="text" class="form-control" formControlName="opcionD" value="{{ seleccionEditar.opciones[3].enunciadoopcion }}">
+                                <input type="text" class="form-control" formControlName="opcionD" required
+                                    [pattern]="regTextoUnaLinea">
+                                <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
+                                    despues del texto</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label>Imagen:</label><br>
-                                <input type="text" class="form-control" formControlName="urlImg" value="{{ seleccionEditar.urlImg }}">
+                                <input type="text" class="form-control" formControlName="urlImg"
+                                    value="{{ seleccionEditar.urlImg }}">
                                 <br>
-                                <div *ngIf=" seleccionEditar.urlImg != 'https://i.imgur.com/JX1T90I.png'" style="text-align: center;;">
-                                    <img src="{{ seleccionEditar.urlImg }}" class="rounded img-thumbnail" alt="{{ seleccionEditar.urlImg }}"
-                                style="height: 400px;">
+                                <div *ngIf=" seleccionEditar.urlImg != 'https://i.imgur.com/JX1T90I.png'"
+                                    style="text-align: center;;">
+                                    <img src="{{ seleccionEditar.urlImg }}" class="rounded img-thumbnail"
+                                        alt="{{ seleccionEditar.urlImg }}" style="height: 400px;">
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" [disabled]="!editarPreguntaForm.valid">Guardar</button>
+                    <button type="button" class="btn btn-success" [disabled]="!editarPreguntaForm.valid"
+                        (click)="guardarPregunta()">Guardar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
                 </div>
             </div>
         </div>

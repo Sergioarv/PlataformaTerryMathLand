@@ -16,7 +16,7 @@ export class PreguntaComponent implements OnInit {
   seleccionEditar: Pregunta;
 
   regNumeros = '^[0-9]|[1-2][0-9]$';
-  regTextoUnaLinea = '^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+';
+  regTextoUnaLinea = '^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1].[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1]$';
 
   cargando = false;
 
@@ -26,7 +26,7 @@ export class PreguntaComponent implements OnInit {
   });
 
   editarPreguntaForm = new FormGroup({
-    numePregunta: new FormControl('', [Validators.pattern(this.regNumeros)]),
+    numePregunta: new FormControl(''),
     enumPregunta: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
     opcionA: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
     opcionB: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
@@ -78,8 +78,18 @@ export class PreguntaComponent implements OnInit {
     this.filtrar();
   }
 
+  guardarPregunta(){
+    console.log(this.editarPreguntaForm.controls['enumPregunta'].value);
+  }
+
   seleccionarEditar(pregunta: Pregunta){
     this.editarPreguntaForm.get('numePregunta')?.disable();
+    this.editarPreguntaForm.get('numePregunta')?.setValue(pregunta.idpregunta);
+    this.editarPreguntaForm.get('enumPregunta')?.setValue(pregunta.enunciado);
+    this.editarPreguntaForm.get('opcionA')?.setValue(pregunta.opciones[0].enunciadoopcion);
+    this.editarPreguntaForm.get('opcionB')?.setValue(pregunta.opciones[1].enunciadoopcion);
+    this.editarPreguntaForm.get('opcionC')?.setValue(pregunta.opciones[2].enunciadoopcion);
+    this.editarPreguntaForm.get('opcionD')?.setValue(pregunta.opciones[3].enunciadoopcion);
     this.seleccionEditar = pregunta;
   }
 }

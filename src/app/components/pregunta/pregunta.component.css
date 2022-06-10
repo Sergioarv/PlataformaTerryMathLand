@@ -10,6 +10,6 @@
     border-color: #60a6dc;
 }
 
-.invalid, .feedback {
-    color: red;
+textarea .invalid {
+        color: red;    
 }
