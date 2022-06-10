@@ -8,12 +8,13 @@
             <h5>Busqueda Avanzada</h5>
         </div>
         <div class="card-body">
-            <form class="form-group" [formGroup]="filtrarForm">
+            <form class="form-group" [formGroup]="filtrarForm" class="was-validated">
                 <div class="row">
                     <div class="col-sm-12 col-lg-6">
                         <label>Nombre:</label>
-                        <input type="text" class="form-control" formControlName="nombre"
+                        <input type="text" class="form-control" formControlName="nombre" [pattern]="regNombre"
                             placeholder="Ingrese el nombre a buscar">
+                            <div class="invalid-feedback">Por favor verifique el nombre</div>
                     </div>
                     <div class="col-sm-12 col-lg-6">
                         <label>Fecha de respuesta:</label>
@@ -99,11 +100,12 @@
             <h5 class="modal-tittle" id="modal-basic-tittle">Agregar Estudiante</h5>
         </div>
         <div class="modal-body">
-            <form class="form-group" [formGroup]="agregarEstudianteForm">
+            <form class="form-group was-validated" [formGroup]="agregarEstudianteForm" novalidate>
                 <div class="row">
                     <div class="col-12">
                         <label>Nombre:</label>
-                        <input type="text" class="form-control" formControlName="nombre" required>
+                        <input type="text" class="form-control" formControlName="nombre" required [pattern]="regNombre">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
                     </div>
                 </div>
             </form>
@@ -121,7 +123,7 @@
             <h5 class="modal-tittle" id="modal-basic-tittle">Editar Estudiante</h5>
         </div>
         <div class="modal-body">
-            <form class="form-group" [formGroup]="editarEstudianteForm">
+            <form class="form-group" [formGroup]="editarEstudianteForm" class="was-validated" novalidate>
                 <div class="row">
                     <div class="col-12">
                         <label>id Estudiante:</label>
@@ -132,14 +134,15 @@
                 <div class="row">
                     <div class="col-12">
                         <label>Nombre:</label>
-                        <input type="text" class="form-control" formControlName="nombre" required
+                        <input type="text" class="form-control" formControlName="nombre" required [pattern]="regNombre"
                             value="{{ seleccionEditar.nombre }}">
+                            <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
                         <label>Respuestas:</label>
-                        <select class="form-control" formControlName="respuesta" (change)="seleccionarRespuesta()">
+                        <select class="form-control" formControlName="respuesta" (change)="seleccionarRespuesta()" novalidate>
                             <option selected value=''>{{ seleccionEditar.respuestas.length == 0 ? 'No hay
                                 respuetas' : 'Seleccione una respuesta' }}</option>
                             <option *ngFor="let resp of seleccionEditar.respuestas; let i = index" value="{{ i }}">
