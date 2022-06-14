@@ -37,11 +37,12 @@ export class GraficaComponent implements OnInit {
 
   ngOnInit(): void {
 
+    google.charts.load('current', { packages: ['corechart'] });
+
     this.filtrar(true);
 
-    google.charts.load('current', { packages: ['corechart'] });
     google.charts.setOnLoadCallback(this.drawChartPie);
-    google.charts.setOnLoadCallback(this.drawChartLine);
+
   }
 
   filtrar(inicio?: boolean) {
@@ -59,6 +60,8 @@ export class GraficaComponent implements OnInit {
         this.cargando = false;
         if (inicio) {
           this.obtenerEstudiantes();
+        } else {
+          this.drawChartLine();
         }
       } else {
         this.toastrService.warning(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
@@ -77,8 +80,9 @@ export class GraficaComponent implements OnInit {
       this.listaEstudiantes = resp.data;
 
       if (resp.success) {
-        this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
+        //this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
         this.cargando = false;
+        this.drawChartLine();
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
         this.cargando = false;
@@ -90,16 +94,19 @@ export class GraficaComponent implements OnInit {
   }
 
   drawChartLine() {
+
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'fecha');
-    data.addColumn('number', 'Nombre 1');
-    data.addColumn('number', 'Nombre n');
-    data.addRows([
-      ['2022-06-10', 3.0, 2.1],
-      ['2022-06-12', 5, 1.5],
-      ['2022-06-13', 1.9, 4.5],
-    ]);
+    this.listaRespuestas.forEach(item => {
+      data.addColumn('number', item.idrespuesta) + ','
+    });
+
+    for (var i = 0; i < this.listaRespuestas.length; i++) {
+      data.addRows([
+
+      ]);
+    }
 
     // Set chart options
     var options = {
