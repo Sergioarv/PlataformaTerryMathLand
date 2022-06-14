@@ -19,11 +19,11 @@ export class RespuestaComponent implements OnInit {
 
   listaRespuestas: Respuesta[];
   listaEstudiantes: Estudiante[];
-listaSoluciones: Solucion[];
+  listaSoluciones: Solucion[];
 
-seleccionRespuesta: Respuesta;
+  seleccionRespuesta: Respuesta;
 
-  fechaActual:Date = new Date();
+  fechaActual: Date = new Date();
 
   closeResult = '';
 
@@ -47,7 +47,7 @@ seleccionRespuesta: Respuesta;
 
     config.backdrop = 'static';
     config.keyboard = false;
-   }
+  }
 
   ngOnInit(): void {
     this.filtrar(true);
@@ -55,10 +55,10 @@ seleccionRespuesta: Respuesta;
 
   verificarEstudianteId() {
     const idEstudiante = localStorage.getItem('idEstudiante');
-    if(idEstudiante != null){
+    if (idEstudiante != null) {
       this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
 
-      this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe( resp => {
+      this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe(resp => {
         this.listaRespuestas = resp.data;
 
         localStorage.removeItem('idEstudiante');
@@ -67,23 +67,23 @@ seleccionRespuesta: Respuesta;
     }
   }
 
-  filtrar(inicio?: boolean){
+  filtrar(inicio?: boolean) {
 
     this.cargando = true;
 
     const estudiante = this.filtrarForm.controls['estudiantes'].value;
     const fecha = this.filtrarForm.controls['fecha'].value;
 
-    this.respuestaService.filtrarRespuesta(estudiante ? estudiante : null, fecha ? fecha : null).subscribe( resp => {
+    this.respuestaService.filtrarRespuesta(estudiante ? estudiante : null, fecha ? fecha : null).subscribe(resp => {
       this.listaRespuestas = resp.data;
 
-      if(resp.success){
+      if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true });
         this.cargando = false;
-        if(inicio){
+        if (inicio) {
           this.obtenerEstudiantes();
         }
-      }else{
+      } else {
         this.toastrService.warning(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
         this.cargando = false;
       }
@@ -93,27 +93,27 @@ seleccionRespuesta: Respuesta;
     });
   }
 
-  obtenerEstudiantes(){
+  obtenerEstudiantes() {
     this.cargando = true;
 
-    this.estudianteService.obtenerEstudiantes().subscribe( resp => {
+    this.estudianteService.obtenerEstudiantes().subscribe(resp => {
       this.listaEstudiantes = resp.data;
 
-      if(resp.success){
+      if (resp.success) {
         //this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
         this.cargando = false;
         this.verificarEstudianteId();
-      }else{
-        this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true});
+      } else {
+        this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
         this.cargando = false;
       }
     }, error => () => {
-      this.toastrService.error(error.message, 'Proceso fallido', { timeOut: 4000, closeButton: true});
+      this.toastrService.error(error.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
       this.cargando = false;
     });
   }
 
-  seleccionarRespuesta(respuesta: any){
+  seleccionarRespuesta(respuesta: any) {
     this.seleccionRespuesta = respuesta;
     this.listaSoluciones = this.seleccionRespuesta.soluciones;
   }
@@ -132,7 +132,7 @@ seleccionRespuesta: Respuesta;
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', backdropClass: 'light-blue-backdrop' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-    },  (reason) => {
+    }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
   }
