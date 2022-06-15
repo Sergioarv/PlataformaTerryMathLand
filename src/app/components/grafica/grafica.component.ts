@@ -1,31 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Estudiante } from 'src/app/models/estudiante';
 import { Respuesta } from 'src/app/models/respuesta';
-import { Solucion } from 'src/app/models/solucion';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { RespuestaService } from 'src/app/services/respuesta.service';
+declare var google: any;
 
 @Component({
-  selector: 'app-respuesta',
-  templateUrl: './respuesta.component.html',
-  styleUrls: ['./respuesta.component.css']
+  selector: 'app-grafica',
+  templateUrl: './grafica.component.html',
+  styleUrls: ['./grafica.component.css'],
 })
-export class RespuestaComponent implements OnInit {
+export class GraficaComponent implements OnInit {
+
+  listaEstudiantes: Estudiante[];
+  listaRespuestas: Respuesta[];
 
   cargando = false;
 
-  listaRespuestas: Respuesta[];
-  listaEstudiantes: Estudiante[];
-  listaSoluciones: Solucion[];
-
-  seleccionRespuesta: Respuesta;
-
   fechaActual: Date = new Date();
-
-  closeResult = '';
 
   filtrarForm = new FormGroup({
     estudiantes: new FormControl(''),
@@ -33,38 +27,22 @@ export class RespuestaComponent implements OnInit {
   });
 
   constructor(
-    private respuestaService: RespuestaService,
-    private toastrService: ToastrService,
     private estudianteService: EstudianteService,
-    private modalService: NgbModal,
-    private config: NgbModalConfig
+    private respuestaService: RespuestaService,
+    private toastrService: ToastrService
   ) {
-    this.listaRespuestas = [];
     this.listaEstudiantes = [];
-    this.listaSoluciones = [];
-
-    this.seleccionRespuesta = new Respuesta();
-
-    config.backdrop = 'static';
-    config.keyboard = false;
+    this.listaRespuestas = [];
   }
 
   ngOnInit(): void {
+
+    google.charts.load('current', { packages: ['corechart'] });
+
     this.filtrar(true);
-  }
 
-  verificarEstudianteId() {
-    const idEstudiante = localStorage.getItem('idEstudiante');
-    if (idEstudiante != null) {
-      this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
+    google.charts.setOnLoadCallback(this.drawChartPie);
 
-      this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe(resp => {
-        this.listaRespuestas = resp.data;
-
-        localStorage.removeItem('idEstudiante');
-      });
-
-    }
   }
 
   filtrar(inicio?: boolean) {
@@ -82,6 +60,8 @@ export class RespuestaComponent implements OnInit {
         this.cargando = false;
         if (inicio) {
           this.obtenerEstudiantes();
+        } else {
+          this.drawChartLine();
         }
       } else {
         this.toastrService.warning(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
@@ -102,7 +82,7 @@ export class RespuestaComponent implements OnInit {
       if (resp.success) {
         //this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
         this.cargando = false;
-        this.verificarEstudianteId();
+        this.drawChartLine();
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
         this.cargando = false;
@@ -113,9 +93,74 @@ export class RespuestaComponent implements OnInit {
     });
   }
 
-  seleccionarRespuesta(respuesta: any) {
-    this.seleccionRespuesta = respuesta;
-    this.listaSoluciones = this.seleccionRespuesta.soluciones;
+  drawChartLine() {
+
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'fecha');
+    this.listaRespuestas.forEach(item => {
+      data.addColumn('number', item.idrespuesta) + ','
+    });
+
+    for (var i = 0; i < this.listaRespuestas.length; i++) {
+      data.addRows([
+
+      ]);
+    }
+
+    // Set chart options
+    var options = {
+      chart: {
+        title: 'Notas por fechas',
+        subtitle: 'in millions of dollars (USD)',
+      },
+      height: 480,
+      chartArea: { width: '90%' },
+      legend: { position: 'top', alignment: 'center', maxLines: 2 },
+      tooltip: { trigger: 'focused' },
+      focusTarget: 'category',
+      crosshair: { trigger: 'focus', orientation: 'vertical', color: 'black' },
+      hAxis: {
+        title: 'Fecha',
+      },
+      vAxis: {
+        title: 'Nota',
+        format: 'decimal',
+        ticks: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
+      },
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.LineChart(document.getElementById('chartLine_div'));
+    chart.draw(data, options);
+  }
+
+  drawChartPie() {
+    // Create the data table.
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Nota');
+    data.addColumn('number', 'Promedio');
+    data.addRows([
+      ['Nota de 5.0', 3.0],
+      ['Nota entre 4.9 a 4.0', 1.0],
+      ['Nota entre 3.9 a 3.0', 10.0],
+      ['Nota inferior a 3.0', 5],
+    ]);
+
+    // Set chart options
+    var options = {
+      title: 'How Much Pizza I Ate Last Night',
+      height: 480,
+      is3D: true,
+      chartArea: { width: '90%' },
+      legend: { position: 'top', alignment: 'center', maxLines: 2 },
+    };
+
+    // Instantiate and draw our chart, passing in some options.
+    var chart = new google.visualization.PieChart(
+      document.getElementById('chartPie_div')
+    );
+    chart.draw(data, options);
   }
 
   borrarFecha() {
@@ -126,24 +171,5 @@ export class RespuestaComponent implements OnInit {
     this.filtrarForm.get('estudiantes')?.setValue("");
     this.filtrarForm.get('fecha')?.setValue(null);
     this.filtrar();
-  }
-
-  open(content: any) {
-
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'lg', backdropClass: 'light-blue-backdrop' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
   }
 }

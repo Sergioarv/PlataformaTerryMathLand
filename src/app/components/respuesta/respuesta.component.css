@@ -11,3 +11,13 @@
 .table {
     display: table;
 }
+
+.correcto {
+    border: 2px solid #075800;
+    background-color: #8ef18557;
+}
+
+.incorrecto {
+    border: 2px solid #580000;
+    background-color: #f1858557;
+}
