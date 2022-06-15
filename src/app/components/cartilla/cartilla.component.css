@@ -1,0 +1,13 @@
+.correcto {
+    color: #0d4808;
+    font-weight: bold ;
+}
+
+.incorrecto {
+    color: #580000;
+    font-weight: bold ;
+}
+
+.toast-dato{
+    background-color: #747474;
+}

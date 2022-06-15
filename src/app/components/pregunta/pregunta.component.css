@@ -4,12 +4,16 @@
     border-color: #454d55;
 }
 
-.btn-edit {
-    color: seashell;
-    background-color: #60a6dc;
-    border-color: #60a6dc;
+textarea .invalid {
+    color: red;
 }
 
-textarea .invalid {
-        color: red;    
+.correcto {
+    color: #0d4808;
+    font-weight: bold;
+}
+
+.incorrecto {
+    color: #580000;
+    font-weight: bold;
 }

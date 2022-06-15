@@ -79,6 +79,12 @@
     border-color: #454d55;
 }
 
+.contenedor .btn-edit {
+    color: whitesmoke;
+    background-color: #6581d5;
+    border-color: #6581d5;
+}
+
 input#date-input{
     display: inline-block;
     position: relative;

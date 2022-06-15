@@ -69,10 +69,30 @@
                     <tr *ngFor="let pregunta of listPregunta">
                         <td>{{ pregunta.idpregunta }}</td>
                         <td>{{ pregunta.enunciado }}</td>
-                        <td>{{ pregunta.opciones[0].enunciadoopcion}}</td>
-                        <td>{{ pregunta.opciones[1].enunciadoopcion}}</td>
-                        <td>{{ pregunta.opciones[2].enunciadoopcion}}</td>
-                        <td>{{ pregunta.opciones[3].enunciadoopcion}}</td>
+                        <td>{{ pregunta.opciones[0].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[0].respuesta,
+                            'incorrecto': !pregunta.opciones[0].respuesta }">
+                                {{ pregunta.opciones[0].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[1].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[1].respuesta,
+                            'incorrecto': !pregunta.opciones[1].respuesta }">
+                                {{ pregunta.opciones[1].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[2].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[2].respuesta,
+                            'incorrecto': !pregunta.opciones[2].respuesta }">
+                                {{ pregunta.opciones[2].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[3].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[3].respuesta,
+                            'incorrecto': !pregunta.opciones[3].respuesta }">
+                                {{ pregunta.opciones[3].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
                         <td style="width: 1024px;">
                             <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
                                 <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
@@ -98,8 +118,9 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel" 
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editarPreguntaLabel">Editar Pregunta</h5>
