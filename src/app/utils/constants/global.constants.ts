@@ -15,4 +15,7 @@ export class GlobalConstant {
     //Estudiante
     public static URL_ESTUDIANTE = '/estudiante';
     public static URL_ESTUDIANTE_FILTRO = '/estudiante/filtrar';
+
+    public static URL_CARTILLA = '/cartilla';
+    public static URL_CARTILLA_FILTRO = '/cartilla/filtrarPreguntas';
 }

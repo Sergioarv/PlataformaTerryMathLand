@@ -13,12 +13,12 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { JuegoComponent } from './components/juego/juego.component';
 import { PreguntaComponent } from './components/pregunta/pregunta.component';
-import { EditarPreguntaComponent } from './components/pregunta/editar/editar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
 import { DatePipe } from '@angular/common';
 import { RespuestaComponent } from './components/respuesta/respuesta.component';
 import { GraficaComponent } from './components/grafica/grafica.component';
+import { CartillaComponent } from './components/cartilla/cartilla.component';
 
 @NgModule({
   declarations: [
@@ -27,10 +27,10 @@ import { GraficaComponent } from './components/grafica/grafica.component';
     InicioComponent,
     JuegoComponent,
     PreguntaComponent,
-    EditarPreguntaComponent,
     EstudianteComponent,
     RespuestaComponent,
-    GraficaComponent
+    GraficaComponent,
+    CartillaComponent
   ],
   imports: [
     BrowserModule,
