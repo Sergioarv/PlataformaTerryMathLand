@@ -21,6 +21,10 @@ export class CartillaComponent implements OnInit {
   listaPreguntasCartilla: Pregunta[];
   // Lista de preguntas a actualizar en la cartilla
   listaPreguntasAgregar: Pregunta[];
+// Boleano para crear una nueva cartilla
+creacionCartilla: boolean;
+  // cartilla a guardar o editada
+  newCartilla: Cartilla;
 
   cargando = false;
 
@@ -39,6 +43,7 @@ export class CartillaComponent implements OnInit {
 
   editarCartillaForm = new FormGroup({
     nomCartilla: new FormControl({ value: '', disabled: true }),
+    nomCartillaI: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
     preguntas: new FormControl(''),
     enumPregunta: new FormControl({ value: '', disabled: true }),
     opcionA: new FormControl({ value: '', disabled: true }),
@@ -57,6 +62,8 @@ export class CartillaComponent implements OnInit {
     this.listaPreguntas = [];
     this.listaPreguntasCartilla = [];
     this.listaPreguntasAgregar = [];
+    this.newCartilla = new Cartilla();
+    this.creacionCartilla = false;
   }
 
   ngOnInit(): void {
@@ -76,15 +83,15 @@ export class CartillaComponent implements OnInit {
       this.listaCartillas = resp.data;
 
       if (resp.success) {
-        this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true });
+        this.toastrService.success(resp.message, 'Proceso exitoso');
         this.filtrarForm.get('numcartilla')?.setValue(this.listaCartillas[0].idcartilla);
         this.filtrar(1);
       } else {
-        this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
+        this.toastrService.error(resp.message, 'Proceso fallido');
         this.cargando = false;
       }
     }, error => {
-      this.toastrService.error(error.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
+      this.toastrService.error(error.message, 'Proceso fallido');
       this.cargando = false;
     });
   }
@@ -99,14 +106,14 @@ export class CartillaComponent implements OnInit {
       this.cartillaService.filtrarPreguntasCartilla(idCartilla ? idCartilla : id ? id : null).subscribe(resp => {
         this.listaPreguntasCartilla = resp.data;
         if (resp.success) {
-          this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 5000, closeButton: true });
+          this.toastrService.success(resp.message, 'Proceso exitoso');
           this.cargando = false;
         } else {
-          this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+          this.toastrService.error(resp.message, 'Proceso fallido');
           this.cargando = false;
         }
       }, error => {
-        this.toastrService.error(error.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+        this.toastrService.error(error.message, 'Proceso fallido');
         this.cargando = false;
       });
     } else {
@@ -121,9 +128,12 @@ export class CartillaComponent implements OnInit {
     this.filtrar();
   }
 
-  seleccionarEditar() {
+  seleccionarEditar(creacionB: boolean) {
+    this.creacionCartilla = creacionB;
     const cartilla = this.filtrarForm.controls['numcartilla'].value;
     this.editarCartillaForm.get('nomCartilla')?.setValue(cartilla);
+    this.editarCartillaForm.get('preguntas')?.setValue("");
+    this.detalleDePregunta = null;
 
     this.listaPreguntasAgregar = this.listaPreguntasAgregar.concat(this.listaPreguntasCartilla);
   }
@@ -145,32 +155,77 @@ export class CartillaComponent implements OnInit {
     const preguntaAdd = this.listaPreguntas[i];
 
     if (this.listaPreguntasAgregar.length == 25) {
-      this.toastrService.info('La cantidad maxima (25 preguntas por cartilla) se ha cumplido', 'Proceso pendiente', { timeOut: 4000, closeButton: true });
+      this.toastrService.info('La cantidad maxima (25 preguntas por cartilla) se ha cumplido, no se pueden agregar más preguntas', 'Proceso pendiente');
     } else {
-      const verificar = this.listaPreguntasAgregar.filter((preg: Pregunta) =>
+      const verificar = this.listaPreguntasAgregar.find((preg: Pregunta) =>
         preg.idpregunta == preguntaAdd.idpregunta);
 
-      if (verificar.length == 0) {
+      if (verificar == null) {
         this.listaPreguntasAgregar.push(preguntaAdd);
-        this.toastrService.info('La pregunta se encuentra en la lista para ser guardada', 'Proceso exitoso', { timeOut: 4000, closeButton: true });
+        this.toastrService.info('La pregunta se encuentra en la lista para ser guardada', 'Proceso pendiente');
       } else {
-        this.toastrService.warning('La pregunta ya ha sido agregada', 'Proceso fallido', { timeOut: 4000, closeButton: true });
+        this.toastrService.warning('La pregunta ya ha sido agregada', 'Proceso fallido');
       }
     }
   }
 
-  quitarPregunta(preguntaC: any){
+  quitarPregunta(preguntaC: any) {
     const indice = this.listaPreguntasAgregar.indexOf(preguntaC);
     this.listaPreguntasAgregar.splice(indice, 1);
+
+    const verificar = this.listaPreguntasCartilla.find((preg: Pregunta) =>
+      preg.idpregunta == preguntaC.idpregunta);
+
+    if (verificar == null) {
+      this.toastrService.warning('La pregunta ya no se agregara a la cartilla', 'Proceso fallido', { timeOut: 4000, closeButton: true });
+    } else {
+      this.toastrService.warning('La pregunta será borrada de la cartilla', 'Proceso fallido', { timeOut: 4000, closeButton: true });
+    }
+
   }
 
-  cerrarEditar(){
+  cerrarEditar() {
     this.listaPreguntasAgregar = [];
   }
 
   guardarCartilla() {
-    if(this.listaPreguntasAgregar.length < 5){
-      this.toastrService.info('La capacidad maxima (25 preguntas por cartilla) se ha cumplido', 'Proceso exitoso', { timeOut: 4000, closeButton: true });
+    this.cargando = true;
+
+    if (this.listaPreguntasAgregar.length < 5) {
+      this.toastrService.info('La capacidad minima (5 preguntas por cartilla) no se ha cumplido, por favor agrega más preguntas', 'Proceso exitoso', { timeOut: 4000, closeButton: true });
+      this.cargando = false;
+    } else if (this.listaPreguntasAgregar.length >= 25) {
+      this.toastrService.info('La cantidad maxima (25 preguntas por cartilla) se ha cumplido, quite algunas preguntas', 'Proceso pendiente');
+      this.cargando = false;
+    } else {
+      const idCartilla = this.editarCartillaForm.controls['nomCartilla'].value;
+      let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = idCartilla);
+
+      this.newCartilla.idcartilla = cartilla == undefined ? '' : cartilla.idcartilla;
+      this.newCartilla.nombre = cartilla == undefined ? '' : cartilla.nombre;
+
+      this.listaPreguntasAgregar.sort(function(a,b){
+        if(a.idpregunta > b.idpregunta){ return 1;}
+        if(a.idpregunta < b.idpregunta){ return -1;}
+        return 0;
+      });
+
+      this.newCartilla.preguntas = this.listaPreguntasAgregar;
+
+      this.cartillaService.actualizarCartilla(this.newCartilla).subscribe(resp => {
+        if (resp.success) {
+          this.toastrService.success(resp.message, 'Proceso exitoso');
+          this.cargando = false;
+          this.filtrar(1);
+          this.cerrarEditar();
+        } else {
+          this.toastrService.error(resp.message, 'Proceso fallido');
+          this.cargando = false;
+        }
+      }, error => {
+        this.toastrService.error(error.message, 'Proceso fallido');
+        this.cargando = false;
+      });
     }
   }
 }

@@ -40,7 +40,15 @@ import { CartillaComponent } from './components/cartilla/cartilla.component';
     HttpClientModule,
     NgxLoadingModule,
     NgbModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      maxOpened: 2,
+      timeOut: 3000,
+      closeButton: true,
+      newestOnTop: true,
+      countDuplicates:true,
+      preventDuplicates: true,
+      resetTimeoutOnDuplicate: true
+    })
   ],
   providers: [
     DatePipe

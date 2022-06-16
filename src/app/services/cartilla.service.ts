@@ -1,6 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Cartilla } from '../models/cartilla';
 import { GlobalConstant } from '../utils/constants/global.constants';
 
 @Injectable({
@@ -48,5 +49,15 @@ export class CartillaService {
     }
 
     return this.http.get<any>(URL + params);
+  }
+
+  actualizarCartilla(newCartilla: Cartilla): Observable<any> {
+    const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_CARTILLA;
+
+    let httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+
+    return this.http.put<any>(URL, newCartilla, httpOptions);
   }
 }

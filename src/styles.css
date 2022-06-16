@@ -29,6 +29,7 @@
     }
 }
 */
+/* Contenedor principal para dar orden a los modulos */
 .contenedor {
     padding-inline-end: 2%;
     padding-inline-start: 2%;
@@ -38,22 +39,26 @@
     max-width: 100%;
 }
 
+/* card que agrupan las diferentes secciones de los modulos*/
 .contenedor .card .card-header{
     background-color: rgb(216, 216, 216);
     border: 1;
     border-color: black;
 }
 
+/* contenedor especial para la barra de navegación*/
 .contenedor-nav {
     width: 100% !important;
     min-width: 100%;
     max-width: 100%;
 }
 
+/* proporciona un tamaño minimo a la barra de navegacion */
 .contenedor-nav nav{
     min-width: 940px;
 }
 
+/* Proporciona untamaño y vista de las tablas */
 .table {
     display: table;
     border-collapse: collapse;
@@ -62,34 +67,38 @@
     max-width: 100%;
 }
 
+/* Proporciona un tamaño fijo para los encabezados de las tablas */
 .table thead th {
     width: 200px;
     min-width: 30px;
 }
-
+/* Proporciona un tamaño fijo para las celdas de las tablas */
 .table tbody td {
     width: fit-content;
     min-width: 100%;
     max-width: min-content;
 }
-
+/* Proporciona estilopara los encabezados de las tablas */
 .thead-col {
     color: #fff;
     background-color: #343a40;
     border-color: #454d55;
 }
-
+/* proporciona un estilo propio a un boton de clase pripia llamado edit */
 .contenedor .btn-edit {
     color: whitesmoke;
     background-color: #6581d5;
     border-color: #6581d5;
+    max-width: fit-content;
 }
-
+/* Porporciona un estilo al input de fecha permite seleccionar
+ en cualquier parte del input para ingresar una fecha */
 input#date-input{
     display: inline-block;
     position: relative;
 }
-
+/* Porporciona un estilo al input de fecha permite seleccionar
+ en cualquier parte del input para ingresar una fecha */
 input#date-input::-webkit-calendar-picker-indicator {
     background: transparent;
     color: transparent;
@@ -102,3 +111,12 @@ input#date-input::-webkit-calendar-picker-indicator {
     height: auto;
     width: auto;
 }
+
+/* Quita el icono de invalido en los form */
+.form-control.is-valid, .was-validated .form-control:valid {
+    background-image: none !important;
+}
+
+/* .form-control.is-invalid, .was-validated .form-control:invalid {
+    background-image: none !important;
+} */

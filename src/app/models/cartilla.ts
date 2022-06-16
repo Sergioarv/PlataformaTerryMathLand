@@ -1,7 +1,13 @@
 import { Pregunta } from "./pregunta";
 
 export class Cartilla {
-    idcartilla = '';
-    nombre = '';
-    preguntas: Pregunta[] = [];
+    idcartilla: string;
+    nombre: string;
+    preguntas: Pregunta[];
+
+    constructor(){
+        this.idcartilla = "";
+        this.nombre = "";
+        this.preguntas = [];
+    }
 }
