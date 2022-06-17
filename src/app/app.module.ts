@@ -8,14 +8,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxLoadingModule } from 'ngx-loading';
+import { NgxBootstrapConfirmModule } from 'ngx-bootstrap-confirm';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { DatePipe } from '@angular/common';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { JuegoComponent } from './components/juego/juego.component';
 import { PreguntaComponent } from './components/pregunta/pregunta.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
-import { DatePipe } from '@angular/common';
 import { RespuestaComponent } from './components/respuesta/respuesta.component';
 import { GraficaComponent } from './components/grafica/grafica.component';
 import { CartillaComponent } from './components/cartilla/cartilla.component';
@@ -40,6 +42,7 @@ import { CartillaComponent } from './components/cartilla/cartilla.component';
     HttpClientModule,
     NgxLoadingModule,
     NgbModule,
+    NgxBootstrapConfirmModule,
     ToastrModule.forRoot({
       maxOpened: 2,
       timeOut: 3000,

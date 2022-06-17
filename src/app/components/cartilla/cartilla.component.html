@@ -9,6 +9,7 @@
             <h5>Busqueda Avanzada</h5>
         </div>
         <div class="card-body">
+            <!-- Formulario de filtro -->
             <form class="form-group" [formGroup]="filtrarForm">
                 <div class="row">
                     <div class="col-s-12 col-lg-6">
@@ -16,8 +17,7 @@
                         <select class="form-control" formControlName="numcartilla" (change)="filtrar()">
                             <option selected value=''>{{ listaCartillas.length == 0 ? 'No hay cartillas' :
                                 'Seleccione una cartilla' }}</option>
-                            <option *ngFor="let cartilla of listaCartillas"
-                                value="{{ cartilla.idcartilla }}">{{
+                            <option *ngFor="let cartilla of listaCartillas" value="{{ cartilla.idcartilla }}">{{
                                 cartilla.nombre }}</option>
                         </select>
                     </div>
@@ -41,25 +41,30 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-4">
-                    <h5 class="card-title">Lista de preguntas</h5>
+                    <h5 class="card-title">Lista de preguntas de la cartilla</h5>
                 </div>
                 <div class="col-8" style="justify-content: right; align-items: flex-end; display: flex;">
                     <button class="btn btn-secondary" routerLink='/pregunta'
                         style=" width: 10rem; max-width: fit-content;">
                         <em class="fa-solid fa-clipboard-question"></em> Preguntas</button>
                     &nbsp;&nbsp;
-                    <button type="button" class="btn btn-primary" 
-                    (click)="seleccionarEditar(true, content)">
-                    <em class="far fa-edit"></em> Crear Cartilla
-                </button>
-                &nbsp;&nbsp;
-                    <button type="button" class="btn btn-edit" 
-                        (click)="seleccionarEditar(false, content)" [disabled]="!filtrarForm.controls['numcartilla'].value">
+                    <button type="button" class="btn btn-primary" (click)="seleccionarEditar(true, content)">
+                        <em class="far fa-edit"></em> Crear Cartilla
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-edit" (click)="seleccionarEditar(false, content)"
+                        [disabled]="!filtrarForm.controls['numcartilla'].value">
                         <em class="far fa-edit"></em> Editar Cartilla
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-danger" (click)="seleccionarEliminar(contentEliminar)"
+                        [disabled]="!filtrarForm.controls['numcartilla'].value">
+                        <em class="far fa-trash-can"></em> Eliminar Cartilla
                     </button>
                 </div>
             </div>
         </div>
+        <!-- Tabla de preguntas de la cartilla -->
         <div class="card-body">
             <table class="table table-bordered table-hover table-responsive" style="overflow-x: scroll;">
                 <caption>Preguntas de la cartilla</caption>
@@ -145,7 +150,8 @@
                                 value="{{ cartilla.idcartilla }}">{{
                                 cartilla.nombre }}</option>
                         </select>
-                        <input class="form-control" formControlName="nomCartillaI" value="" *ngIf="creacionCartilla" [pattern]="regTextoUnaLinea">
+                        <input class="form-control" formControlName="nomCartillaI" value="" *ngIf="creacionCartilla"
+                            [pattern]="regTextoUnaLinea">
                         <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-5">
@@ -163,8 +169,7 @@
                     </div>
                     <div class="col-sm-12 col-md-4 col-xl-2">
                         <label>&nbsp;</label><br>
-                        <button type="button" class="btn btn-primary" style=" width: 10rem;"
-                            (click)="agregarPregunta()"
+                        <button type="button" class="btn btn-primary" style=" width: 10rem;" (click)="agregarPregunta()"
                             [disabled]="editarCartillaForm.controls['preguntas'].value == ''">
                             <em class="fa-solid fa-plus"></em> Agregar</button>
                     </div>
@@ -191,8 +196,8 @@
                                 <td>{{ preguntaC.idpregunta }}</td>
                                 <td>{{ preguntaC.enunciado }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-danger"
-                                        (click)="quitarPregunta(preguntaC)"><em class="fas fa-xmark"></em> Quitar</button>
+                                    <button type="button" class="btn btn-danger" (click)="quitarPregunta(preguntaC)"><em
+                                            class="fas fa-xmark"></em> Quitar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -202,8 +207,7 @@
             <!-- Detalles de la pregunta -->
             <div class="row">
                 <div class="col-12">
-                    <table class="table table-bordered table-hover table-responsive"
-                        style="overflow-x: scroll;">
+                    <table class="table table-bordered table-hover table-responsive" style="overflow-x: scroll;">
                         <caption>Detalles de preguntas</caption>
                         <thead class="thead-col">
                             <tr>
@@ -266,7 +270,43 @@
             <button type="button" class="btn btn-success" [disabled]="!editarCartillaForm.valid"
                 (click)="guardarCartilla()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal"
-                (click)="cerrarEditar()"><em class="fa-solid fa-ban"></em> Cancelar</button>
+                (click)="abrirConfirmarEdit(contentCancelarEditar)">
+                <em class="fa-solid fa-ban"></em> Cancelar</button>
         </div>
     </ng-template>
+
+    <!-- Modal de Confirmación eliminar -->
+    <ng-template #contentEliminar letc="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basi-tittle">Eliminar Cartilla</h5>
+        </div>
+        <div class="modal-body">
+            <h6>¿Está seguro que desea eliminar la cartilla?</h6>
+            <h6>Se eliminará la siguiente cartilla:<br />{{ mensajeEliminar }}</h6>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="eliminarCartilla()"><em
+                    class="fa-regular fa-circle-check"></em> Confirmar</button>
+            <button type="button" class="btn btn-danger" (click)="d('Close click')"><em class="fa-solid fa-ban"></em>
+                Cancelar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal de Confirmación cancelar edicion -->
+    <ng-template #contentCancelarEditar letc="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basi-tittle">Confirmar cancelación</h5>
+        </div>
+        <div class="modal-body">
+            <h6>¿Está seguro que desea cancelar el proceso?</h6>
+            <h6>Si cancela el proceso las preguntas que agrego o quito no se guardara</h6>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="cerrarEditar()"><em
+                    class="fa-regular fa-circle-check"></em> Confirmar</button>
+            <button type="button" class="btn btn-danger" (click)="d('Close click')"><em class="fa-solid fa-ban"></em>
+                Cancelar</button>
+        </div>
+    </ng-template>
+
 </div>

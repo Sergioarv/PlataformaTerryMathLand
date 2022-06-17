@@ -9,6 +9,7 @@ import { GlobalConstant } from '../utils/constants/global.constants';
 })
 export class CartillaService {
 
+
   constructor(
     private http: HttpClient
   ) { }
@@ -55,6 +56,18 @@ export class CartillaService {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_CARTILLA;
 
     return this.http.post(URL, newCartilla);
+  }
+  
+  eliminarCartilla(cartilla: Cartilla): Observable<any> {
+    const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_CARTILLA;
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: cartilla,
+    };
+
+    return this.http.delete<any>(URL, options);
   }
 
   actualizarCartilla(newCartilla: Cartilla): Observable<any> {

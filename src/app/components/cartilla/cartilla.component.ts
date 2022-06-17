@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgxBootstrapConfirmService } from 'ngx-bootstrap-confirm';
 import { ToastrService } from 'ngx-toastr';
 import { Cartilla } from 'src/app/models/cartilla';
 import { Pregunta } from 'src/app/models/pregunta';
@@ -25,7 +26,7 @@ export class CartillaComponent implements OnInit {
   // Boleano para crear una nueva cartilla
   creacionCartilla: boolean;
   // cartilla a guardar o editada
-  // newCartilla: Cartilla;
+  mensajeEliminar = '';
 
   cargando = false;
 
@@ -55,6 +56,7 @@ export class CartillaComponent implements OnInit {
     private cartillaService: CartillaService,
     private preguntaService: PreguntaService,
     private modalService: NgbModal,
+    private confirmacionService: NgxBootstrapConfirmService,
     config: NgbModalConfig,
     private changeDetectorRef: ChangeDetectorRef
   ) {
@@ -62,7 +64,6 @@ export class CartillaComponent implements OnInit {
     this.listaPreguntas = [];
     this.listaPreguntasCartilla = [];
     this.listaPreguntasAgregar = [];
-    // this.newCartilla = new Cartilla();
     this.creacionCartilla = false;
 
     config.backdrop = 'static';
@@ -105,11 +106,11 @@ export class CartillaComponent implements OnInit {
   filtrar(): void {
 
     this.cargando = true;
-    const idCartilla = this.filtrarForm.controls['numcartilla'].value;
+    const cartillaF = this.filtrarForm.controls['numcartilla'].value;
 
-    if (idCartilla != null && idCartilla != '') {
+    if (cartillaF != null && cartillaF != '') {
 
-      this.cartillaService.filtrarPreguntasCartilla(idCartilla ? idCartilla : null).subscribe(resp => {
+      this.cartillaService.filtrarPreguntasCartilla(cartillaF ? cartillaF : null).subscribe(resp => {
         this.listaPreguntasCartilla = resp.data;
         if (resp.success) {
           this.toastrService.success(resp.message, 'Proceso exitoso');
@@ -144,7 +145,16 @@ export class CartillaComponent implements OnInit {
       this.listaPreguntasAgregar = this.listaPreguntasAgregar.concat(this.listaPreguntasCartilla);
     }
 
-    this.open(content);
+    this.open(content, 'xl');
+  }
+
+  seleccionarEliminar(contentEliminar?: any) {
+
+    const cartillaS = this.filtrarForm.controls['numcartilla'].value;
+    let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = cartillaS);
+    this.mensajeEliminar = cartilla?.nombre == undefined ? '' : cartilla?.nombre;
+
+    this.open(contentEliminar, '');
   }
 
   detallesPregunta() {
@@ -189,7 +199,6 @@ export class CartillaComponent implements OnInit {
     } else {
       this.toastrService.warning('La pregunta será borrada de la cartilla', 'Proceso fallido');
     }
-
   }
 
   cerrarEditar() {
@@ -199,6 +208,10 @@ export class CartillaComponent implements OnInit {
     this.editarCartillaForm.get('preguntas')?.setValue("");
     this.detalleDePregunta = null;
     this.modalService.dismissAll('Close click');
+  }
+
+  abrirConfirmarEdit(contentCancelarEditar?: any) {
+    this.creacionCartilla ? this.cerrarEditar() : this.open(contentCancelarEditar, '');
   }
 
   guardarCartilla() {
@@ -234,10 +247,10 @@ export class CartillaComponent implements OnInit {
           this.toastrService.error(error.message, 'Proceso fallido');
           this.cargando = false;
         });
-  
+
       } else {
-        const idCartilla = this.editarCartillaForm.controls['nomCartilla'].value;
-        let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = idCartilla);
+        const cartillaU = this.editarCartillaForm.controls['nomCartilla'].value;
+        let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = cartillaU);
 
         newCartilla.idcartilla = cartilla == undefined ? '' : cartilla.idcartilla;
         newCartilla.nombre = cartilla == undefined ? '' : cartilla.nombre;
@@ -262,10 +275,37 @@ export class CartillaComponent implements OnInit {
     }
   }
 
-  /** Funciones para abrir y cerrar modal ng **/
-  open(content: any) {
+  eliminarCartilla() {
+    this.cargando = true;
 
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'xl', backdropClass: 'light-blue-backdrop' }).result.then((result) => {
+    const cartillaD = this.filtrarForm.controls['numcartilla'].value;
+    let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = cartillaD);
+
+    const eliminar = new Cartilla();
+
+    eliminar.idcartilla = cartilla == undefined ? '' : cartilla?.idcartilla;
+    eliminar.nombre = cartilla == undefined ? '' : cartilla.nombre;
+    eliminar.preguntas = cartilla == undefined ? [] : cartilla?.preguntas;
+
+    this.cartillaService.eliminarCartilla(eliminar).subscribe(resp => {
+      if (resp.success) {
+        this.toastrService.success(resp.message, 'Proceso exitoso');
+        this.cargando = false;
+        this.modalService.dismissAll('Save click');
+      } else {
+        this.toastrService.error(resp.message, 'Proceso fallido');
+        this.cargando = false;
+      }
+    }, error => {
+      this.toastrService.error(error.message, 'Proceso fallido');
+      this.cargando = false;
+    });
+  }
+
+  /** Funciones para abrir y cerrar modal ng **/
+  open(content: any, tamaño: any) {
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: tamaño, backdropClass: 'light-blue-backdrop', centered: true }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
