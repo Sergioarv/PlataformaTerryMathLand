@@ -26,11 +26,11 @@
                 <div class="row">
                     <div class="col-s-12 col-lg-6">
                         <button class="btn btn-primary" (click)="filtrar()"
-                            [disabled]="!filtrarForm.valid">Buscar</button>
+                            [disabled]="!filtrarForm.valid"><em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
                         &nbsp;
-                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em> Limpiar</button>
                         &nbsp;
-                        <button class="btn btn-info" (click)="borrarFecha()">Borrar fecha</button>
+                        <button class="btn btn-info" (click)="borrarFecha()"><em class="fa-regular fa-calendar-xmark"></em> Borrar fecha</button>
                     </div>
                 </div>
             </form>
@@ -85,7 +85,7 @@
                         <td>
                             <button type="button" class="btn btn-secondary" style="width: fit-content;"
                                 [hidden]="estudiante.respuestas.length == 0" (click)="verRespuesta(estudiante)">
-                                <em class="fas fa-trash-alt"></em> Ver Respuestas
+                                <em class="fa-solid fa-question"></em> Ver Respuestas
                             </button>
                             <p [hidden]="estudiante.respuestas.length != 0">No tiene respuestas</p>
                         </td>
@@ -120,8 +120,9 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-success" (click)="agregarEstudiante()"
-                [disabled]="!agregarEstudianteForm.valid">Guardar</button>
-            <button type="button" class="btn btn-danger" (click)="resetearAgregarEstudianteForm()">Cancelar</button>
+                [disabled]="!agregarEstudianteForm.valid"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+            <button type="button" class="btn btn-danger" (click)="resetearAgregarEstudianteForm()">
+                <em class="fa-solid fa-ban"></em> Cancelar</button>
         </div>
     </ng-template>
 
@@ -177,8 +178,9 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-success" (click)="editarEstudiante()"
-                [disabled]="!editarEstudianteForm.valid">Guardar</button>
-            <button type="button" class="btn btn-danger" (click)="resetearEditarEstudianteForm()">Cancelar</button>
+                [disabled]="!editarEstudianteForm.valid"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+            <button type="button" class="btn btn-danger" (click)="resetearEditarEstudianteForm()">
+                <em class="fa-solid fa-ban"></em> Cancelar</button>
         </div>
     </ng-template>
 
@@ -207,9 +209,9 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-success"
-                (click)="eliminarEstudiante(seleccionEliminar)">Confirmar</button>
+                (click)="eliminarEstudiante(seleccionEliminar)"><em class="fa-regular fa-circle-check"></em> Confirmar</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal"
-                (click)="resetearEliminarEstudianteForm()">Cancelar</button>
+                (click)="resetearEliminarEstudianteForm()"><em class="fa-solid fa-ban"></em> Cancelar</button>
         </div>
     </ng-template>
 </div>

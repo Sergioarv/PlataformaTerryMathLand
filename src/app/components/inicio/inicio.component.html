@@ -20,6 +20,24 @@
 
     <div class="col-sm-6 col-md-3">
       <div class="card" style="text-align: center;">
+        <a [routerLink]="['/estudiante']">
+          <div class="card-header">
+            <img
+              src="https://cdn-icons.flaticon.com/png/512/2995/premium/2995620.png?token=exp=1654377294~hmac=b03863e4b2a436f6fa16db815a31b6d9"
+              alt="flaticon">
+          </div>
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">Gestionar Cartillas</h5>
+          <p class="card-text">Crear, listar y modificar cartillas, agregar y quitar preguntas de la cartilla.</p>
+          <a [routerLink]="['/cartilla']" class="btn btn-primary"><em class="fa-solid fa-newspaper"></em>
+            Estudiantes</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-6 col-md-3">
+      <div class="card" style="text-align: center;">
         <a [routerLink]="['/pregunta']">
           <div class="card-header">
             <img src="https://cdn-icons-png.flaticon.com/512/4470/4470846.png" alt="flaticon">
@@ -28,10 +46,12 @@
         <div class="card-body">
           <h5 class="card-title">Gestionar Preguntas</h5>
           <p class="card-text">Agregar, listar y modificar las preguntas.</p>
-          <a [routerLink]="['/pregunta']" class="btn btn-primary"><em class="fa-solid fa-clipboard"></em> Preguntas</a>
+          <a [routerLink]="['/pregunta']" class="btn btn-primary"><em class="fa-solid fa-clipboard-question"></em>
+            Preguntas</a>
         </div>
       </div>
     </div>
+
     <div class="col-sm-6 col-md-3">
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/pregunta']">
@@ -41,12 +61,30 @@
         </a>
         <div class="card-body">
           <h5 class="card-title">Gestionar Respuestas</h5>
-          <p class="card-text">Listar y graficar respuestas y soluciones de estudiantes.</p>
-          <a [routerLink]="['/respuesta']" class="btn btn-primary"><em class="fa-solid fa-chart-area"></em>
+          <p class="card-text">Listar y visualizar respuestas y soluciones de estudiantes.</p>
+          <a [routerLink]="['/respuesta']" class="btn btn-primary"><em class="fa-solid fa-comment-dots"></em>
             Respuestas</a>
         </div>
       </div>
     </div>
+
+    <div class="col-sm-6 col-md-3">
+      <div class="card" style="text-align: center;">
+        <a [routerLink]="['/estudiante']">
+          <div class="card-header">
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/3063/3063525.png"
+              alt="flaticon">
+          </div>
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">Gestionar Graficas</h5>
+          <p class="card-text">Visualizar y filtrar graficas de pomedios de respuestas.</p>
+          <a [routerLink]="['/cartilla']" class="btn btn-primary"><em class="fa-solid fa-chart-area"></em> Graficas</a>
+        </div>
+      </div>
+    </div>
+
     <div class="col-sm-6 col-md-3">
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/juego']">

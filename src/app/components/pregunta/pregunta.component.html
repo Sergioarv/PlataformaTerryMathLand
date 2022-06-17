@@ -27,9 +27,9 @@
                 <div class="row">
                     <div class="col-12">
                         <button class="btn btn-primary" (click)="filtrar()"
-                            [disabled]="!filtrarForm.valid">Buscar</button>
+                            [disabled]="!filtrarForm.valid"><em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
                         &nbsp;
-                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em> Limpiar</button>
                     </div>
                 </div>
             </form>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-8">
                     <button class="btn btn-primary" routerLink='/cartilla'
-                        style="float: right; width: 10rem;">Cartillas</button>
+                        style="float: right; width: 10rem;"><em class="fa-regular fa-newspaper"></em> Cartillas</button>
                 </div>
             </div>
         </div>
@@ -198,8 +198,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" [disabled]="!editarPreguntaForm.valid"
-                        (click)="guardarPregunta()">Guardar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        (click)="guardarPregunta()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><em class="fa-solid fa-ban"></em> Cancelar</button>
                 </div>
             </div>
         </div>

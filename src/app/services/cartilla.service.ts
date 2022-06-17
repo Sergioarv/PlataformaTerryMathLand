@@ -51,6 +51,12 @@ export class CartillaService {
     return this.http.get<any>(URL + params);
   }
 
+  crearCartilla(newCartilla: Cartilla): Observable<any> {
+    const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_CARTILLA;
+
+    return this.http.post(URL, newCartilla);
+  }
+
   actualizarCartilla(newCartilla: Cartilla): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_CARTILLA;
 

@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Cartilla } from 'src/app/models/cartilla';
 import { Pregunta } from 'src/app/models/pregunta';
@@ -21,12 +22,14 @@ export class CartillaComponent implements OnInit {
   listaPreguntasCartilla: Pregunta[];
   // Lista de preguntas a actualizar en la cartilla
   listaPreguntasAgregar: Pregunta[];
-// Boleano para crear una nueva cartilla
-creacionCartilla: boolean;
+  // Boleano para crear una nueva cartilla
+  creacionCartilla: boolean;
   // cartilla a guardar o editada
-  newCartilla: Cartilla;
+  // newCartilla: Cartilla;
 
   cargando = false;
+
+  closeResult = '';
 
   // Cartilla a la que se agregara o quitara preguntas
   seleccionarEditarCartilla: any;
@@ -43,32 +46,36 @@ creacionCartilla: boolean;
 
   editarCartillaForm = new FormGroup({
     nomCartilla: new FormControl({ value: '', disabled: true }),
-    nomCartillaI: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
+    nomCartillaI: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.required]),
     preguntas: new FormControl(''),
-    enumPregunta: new FormControl({ value: '', disabled: true }),
-    opcionA: new FormControl({ value: '', disabled: true }),
-    opcionB: new FormControl({ value: '', disabled: true }),
-    opcionC: new FormControl({ value: '', disabled: true }),
-    opcionD: new FormControl({ value: '', disabled: true }),
-    urlImg: new FormControl({ value: '', disabled: true })
   });
 
   constructor(
     private toastrService: ToastrService,
     private cartillaService: CartillaService,
-    private preguntaService: PreguntaService
+    private preguntaService: PreguntaService,
+    private modalService: NgbModal,
+    config: NgbModalConfig,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.listaCartillas = [];
     this.listaPreguntas = [];
     this.listaPreguntasCartilla = [];
     this.listaPreguntasAgregar = [];
-    this.newCartilla = new Cartilla();
+    // this.newCartilla = new Cartilla();
     this.creacionCartilla = false;
+
+    config.backdrop = 'static';
+    config.keyboard = false;
   }
 
   ngOnInit(): void {
     this.obtenerCartillas();
     this.obtenerPreguntas();
+  }
+
+  ngAfterViewChecked(): void {
+    this.changeDetectorRef.detectChanges();
   }
 
   obtenerPreguntas() {
@@ -84,8 +91,7 @@ creacionCartilla: boolean;
 
       if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso');
-        this.filtrarForm.get('numcartilla')?.setValue(this.listaCartillas[0].idcartilla);
-        this.filtrar(1);
+        this.cargando = false;
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido');
         this.cargando = false;
@@ -96,14 +102,14 @@ creacionCartilla: boolean;
     });
   }
 
-  filtrar(id?: any): void {
+  filtrar(): void {
 
     this.cargando = true;
-
     const idCartilla = this.filtrarForm.controls['numcartilla'].value;
 
-    if (idCartilla || id) {
-      this.cartillaService.filtrarPreguntasCartilla(idCartilla ? idCartilla : id ? id : null).subscribe(resp => {
+    if (idCartilla != null && idCartilla != '') {
+
+      this.cartillaService.filtrarPreguntasCartilla(idCartilla ? idCartilla : null).subscribe(resp => {
         this.listaPreguntasCartilla = resp.data;
         if (resp.success) {
           this.toastrService.success(resp.message, 'Proceso exitoso');
@@ -128,26 +134,22 @@ creacionCartilla: boolean;
     this.filtrar();
   }
 
-  seleccionarEditar(creacionB: boolean) {
+  seleccionarEditar(creacionB: boolean, content?: any) {
     this.creacionCartilla = creacionB;
     const cartilla = this.filtrarForm.controls['numcartilla'].value;
     this.editarCartillaForm.get('nomCartilla')?.setValue(cartilla);
-    this.editarCartillaForm.get('preguntas')?.setValue("");
-    this.detalleDePregunta = null;
+    this.editarCartillaForm.get('nomCartillaI')?.setValue(creacionB ? "" : "nada");
 
-    this.listaPreguntasAgregar = this.listaPreguntasAgregar.concat(this.listaPreguntasCartilla);
+    if (!creacionB) {
+      this.listaPreguntasAgregar = this.listaPreguntasAgregar.concat(this.listaPreguntasCartilla);
+    }
+
+    this.open(content);
   }
 
   detallesPregunta() {
-
     const i = this.editarCartillaForm.controls['preguntas'].value;
     this.detalleDePregunta = this.listaPreguntas[i];
-
-    this.editarCartillaForm.get('enumPregunta')?.setValue(this.detalleDePregunta.enunciado);
-    this.editarCartillaForm.get('opcionA')?.setValue(this.detalleDePregunta.opciones[0].enunciadoopcion);
-    this.editarCartillaForm.get('opcionB')?.setValue(this.detalleDePregunta.opciones[1].enunciadoopcion);
-    this.editarCartillaForm.get('opcionC')?.setValue(this.detalleDePregunta.opciones[2].enunciadoopcion);
-    this.editarCartillaForm.get('opcionD')?.setValue(this.detalleDePregunta.opciones[3].enunciadoopcion);
   }
 
   agregarPregunta() {
@@ -163,6 +165,12 @@ creacionCartilla: boolean;
       if (verificar == null) {
         this.listaPreguntasAgregar.push(preguntaAdd);
         this.toastrService.info('La pregunta se encuentra en la lista para ser guardada', 'Proceso pendiente');
+
+        this.listaPreguntasAgregar.sort(function (a, b) {
+          if (a.idpregunta > b.idpregunta) { return 1; }
+          if (a.idpregunta < b.idpregunta) { return -1; }
+          return 0;
+        });
       } else {
         this.toastrService.warning('La pregunta ya ha sido agregada', 'Proceso fallido');
       }
@@ -177,15 +185,20 @@ creacionCartilla: boolean;
       preg.idpregunta == preguntaC.idpregunta);
 
     if (verificar == null) {
-      this.toastrService.warning('La pregunta ya no se agregara a la cartilla', 'Proceso fallido', { timeOut: 4000, closeButton: true });
+      this.toastrService.warning('La pregunta ya no se agregara a la cartilla', 'Proceso fallido');
     } else {
-      this.toastrService.warning('La pregunta será borrada de la cartilla', 'Proceso fallido', { timeOut: 4000, closeButton: true });
+      this.toastrService.warning('La pregunta será borrada de la cartilla', 'Proceso fallido');
     }
 
   }
 
   cerrarEditar() {
     this.listaPreguntasAgregar = [];
+    this.editarCartillaForm.get('nomCartilla')?.setValue("");
+    this.editarCartillaForm.get('nomCartillaI')?.setValue("");
+    this.editarCartillaForm.get('preguntas')?.setValue("");
+    this.detalleDePregunta = null;
+    this.modalService.dismissAll('Close click');
   }
 
   guardarCartilla() {
@@ -198,34 +211,74 @@ creacionCartilla: boolean;
       this.toastrService.info('La cantidad maxima (25 preguntas por cartilla) se ha cumplido, quite algunas preguntas', 'Proceso pendiente');
       this.cargando = false;
     } else {
-      const idCartilla = this.editarCartillaForm.controls['nomCartilla'].value;
-      let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = idCartilla);
 
-      this.newCartilla.idcartilla = cartilla == undefined ? '' : cartilla.idcartilla;
-      this.newCartilla.nombre = cartilla == undefined ? '' : cartilla.nombre;
+      const newCartilla = new Cartilla();
 
-      this.listaPreguntasAgregar.sort(function(a,b){
-        if(a.idpregunta > b.idpregunta){ return 1;}
-        if(a.idpregunta < b.idpregunta){ return -1;}
-        return 0;
-      });
+      if (this.creacionCartilla) {
+        const nombreCartilla = this.editarCartillaForm.controls['nomCartillaI'].value;
+        newCartilla.idcartilla = '-1';
+        newCartilla.nombre = nombreCartilla;
+        newCartilla.preguntas = this.listaPreguntasAgregar;
 
-      this.newCartilla.preguntas = this.listaPreguntasAgregar;
-
-      this.cartillaService.actualizarCartilla(this.newCartilla).subscribe(resp => {
-        if (resp.success) {
-          this.toastrService.success(resp.message, 'Proceso exitoso');
+        this.cartillaService.crearCartilla(newCartilla).subscribe(resp => {
+          if (resp.success) {
+            this.toastrService.success(resp.message, 'Proceso exitoso');
+            this.cargando = false;
+            this.obtenerCartillas();
+            this.cerrarEditar();
+          } else {
+            this.toastrService.error(resp.message, 'Proceso fallido');
+            this.cargando = false;
+          }
+        }, error => {
+          this.toastrService.error(error.message, 'Proceso fallido');
           this.cargando = false;
-          this.filtrar(1);
-          this.cerrarEditar();
-        } else {
-          this.toastrService.error(resp.message, 'Proceso fallido');
+        });
+  
+      } else {
+        const idCartilla = this.editarCartillaForm.controls['nomCartilla'].value;
+        let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = idCartilla);
+
+        newCartilla.idcartilla = cartilla == undefined ? '' : cartilla.idcartilla;
+        newCartilla.nombre = cartilla == undefined ? '' : cartilla.nombre;
+
+        newCartilla.preguntas = this.listaPreguntasAgregar;
+
+        this.cartillaService.actualizarCartilla(newCartilla).subscribe(resp => {
+          if (resp.success) {
+            this.toastrService.success(resp.message, 'Proceso exitoso');
+            this.cargando = false;
+            this.filtrar();
+            this.cerrarEditar();
+          } else {
+            this.toastrService.error(resp.message, 'Proceso fallido');
+            this.cargando = false;
+          }
+        }, error => {
+          this.toastrService.error(error.message, 'Proceso fallido');
           this.cargando = false;
-        }
-      }, error => {
-        this.toastrService.error(error.message, 'Proceso fallido');
-        this.cargando = false;
-      });
+        });
+      }
+    }
+  }
+
+  /** Funciones para abrir y cerrar modal ng **/
+  open(content: any) {
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title', size: 'xl', backdropClass: 'light-blue-backdrop' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
     }
   }
 }
