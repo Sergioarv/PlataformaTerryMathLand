@@ -66,7 +66,7 @@ export class CartillaService {
       }),
       body: cartilla,
     };
-    console.log(cartilla, options);
+
     return this.http.delete<any>(URL, options);
   }
 

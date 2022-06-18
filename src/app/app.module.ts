@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxLoadingModule } from 'ngx-loading';
-import { NgxBootstrapConfirmModule } from 'ngx-bootstrap-confirm';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DatePipe } from '@angular/common';
@@ -42,7 +41,6 @@ import { CartillaComponent } from './components/cartilla/cartilla.component';
     HttpClientModule,
     NgxLoadingModule,
     NgbModule,
-    NgxBootstrapConfirmModule,
     ToastrModule.forRoot({
       maxOpened: 2,
       timeOut: 3000,

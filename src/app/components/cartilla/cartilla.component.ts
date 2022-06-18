@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
-import { NgxBootstrapConfirmService } from 'ngx-bootstrap-confirm';
 import { ToastrService } from 'ngx-toastr';
 import { Cartilla } from 'src/app/models/cartilla';
 import { Pregunta } from 'src/app/models/pregunta';
@@ -54,7 +53,6 @@ export class CartillaComponent implements OnInit {
     private cartillaService: CartillaService,
     private preguntaService: PreguntaService,
     private modalService: NgbModal,
-    private confirmacionService: NgxBootstrapConfirmService,
     config: NgbModalConfig,
     private changeDetectorRef: ChangeDetectorRef
   ) {
