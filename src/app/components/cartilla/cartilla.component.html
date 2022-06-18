@@ -17,8 +17,8 @@
                         <select class="form-control" formControlName="numcartilla" (change)="filtrar()">
                             <option selected value=''>{{ listaCartillas.length == 0 ? 'No hay cartillas' :
                                 'Seleccione una cartilla' }}</option>
-                            <option *ngFor="let cartilla of listaCartillas" value="{{ cartilla.idcartilla }}">{{
-                                cartilla.nombre }}</option>
+                            <option *ngFor="let cartillaselect of listaCartillas" value="{{ cartillaselect.idcartilla }}">{{
+                                cartillaselect.nombre }}</option>
                         </select>
                     </div>
                 </div>
@@ -146,7 +146,7 @@
                         <select class="form-control" formControlName="nomCartilla" *ngIf="!creacionCartilla">
                             <option selected value=''>{{ listaCartillas.length == 0 ? 'No hay cartillas' :
                                 'Seleccione una cartilla' }}</option>
-                            <option *ngFor="let cartilla of listaCartillas; let i = index"
+                            <option *ngFor="let cartilla of listaCartillas"
                                 value="{{ cartilla.idcartilla }}">{{
                                 cartilla.nombre }}</option>
                         </select>

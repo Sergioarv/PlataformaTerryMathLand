@@ -66,17 +66,13 @@ export class CartillaService {
       }),
       body: cartilla,
     };
-
+    console.log(cartilla, options);
     return this.http.delete<any>(URL, options);
   }
 
   actualizarCartilla(newCartilla: Cartilla): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_CARTILLA;
 
-    let httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-    };
-
-    return this.http.put<any>(URL, newCartilla, httpOptions);
+    return this.http.put<any>(URL, newCartilla);
   }
 }

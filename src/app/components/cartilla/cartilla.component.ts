@@ -32,8 +32,6 @@ export class CartillaComponent implements OnInit {
 
   closeResult = '';
 
-  // Cartilla a la que se agregara o quitara preguntas
-  seleccionarEditarCartilla: any;
   // Pregunta seleccionada para agregar
   detalleDePregunta: any;
 
@@ -87,10 +85,16 @@ export class CartillaComponent implements OnInit {
 
   obtenerCartillas() {
     this.cargando = true;
+    this.listaPreguntasCartilla = [];
     this.cartillaService.obtenerCartillas().subscribe(resp => {
       this.listaCartillas = resp.data;
 
       if (resp.success) {
+        this.listaCartillas.sort(function (a, b) {
+          if (a.nombre > b.nombre) { return 1; }
+          if (a.nombre < b.nombre) { return -1; }
+          return 0;
+        });
         this.toastrService.success(resp.message, 'Proceso exitoso');
         this.cargando = false;
       } else {
@@ -137,8 +141,8 @@ export class CartillaComponent implements OnInit {
 
   seleccionarEditar(creacionB: boolean, content?: any) {
     this.creacionCartilla = creacionB;
-    const cartilla = this.filtrarForm.controls['numcartilla'].value;
-    this.editarCartillaForm.get('nomCartilla')?.setValue(cartilla);
+    const seleccionarEditarCartilla = this.filtrarForm.controls['numcartilla'].value;
+    this.editarCartillaForm.get('nomCartilla')?.setValue(seleccionarEditarCartilla);
     this.editarCartillaForm.get('nomCartillaI')?.setValue(creacionB ? "" : "nada");
 
     if (!creacionB) {
@@ -149,11 +153,10 @@ export class CartillaComponent implements OnInit {
   }
 
   seleccionarEliminar(contentEliminar?: any) {
-
-    const cartillaS = this.filtrarForm.controls['numcartilla'].value;
-    let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = cartillaS);
-    this.mensajeEliminar = cartilla?.nombre == undefined ? '' : cartilla?.nombre;
-
+    const seleccionarEliminarCartilla = this.filtrarForm.controls['numcartilla'].value;
+    const cartillaE = this.listaCartillas.find((cart: Cartilla) => 
+    cart.idcartilla == seleccionarEliminarCartilla);
+    this.mensajeEliminar = cartillaE?.nombre == undefined ? '' : cartillaE?.nombre;
     this.open(contentEliminar, '');
   }
 
@@ -238,6 +241,7 @@ export class CartillaComponent implements OnInit {
             this.toastrService.success(resp.message, 'Proceso exitoso');
             this.cargando = false;
             this.obtenerCartillas();
+            this.limpiar();
             this.cerrarEditar();
           } else {
             this.toastrService.error(resp.message, 'Proceso fallido');
@@ -250,7 +254,7 @@ export class CartillaComponent implements OnInit {
 
       } else {
         const cartillaU = this.editarCartillaForm.controls['nomCartilla'].value;
-        let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = cartillaU);
+        let cartilla = this.listaCartillas.find((c: any) => c.idcartilla == cartillaU);
 
         newCartilla.idcartilla = cartilla == undefined ? '' : cartilla.idcartilla;
         newCartilla.nombre = cartilla == undefined ? '' : cartilla.nombre;
@@ -276,10 +280,11 @@ export class CartillaComponent implements OnInit {
   }
 
   eliminarCartilla() {
+    
     this.cargando = true;
 
     const cartillaD = this.filtrarForm.controls['numcartilla'].value;
-    let cartilla = this.listaCartillas.find((c: any) => c.idcartilla = cartillaD);
+    let cartilla = this.listaCartillas.find((c: any) => c.idcartilla == cartillaD);
 
     const eliminar = new Cartilla();
 
@@ -292,6 +297,8 @@ export class CartillaComponent implements OnInit {
         this.toastrService.success(resp.message, 'Proceso exitoso');
         this.cargando = false;
         this.modalService.dismissAll('Save click');
+        this.limpiar();
+        this.obtenerCartillas();
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido');
         this.cargando = false;
