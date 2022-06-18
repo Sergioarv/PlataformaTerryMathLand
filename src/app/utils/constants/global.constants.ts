@@ -1,8 +1,11 @@
+import { environment } from "src/environments/environment";
+
 export class GlobalConstant {
 
     //Globales
     //public static URL_ENDPOINT = 'http://localhost:8080';
-    public static URL_ENDPOINT = 'https://bk-terrymathland.herokuapp.com';
+    //public static URL_ENDPOINT = 'https://bk-terrymathland.herokuapp.com';
+    public static URL_ENDPOINT = environment.baseUrl;
 
     //Pregunta
     public static URL_PREGUNTA = '/pregunta';
