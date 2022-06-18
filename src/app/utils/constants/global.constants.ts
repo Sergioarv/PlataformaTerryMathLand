@@ -1,7 +1,8 @@
 export class GlobalConstant {
 
     //Globales
-    public static URL_ENDPOINT = 'http://localhost:8080';
+    //public static URL_ENDPOINT = 'http://localhost:8080';
+    public static URL_ENDPOINT = 'https://bk-terrymathland.herokuapp.com';
 
     //Pregunta
     public static URL_PREGUNTA = '/pregunta';
@@ -15,4 +16,7 @@ export class GlobalConstant {
     //Estudiante
     public static URL_ESTUDIANTE = '/estudiante';
     public static URL_ESTUDIANTE_FILTRO = '/estudiante/filtrar';
+
+    public static URL_CARTILLA = '/cartilla';
+    public static URL_CARTILLA_FILTRO = '/cartilla/filtrarPreguntas';
 }

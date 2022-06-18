@@ -1,0 +1,312 @@
+<div class="contenedor">
+    <!-- Animacion de carga -->
+    <ngx-loading [show]="cargando"
+        [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff', fullScreenBackdrop: true }">
+    </ngx-loading>
+    <!-- Session de busqueda o filtro-->
+    <div class="card">
+        <div class="card-header">
+            <h5>Busqueda Avanzada</h5>
+        </div>
+        <div class="card-body">
+            <!-- Formulario de filtro -->
+            <form class="form-group" [formGroup]="filtrarForm">
+                <div class="row">
+                    <div class="col-s-12 col-lg-6">
+                        <label>Cartilla:</label>
+                        <select class="form-control" formControlName="numcartilla" (change)="filtrar()">
+                            <option selected value=''>{{ listaCartillas.length == 0 ? 'No hay cartillas' :
+                                'Seleccione una cartilla' }}</option>
+                            <option *ngFor="let cartillaselect of listaCartillas" value="{{ cartillaselect.idcartilla }}">{{
+                                cartillaselect.nombre }}</option>
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-12">
+                        <button class="btn btn-primary" (click)="filtrar()">
+                            <em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
+                        &nbsp;
+                        <button class="btn btn-secondary" (click)="limpiar()">
+                            <em class="fa-solid fa-eraser"></em> Limpiar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <!-- Tabla de listado -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-4">
+                    <h5 class="card-title">Lista de preguntas de la cartilla</h5>
+                </div>
+                <div class="col-8" style="justify-content: right; align-items: flex-end; display: flex;">
+                    <button class="btn btn-secondary" routerLink='/pregunta'
+                        style=" width: 10rem; max-width: fit-content;">
+                        <em class="fa-solid fa-clipboard-question"></em> Preguntas</button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" (click)="seleccionarEditar(true, content)">
+                        <em class="far fa-edit"></em> Crear Cartilla
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-edit" (click)="seleccionarEditar(false, content)"
+                        [disabled]="!filtrarForm.controls['numcartilla'].value">
+                        <em class="far fa-edit"></em> Editar Cartilla
+                    </button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-danger" (click)="seleccionarEliminar(contentEliminar)"
+                        [disabled]="!filtrarForm.controls['numcartilla'].value">
+                        <em class="far fa-trash-can"></em> Eliminar Cartilla
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Tabla de preguntas de la cartilla -->
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-responsive" style="overflow-x: scroll;">
+                <caption>Preguntas de la cartilla</caption>
+                <thead class="thead-col">
+                    <tr>
+                        <th scope="col" style="width: fit-content;">Numero</th>
+                        <th scope="col">Enunciado</th>
+                        <th scope="col">Opcion A</th>
+                        <th scope="col">Opcion B</th>
+                        <th scope="col">Opcion C</th>
+                        <th scope="col">Opcion D</th>
+                        <th scope="col" style="width: 200px; max-width: max-content;">
+                            Imagen</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pregunta of listaPreguntasCartilla">
+                        <td>{{ pregunta.idpregunta }}</td>
+                        <td>{{ pregunta.enunciado }}</td>
+                        <td>{{ pregunta.opciones[0].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[0].respuesta,
+                            'incorrecto': !pregunta.opciones[0].respuesta }">
+                                {{ pregunta.opciones[0].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[1].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[1].respuesta,
+                            'incorrecto': !pregunta.opciones[1].respuesta }">
+                                {{ pregunta.opciones[1].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[2].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[2].respuesta,
+                            'incorrecto': !pregunta.opciones[2].respuesta }">
+                                {{ pregunta.opciones[2].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[3].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[3].respuesta,
+                            'incorrecto': !pregunta.opciones[3].respuesta }">
+                                {{ pregunta.opciones[3].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td style="width: 1024px;">
+                            <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
+                                <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
+                                    alt="{{ pregunta.urlImg }}" style="width: 100%;">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listaCartillas.length == 0">
+                        <td colspan="8">
+                            <p style="text-align: center; font-size: x-large; color: red;">
+                                {{"No hay cartillas"}}</p>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listaCartillas.length != 0 && listaPreguntasCartilla.length == 0">
+                        <td colspan="8">
+                            <p style="text-align: center; font-size: x-large; color: red;">
+                                {{"Seleccione una cartilla o Cree una cartilla"}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal editar -->
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Crear Cartilla</h5>
+        </div>
+        <div class="modal-body">
+            <!-- Formulario editar Cartilla -->
+            <form class="form-group was-validated" [formGroup]="editarCartillaForm">
+                <div class="row">
+                    <div class="col-sm-12 col-md-4 col-xl-5">
+                        <label>Cartilla:</label>
+                        <select class="form-control" formControlName="nomCartilla" *ngIf="!creacionCartilla">
+                            <option selected value=''>{{ listaCartillas.length == 0 ? 'No hay cartillas' :
+                                'Seleccione una cartilla' }}</option>
+                            <option *ngFor="let cartilla of listaCartillas"
+                                value="{{ cartilla.idcartilla }}">{{
+                                cartilla.nombre }}</option>
+                        </select>
+                        <input class="form-control" formControlName="nomCartillaI" value="" *ngIf="creacionCartilla"
+                            [pattern]="regTextoUnaLinea">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-5">
+                        <label>Pregunta:</label>
+                        <select class="form-control" formControlName="preguntas" #selectedP
+                            (change)="detallesPregunta()">
+                            <option selected value="">{{ listaPreguntas.length == 0 ? 'No hay preguntas
+                                creadas':
+                                'Seleccione una pregunta' }}</option>
+                            <option class="option" *ngFor="let preguntas of listaPreguntas; let i = index"
+                                value="{{ i }}">
+                                {{ 'Pregunta numero ' }} {{ preguntas.idpregunta }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-sm-12 col-md-4 col-xl-2">
+                        <label>&nbsp;</label><br>
+                        <button type="button" class="btn btn-primary" style=" width: 10rem;" (click)="agregarPregunta()"
+                            [disabled]="editarCartillaForm.controls['preguntas'].value == ''">
+                            <em class="fa-solid fa-plus"></em> Agregar</button>
+                    </div>
+                </div>
+            </form>
+            &nbsp;
+            <!-- Tablas -->
+            <!-- Tabla preguntas de la cartilla -->
+            <div class="row">
+                <div class="col-12">
+                    <h5>Preguntas que quedarán en la cartilla</h5>
+                    <table class="table table-bordered table-hover table-responsive"
+                        style="height: auto; max-height: 600px; overflow-x: scroll; overflow-y: hidden;">
+                        <caption>Preguntas de la cartilla</caption>
+                        <thead class="thead-col">
+                            <tr>
+                                <th style="width: 50px; max-width: 100%;">Numero Pregunta</th>
+                                <th>Fragmento enunciado</th>
+                                <th style="width: 50px; max-width: 100%;">Funcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let preguntaC of listaPreguntasAgregar">
+                                <td>{{ preguntaC.idpregunta }}</td>
+                                <td>{{ preguntaC.enunciado }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-danger" (click)="quitarPregunta(preguntaC)"><em
+                                            class="fas fa-xmark"></em> Quitar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Detalles de la pregunta -->
+            <div class="row">
+                <div class="col-12">
+                    <table class="table table-bordered table-hover table-responsive" style="overflow-x: scroll;">
+                        <caption>Detalles de preguntas</caption>
+                        <thead class="thead-col">
+                            <tr>
+                                <th scope="col" style="width: fit-content;">Numero</th>
+                                <th scope="col">Enunciado</th>
+                                <th scope="col">Opcion A</th>
+                                <th scope="col">Opcion B</th>
+                                <th scope="col">Opcion C</th>
+                                <th scope="col">Opcion D</th>
+                                <th scope="col" style="width: 200px; max-width: max-content;">
+                                    Imagen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="detalleDePregunta">
+                                <td>{{ detalleDePregunta.idpregunta }}</td>
+                                <td>{{ detalleDePregunta.enunciado }}</td>
+                                <td>{{ detalleDePregunta.opciones[0].enunciadoopcion }}
+                                    <p [ngClass]="{ 'correcto': detalleDePregunta.opciones[0].respuesta,
+                                    'incorrecto': !detalleDePregunta.opciones[0].respuesta }">
+                                        {{ detalleDePregunta.opciones[0].respuesta ? 'Opcion Correcta' :
+                                        'Opcion Incorrecta' }}</p>
+                                </td>
+                                <td>{{ detalleDePregunta.opciones[1].enunciadoopcion}}
+                                    <p [ngClass]="{ 'correcto': detalleDePregunta.opciones[1].respuesta,
+                                        'incorrecto': !detalleDePregunta.opciones[1].respuesta }">
+                                        {{ detalleDePregunta.opciones[1].respuesta ? 'Opcion Correcta' :
+                                        'Opcion Incorrecta' }}</p>
+                                </td>
+                                <td>{{ detalleDePregunta.opciones[2].enunciadoopcion}}
+                                    <p [ngClass]="{ 'correcto': detalleDePregunta.opciones[2].respuesta,
+                                        'incorrecto': !detalleDePregunta.opciones[2].respuesta }">
+                                        {{ detalleDePregunta.opciones[2].respuesta ? 'Opcion Correcta' :
+                                        'Opcion Incorrecta' }}</p>
+                                </td>
+                                <td>{{ detalleDePregunta.opciones[3].enunciadoopcion}}
+                                    <p [ngClass]="{ 'correcto': detalleDePregunta.opciones[3].respuesta,
+                                        'incorrecto': !detalleDePregunta.opciones[3].respuesta }">
+                                        {{ detalleDePregunta.opciones[3].respuesta ? 'Opcion Correcta' :
+                                        'Opcion Incorrecta' }}</p>
+                                </td>
+                                <td style="width: 1024px; justify-content: center; text-align: center;">
+                                    <div *ngIf="detalleDePregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
+                                        <img src="{{ detalleDePregunta.urlImg }}" class="rounded img-thumbnail"
+                                            alt="{{ detalleDePregunta.urlImg }}" style="width: 60%;">
+                                    </div>
+                                    <div
+                                        *ngIf="detalleDePregunta && detalleDePregunta.urlImg == 'https://i.imgur.com/JX1T90I.png'">
+                                        <p> Esta pregunta no usa imagenes</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- Botones del modal -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="!editarCartillaForm.valid"
+                (click)="guardarCartilla()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                (click)="abrirConfirmarEdit(contentCancelarEditar)">
+                <em class="fa-solid fa-ban"></em> Cancelar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal de Confirmación eliminar -->
+    <ng-template #contentEliminar letc="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basi-tittle">Eliminar Cartilla</h5>
+        </div>
+        <div class="modal-body">
+            <h6>¿Está seguro que desea eliminar la cartilla?</h6>
+            <h6>Se eliminará la siguiente cartilla:<br />{{ mensajeEliminar }}</h6>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="eliminarCartilla()"><em
+                    class="fa-regular fa-circle-check"></em> Confirmar</button>
+            <button type="button" class="btn btn-danger" (click)="d('Close click')"><em class="fa-solid fa-ban"></em>
+                Cancelar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal de Confirmación cancelar edicion -->
+    <ng-template #contentCancelarEditar letc="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basi-tittle">Confirmar cancelación</h5>
+        </div>
+        <div class="modal-body">
+            <h6>¿Está seguro que desea cancelar el proceso?</h6>
+            <h6>Si cancela el proceso las preguntas que agrego o quito no se guardara</h6>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="cerrarEditar()"><em
+                    class="fa-regular fa-circle-check"></em> Confirmar</button>
+            <button type="button" class="btn btn-danger" (click)="d('Close click')"><em class="fa-solid fa-ban"></em>
+                Cancelar</button>
+        </div>
+    </ng-template>
+
+</div>

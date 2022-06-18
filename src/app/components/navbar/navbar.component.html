@@ -2,7 +2,8 @@
     <div class="nav" style="margin: 3px;">
         <ul class="nav nav-pills" role="tablist">
             <li class="nav-item" role="presntation">
-                <a class="nav-link" [routerLink]="['/']"><em class="far fa-paper-plane"></em> &nbsp;Terry math Land</a>
+                <a class="nav-link logo" [routerLink]="['/']"><em class="far fa-paper-plane">
+                </em> &nbsp;Terry math Land</a>
             </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{exact:true}">
@@ -10,23 +11,32 @@
             </li>&nbsp;
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary" [routerLink]="['/estudiante']">Estudiante</button>
+                <button class="btn btn-primary" [routerLink]="['/estudiante']">
+                    <em class="fa-solid fa-user"></em> Estudiantes</button>
             </li>&nbsp;
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary" [routerLink]="['/pregunta']">Preguntas</button>
+                <button class="btn btn-primary" [routerLink]="['/cartilla']">
+                    <em class="fa-solid fa-newspaper"></em> Cartillas</button>
             </li>&nbsp;
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary" [routerLink]="['/respuesta']">Respuestas</button>
+                <button class="btn btn-primary" [routerLink]="['/pregunta']">
+                    <em class="fa-solid fa-clipboard-question"></em> Preguntas</button>
             </li>&nbsp;
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary" [routerLink]="['/grafica']">Graficas</button>
+                <button class="btn btn-primary" [routerLink]="['/respuesta']">
+                    <em class="fa-solid fa-comment-dots"></em> Respuestas</button>
             </li>&nbsp;
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
                 [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary" [routerLink]="['/juego']">Juego</button>
+                <button class="btn btn-primary" [routerLink]="['/grafica']"><em class="fa-solid fa-chart-area"></em> Graficas</button>
+            </li>&nbsp;
+            <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{exact:true}">
+                <button class="btn btn-primary" [routerLink]="['/juego']">
+                    <em class="fa-solid fa-puzzle-piece"></em> Juego</button>
             </li>
         </ul>
     </div>

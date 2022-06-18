@@ -27,9 +27,9 @@
                 <div class="row">
                     <div class="col-12">
                         <button class="btn btn-primary" (click)="filtrar()"
-                            [disabled]="!filtrarForm.valid">Buscar</button>
+                            [disabled]="!filtrarForm.valid"><em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
                         &nbsp;
-                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em> Limpiar</button>
                     </div>
                 </div>
             </form>
@@ -44,8 +44,8 @@
                     <h5 class="card-title">Lista de preguntas</h5>
                 </div>
                 <div class="col-8">
-                    <button class="btn btn-primary" routerLink='/pregunta/editar'
-                        style="float: right; width: 10rem;">Editar preguntas</button>
+                    <button class="btn btn-primary" routerLink='/cartilla'
+                        style="float: right; width: 10rem;"><em class="fa-regular fa-newspaper"></em> Cartillas</button>
                 </div>
             </div>
         </div>
@@ -69,10 +69,30 @@
                     <tr *ngFor="let pregunta of listPregunta">
                         <td>{{ pregunta.idpregunta }}</td>
                         <td>{{ pregunta.enunciado }}</td>
-                        <td>{{ pregunta.opciones[0].enunciadoopcion}}</td>
-                        <td>{{ pregunta.opciones[1].enunciadoopcion}}</td>
-                        <td>{{ pregunta.opciones[2].enunciadoopcion}}</td>
-                        <td>{{ pregunta.opciones[3].enunciadoopcion}}</td>
+                        <td>{{ pregunta.opciones[0].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[0].respuesta,
+                            'incorrecto': !pregunta.opciones[0].respuesta }">
+                                {{ pregunta.opciones[0].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[1].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[1].respuesta,
+                            'incorrecto': !pregunta.opciones[1].respuesta }">
+                                {{ pregunta.opciones[1].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[2].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[2].respuesta,
+                            'incorrecto': !pregunta.opciones[2].respuesta }">
+                                {{ pregunta.opciones[2].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
+                        <td>{{ pregunta.opciones[3].enunciadoopcion}}
+                            <p [ngClass]="{ 'correcto': pregunta.opciones[3].respuesta,
+                            'incorrecto': !pregunta.opciones[3].respuesta }">
+                                {{ pregunta.opciones[3].respuesta ? 'Opcion Correcta' :
+                                'Opcion Incorrecta' }}</p>
+                        </td>
                         <td style="width: 1024px;">
                             <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
                                 <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
@@ -98,8 +118,9 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <div class="modal fade" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel" 
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editarPreguntaLabel">Editar Pregunta</h5>
@@ -177,8 +198,8 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" [disabled]="!editarPreguntaForm.valid"
-                        (click)="guardarPregunta()">Guardar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                        (click)="guardarPregunta()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><em class="fa-solid fa-ban"></em> Cancelar</button>
                 </div>
             </div>
         </div>
