@@ -35,6 +35,16 @@ export class PreguntaComponent implements OnInit {
     urlImg: new FormControl({value: '', disabled: true})
   });
 
+  crearPreguntaForm = new FormGroup({
+    numePregunta: new FormControl(''),
+    enumPregunta: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(255)]),
+    opcionA: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
+    opcionB: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
+    opcionC: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
+    opcionD: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
+    urlImg: new FormControl({value: '', disabled: true})
+  });
+
   constructor(
     private preguntaService: PreguntaService,
     private toastrService: ToastrService,
@@ -78,6 +88,10 @@ export class PreguntaComponent implements OnInit {
     this.filtrar();
   }
 
+  crearPregunta(){
+
+  }
+
   guardarPregunta(){
     console.log(this.editarPreguntaForm.controls['enumPregunta'].value);
   }
@@ -91,5 +105,9 @@ export class PreguntaComponent implements OnInit {
     this.editarPreguntaForm.get('opcionC')?.setValue(pregunta.opciones[2].enunciadoopcion);
     this.editarPreguntaForm.get('opcionD')?.setValue(pregunta.opciones[3].enunciadoopcion);
     this.seleccionEditar = pregunta;
+  }
+
+  resetearcrearPreguntaForm(){
+    
   }
 }
