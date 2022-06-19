@@ -26,10 +26,11 @@
                 <br>
                 <div class="row">
                     <div class="col-12">
-                        <button class="btn btn-primary" (click)="filtrar()"
-                            [disabled]="!filtrarForm.valid"><em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
+                        <button class="btn btn-primary" (click)="filtrar()" [disabled]="!filtrarForm.valid"><em
+                                class="fa-solid fa-magnifying-glass"></em> Buscar</button>
                         &nbsp;
-                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em> Limpiar</button>
+                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em>
+                            Limpiar</button>
                     </div>
                 </div>
             </form>
@@ -43,9 +44,11 @@
                 <div class="col-4">
                     <h5 class="card-title">Lista de preguntas</h5>
                 </div>
-                <div class="col-8">
-                    <button class="btn btn-primary" routerLink='/cartilla'
-                        style="float: right; width: 10rem;"><em class="fa-regular fa-newspaper"></em> Cartillas</button>
+                <div class="col-8" style="justify-content: right; align-items: flex-end; display: flex;">
+                    <button class="btn btn-secondary" routerLink='/cartilla'><em class="fa-regular fa-newspaper"></em>
+                        Cartillas</button>&nbsp;&nbsp;
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editarPregunta"><em
+                            class="fa fa-plus"></em> Crear pregunta</button>
                 </div>
             </div>
         </div>
@@ -56,11 +59,11 @@
                     <tr>
                         <th scope="col" style="width: fit-content;">Numero</th>
                         <th scope="col">Enunciado</th>
-                        <th scope="col">Opcion A</th>
-                        <th scope="col">Opcion B</th>
-                        <th scope="col">Opcion C</th>
-                        <th scope="col">Opcion D</th>
-                        <th scope="col" style="width: 200px; max-width: max-content;">
+                        <th scope="col" style="width: fit-content;">Opcion A</th>
+                        <th scope="col" style="width: fit-content;">Opcion B</th>
+                        <th scope="col" style="width: fit-content;">Opcion C</th>
+                        <th scope="col" style="width: fit-content;">Opcion D</th>
+                        <th scope="col" style="width: 200px;">
                             Imagen</th>
                         <th scope="col">Operaciones</th>
                     </tr>
@@ -93,17 +96,23 @@
                                 {{ pregunta.opciones[3].respuesta ? 'Opcion Correcta' :
                                 'Opcion Incorrecta' }}</p>
                         </td>
-                        <td style="width: 1024px;">
+                        <td style="width: 896px;">
                             <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
                                 <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
                                     alt="{{ pregunta.urlImg }}" style="width: 100%;">
                             </div>
                         <td>
                             <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editarPregunta"
-                                (click)="seleccionarEditar(pregunta)">
+                                (click)="seleccionarEditar(pregunta)" style="width: fit-content;">
                                 <em class="far fa-edit"></em> Editar
+                            </button><br><br />
+                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                data-target="#editarPregunta" (click)="seleccionarEditar(pregunta)"
+                                style="width: fit-content;">
+                                <em class="far fa-trash-can"></em> Eliminar
                             </button>
                         </td>
+
                     </tr>
                     <tr *ngIf="listPregunta.length == 0">
                         <td colspan="8">
@@ -118,8 +127,8 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel" 
-    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal fade light-blue-backdrop" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel"
+        aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -140,16 +149,20 @@
                             <div class="col-12">
                                 <label>Enunciado:</label>
                                 <textarea type="text" class="form-control" formControlName="enumPregunta" required
-                                    [pattern]="regTextoUnaLinea"></textarea>
-                                <div class="invalid-feedback">Por favor ingrese una pregunta o no ponga espacios antes y
-                                    despues del texto</div>
+                                    ng-pattern="regTextoUnaLinea"
+                                    [ngClass]="{'invalid': !editarPreguntaForm.controls['enumPregunta'].valid }"
+                                    maxlength="256"></textarea>
+                                <div class="feedback-invalid"
+                                    *ngIf="!editarPreguntaForm.controls['enumPregunta'].valid">Por favor no deje el
+                                    campo vacio, ingrese una pregunta sin espacios al inicio ni al final del texto y no
+                                    debe superar los 255 caracteres</div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
                                 <label>Opcion A:</label>
                                 <input type="text" class="form-control" formControlName="opcionA" required
-                                    [pattern]="regTextoUnaLinea">
+                                    [pattern]="regTextoUnaLinea" maxlength="81">
                                 <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
                                     despues del texto</div>
                             </div>
@@ -158,7 +171,7 @@
                             <div class="col-12">
                                 <label>Opcion B:</label>
                                 <input type="text" class="form-control" formControlName="opcionB" required
-                                    [pattern]="regTextoUnaLinea">
+                                    [pattern]="regTextoUnaLinea" maxlength="81">
                                 <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
                                     despues del texto</div>
                             </div>
@@ -167,7 +180,7 @@
                             <div class="col-12">
                                 <label>Opcion C:</label>
                                 <input type="text" class="form-control" formControlName="opcionC" required
-                                    [pattern]="regTextoUnaLinea">
+                                    [pattern]="regTextoUnaLinea" maxlength="81">
                                 <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
                                     despues del texto</div>
                             </div>
@@ -176,7 +189,7 @@
                             <div class="col-12">
                                 <label>Opcion D:</label>
                                 <input type="text" class="form-control" formControlName="opcionD" required
-                                    [pattern]="regTextoUnaLinea">
+                                    [pattern]="regTextoUnaLinea" maxlength="81">
                                 <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
                                     despues del texto</div>
                             </div>
@@ -199,7 +212,8 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success" [disabled]="!editarPreguntaForm.valid"
                         (click)="guardarPregunta()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal"><em class="fa-solid fa-ban"></em> Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal"><em class="fa-solid fa-ban"></em>
+                        Cancelar</button>
                 </div>
             </div>
         </div>

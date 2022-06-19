@@ -27,11 +27,11 @@ export class PreguntaComponent implements OnInit {
 
   editarPreguntaForm = new FormGroup({
     numePregunta: new FormControl(''),
-    enumPregunta: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
-    opcionA: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
-    opcionB: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
-    opcionC: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
-    opcionD: new FormControl('', [Validators.pattern(this.regTextoUnaLinea)]),
+    enumPregunta: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(255)]),
+    opcionA: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
+    opcionB: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
+    opcionC: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
+    opcionD: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
     urlImg: new FormControl({value: '', disabled: true})
   });
 
