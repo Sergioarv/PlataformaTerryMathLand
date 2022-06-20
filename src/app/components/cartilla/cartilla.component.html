@@ -49,7 +49,7 @@
                         <em class="fa-solid fa-clipboard-question"></em> Preguntas</button>
                     &nbsp;&nbsp;
                     <button type="button" class="btn btn-primary" (click)="seleccionarEditar(true, content)">
-                        <em class="far fa-edit"></em> Crear Cartilla
+                        <em class="fa-solid fa-plus"></em> Crear Cartilla
                     </button>
                     &nbsp;&nbsp;
                     <button type="button" class="btn btn-edit" (click)="seleccionarEditar(false, content)"
@@ -134,8 +134,11 @@
 
     <!-- Modal editar -->
     <ng-template #content let-c="close" let-d="dismiss">
-        <div class="modal-header">
+        <div class="modal-header" *ngIf="creacionCartilla">
             <h5 class="modal-tittle" id="modal-basic-tittle">Crear Cartilla</h5>
+        </div>
+        <div class="modal-header" *ngIf="!creacionCartilla">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Editar Cartilla</h5>
         </div>
         <div class="modal-body">
             <!-- Formulario editar Cartilla -->
