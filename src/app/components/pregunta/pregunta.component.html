@@ -98,17 +98,17 @@
                                 'Opcion Incorrecta' }}</p>
                         </td>
                         <td style="width: 896px;">
-                            <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'">
+                            <div *ngIf="pregunta.urlImg != 'https://i.imgur.com/JX1T90I.png'"
+                                style="text-align: center;">
                                 <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
                                     alt="{{ pregunta.urlImg }}" style="width: 100%;">
                             </div>
                         <td>
-                            <button type="button" class="btn btn-edit" data-toggle="modal" data-target="#editarPregunta"
-                                (click)="seleccionarEditar(pregunta)" style="width: fit-content;">
+                            <button type="button" class="btn btn-edit"
+                                (click)="seleccionarEditar(pregunta, contentEdit)" style="width: fit-content;">
                                 <em class="far fa-edit"></em> Editar
                             </button><br><br />
-                            <button type="button" class="btn btn-danger" data-toggle="modal"
-                                data-target="#editarPregunta" (click)="seleccionarEditar(pregunta)"
+                            <button type="button" class="btn btn-danger" 
                                 style="width: fit-content;">
                                 <em class="far fa-trash-can"></em> Eliminar
                             </button>
@@ -136,58 +136,74 @@
             <form class="form-group was-validated" [formGroup]="crearPreguntaForm">
                 <div class="row">
                     <div class="col-12">
-                        <label>Enunciado:</label><span class="contador">{{0}}/{{255}}</span>
+                        <div class="group-label-contador">
+                            <label>Enunciado:</label>
+                            <span
+                                class="contador">{{crearPreguntaForm.controls['enumPregunta'].value.length}}/{{255}}</span>
+                        </div>
                         <textarea type="text" class="form-control" formControlName="enumPregunta" required
                             ng-pattern="regTextoUnaLinea"
-                            [ngClass]="{'invalid': !crearPreguntaForm.controls['enumPregunta'].valid, '': crearPreguntaForm.controls['enumPregunta'].valid }"
-                            maxlength="256"></textarea>
-
+                            [ngClass]="{'invalid': !crearPreguntaForm.controls['enumPregunta'].valid, 'valid': crearPreguntaForm.controls['enumPregunta'].valid }"
+                            maxlength="255"></textarea>
                         <div class="feedback-invalid" *ngIf="!crearPreguntaForm.controls['enumPregunta'].valid">Por
                             favor no deje el campo vacio, ingrese una pregunta sin espacios al inicio ni al final del
                             texto</div>
-
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <label>Opcion A:</label>
+                        <div class="group-label-contador">
+                            <label>Opcion A:</label>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionA'].value.length}}/{{80}}</span>
+                        </div>
                         <input type="text" class="form-control" formControlName="opcionA" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
-                        <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
-                            despues del texto</div>
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <label>Opcion B:</label>
+                        <div class="group-label-contador">
+                            <label>Opcion B:</label>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionB'].value.length}}/{{80}}</span>
+                        </div>
                         <input type="text" class="form-control" formControlName="opcionB" required
-                            [pattern]="regTextoUnaLinea" maxlength="81">
-                        <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
-                            despues del texto</div>
+                            [pattern]="regTextoUnaLinea" maxlength="80">
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <label>Opcion C:</label>
+                        <div class="group-label-contador">
+                            <label>Opcion C:</label>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionC'].value.length}}/{{80}}</span>
+                        </div>
                         <input type="text" class="form-control" formControlName="opcionC" required
-                            [pattern]="regTextoUnaLinea" maxlength="81">
-                        <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
-                            despues del texto</div>
+                            [pattern]="regTextoUnaLinea" maxlength="80">
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <label>Opcion D:</label>
+                        <div class="group-label-contador">
+                            <label>Opcion D:</label>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionD'].value.length}}/{{80}}</span>
+                        </div>
                         <input type="text" class="form-control" formControlName="opcionD" required
-                            [pattern]="regTextoUnaLinea" maxlength="81">
-                        <div class="invalid-feedback">Por favor ingrese una opcion o no ponga espacios antes y
-                            despues del texto</div>
+                            [pattern]="regTextoUnaLinea" maxlength="80">
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <label>Imagen:</label><br>
-                        <input type="text" class="form-control" formControlName="urlImg">
+                        <div class="group-label-contador">
+                            <label>Imagen:</label>
+                        </div>
+                        <input type="file" class="form-control" formControlName="urlImg">
                         <br>
                         <div style="text-align: center;">
                             <img src="" class="rounded img-thumbnail" alt="" style="height: 400px;">
@@ -197,15 +213,116 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success" (click)="crearPregunta()"><em
-                    class="fa-regular fa-floppy-disk"></em> Guardar</button>
+            <button type="button" class="btn btn-success" (click)="crearPregunta()"
+                [disabled]="!crearPreguntaForm.valid">
+                <em class="fa-regular fa-floppy-disk"></em> Guardar</button>
             <button type="button" class="btn btn-danger" (click)="resetearcrearPreguntaForm()">
                 <em class="fa-solid fa-ban"></em> Cancelar</button>
         </div>
     </ng-template>
 
+    <!-- Modal Editar -->
+    <ng-template #contentEdit let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Crear Pregunta</h5>
+        </div>
+        <div class="modal-body">
+            <form class="form-group was-validated" [formGroup]="editarPreguntaForm">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Numero de pregunta:</label>
+                        <input type="text" class="form-control" formControlName="numePregunta">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="group-label-contador">
+                            <label>Enunciado:</label>
+                            <span
+                                class="contador">{{editarPreguntaForm.controls['enumPregunta'].value.length}}/{{255}}</span>
+                        </div>
+                        <textarea type="text" class="form-control" formControlName="enumPregunta" required
+                            ng-pattern="regTextoUnaLinea"
+                            [ngClass]="{'invalid': !editarPreguntaForm.controls['enumPregunta'].valid }"
+                            maxlength="255"></textarea>
+                        <div class="feedback-invalid" *ngIf="!editarPreguntaForm.controls['enumPregunta'].valid">Por
+                            favor no deje el campo vacio, ingrese una pregunta sin espacios al inicio ni al final del
+                            texto</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="group-label-contador">
+                            <label>Opcion A:</label>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionA'].value.length}}/{{80}}</span>
+                        </div>
+                        <input type="text" class="form-control" formControlName="opcionA" required
+                            [pattern]="regTextoUnaLinea" maxlength="80">
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="group-label-contador">
+                            <label>Opcion B:</label>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionB'].value.length}}/{{80}}</span>
+                        </div>
+                        <input type="text" class="form-control" formControlName="opcionB" required
+                            [pattern]="regTextoUnaLinea" maxlength="80">
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="group-label-contador">
+                            <label>Opcion C:</label>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionC'].value.length}}/{{80}}</span>
+                        </div>
+                        <input type="text" class="form-control" formControlName="opcionC" required
+                            [pattern]="regTextoUnaLinea" maxlength="80">
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="group-label-contador">
+                            <label>Opcion D:</label>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionD'].value.length}}/{{80}}</span>
+                        </div>
+                        <input type="text" class="form-control" formControlName="opcionD" required
+                            [pattern]="regTextoUnaLinea" maxlength="80">
+                        <div class="invalid-feedback">Por favor no deje el campo vacio, ingrese una opcion sin espacios
+                            al inicio ni al final del texto</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="group-label-contador">
+                            <label>Imagen:</label>
+                        </div>
+                        <input type="file" accept=".png, .jpg" class="form-control" (change)="seleccionarImagen($event)">
+                        <br>
+                        <div *ngIf=" seleccionEditar.urlImg != 'https://i.imgur.com/JX1T90I.png'"
+                            style="text-align: center;">
+                            <img src="{{ seleccionEditar.urlImg }}" class="rounded img-thumbnail"
+                                alt="{{ seleccionEditar.urlImg }}" style="height: 400px;">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" [disabled]="!editarPreguntaForm.valid"
+                (click)="guardarPregunta()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+            <button type="button" class="btn btn-danger" (click)="d('Close click')"><em class="fa-solid fa-ban"></em>
+                Cancelar</button>
+        </div>
+    </ng-template>
 
-    <div class="modal fade light-blue-backdrop" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel"
+    <!-- <div class="modal fade light-blue-backdrop" id="editarPregunta" tabindex="-1" aria-labelledby="editarPreguntaLabel"
         aria-hidden="true" data-backdrop="static" data-keyboard="false">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
@@ -295,5 +412,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
