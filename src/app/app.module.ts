@@ -8,17 +8,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxLoadingModule } from 'ngx-loading';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
+import { DatePipe } from '@angular/common';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { InicioComponent } from './components/inicio/inicio.component';
 import { JuegoComponent } from './components/juego/juego.component';
 import { PreguntaComponent } from './components/pregunta/pregunta.component';
-import { EditarPreguntaComponent } from './components/pregunta/editar/editar.component';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { EstudianteComponent } from './components/estudiante/estudiante.component';
-import { DatePipe } from '@angular/common';
 import { RespuestaComponent } from './components/respuesta/respuesta.component';
 import { GraficaComponent } from './components/grafica/grafica.component';
+import { CartillaComponent } from './components/cartilla/cartilla.component';
 
 @NgModule({
   declarations: [
@@ -27,10 +28,10 @@ import { GraficaComponent } from './components/grafica/grafica.component';
     InicioComponent,
     JuegoComponent,
     PreguntaComponent,
-    EditarPreguntaComponent,
     EstudianteComponent,
     RespuestaComponent,
-    GraficaComponent
+    GraficaComponent,
+    CartillaComponent
   ],
   imports: [
     BrowserModule,
@@ -40,7 +41,15 @@ import { GraficaComponent } from './components/grafica/grafica.component';
     HttpClientModule,
     NgxLoadingModule,
     NgbModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot({
+      maxOpened: 2,
+      timeOut: 3000,
+      closeButton: true,
+      newestOnTop: true,
+      countDuplicates:true,
+      preventDuplicates: true,
+      resetTimeoutOnDuplicate: true
+    })
   ],
   providers: [
     DatePipe

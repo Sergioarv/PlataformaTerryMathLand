@@ -20,11 +20,24 @@ export class PreguntaService {
 
   filtrarPregunta(idPregunta: any, enunciado: any): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_PREGUNTA_FILTRO;
-    
+
     let params = '';
 
-    params = idPregunta ? (params.length > 0 ? params.concat('&id=').concat(idPregunta) : params.concat('?id=').concat(idPregunta)) : params;
-    params = enunciado ? (params.length > 0 ? params.concat('&enunciado=').concat(enunciado) : params.concat('?enunciado=').concat(enunciado)) : params;
+    if (idPregunta) {
+      if (params.length > 0) {
+        params = params.concat('&id=').concat(idPregunta);
+      } else {
+        params = params.concat('?id=').concat(idPregunta)
+      }
+    }
+
+    if (enunciado) {
+      if (params.length > 0) {
+        params = params.concat('&enunciado=').concat(enunciado);
+      } else {
+        params = params.concat('?enunciado=').concat(enunciado)
+      }
+    }
 
     return this.http.get<any>(URL + params);
   }

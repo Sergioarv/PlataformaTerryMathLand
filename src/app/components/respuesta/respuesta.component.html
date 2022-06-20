@@ -29,11 +29,11 @@
                 <div class="row">
                     <div class="col-s-12 col-lg-6">
                         <button class="btn btn-primary" (click)="filtrar()"
-                            [disabled]="!filtrarForm.valid">Buscar</button>
+                            [disabled]="!filtrarForm.valid"><em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
                         &nbsp;
-                        <button class="btn btn-secondary" (click)="limpiar()">Limpiar</button>
+                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em> Limpiar</button>
                         &nbsp;
-                        <button class="btn btn-info" (click)="borrarFecha()">Borrar fecha</button>
+                        <button class="btn btn-info" (click)="borrarFecha()"><em class="fa-regular fa-calendar-xmark"></em> Borrar fecha</button>
                     </div>
                 </div>
             </form>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-sm-12 col-md-8">
                     <button type="button" class="btn btn-primary" style="float: right;">
-                        <em class="far fa-edit"></em> Graficas
+                        <em class="fa-solid fa-chart-area"></em> Graficas
                     </button>
                 </div>
             </div>

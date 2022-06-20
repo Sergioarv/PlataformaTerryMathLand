@@ -23,13 +23,26 @@ export class EstudianteService {
 
     let params = '';
 
-    params = nombre ? (params.length > 0 ? params.concat('&nombre=').concat(nombre) : params.concat('?nombre=').concat(nombre)) : params;
-    params = fechaEntrega ? (params.length > 0 ? params.concat('&fecha=').concat(fechaEntrega) : params.concat('?fecha=').concat(fechaEntrega)) : params;
+    if (nombre) {
+      if (params.length > 0) {
+        params = params.concat('&nombre=').concat(nombre);
+      } else {
+        params = params.concat('?nombre=').concat(nombre)
+      }
+    }
+
+    if (fechaEntrega) {
+      if (params.length > 0) {
+        params = params.concat('&fecha=').concat(fechaEntrega);
+      } else {
+        params = params.concat('?fecha=').concat(fechaEntrega);
+      }
+    }
 
     return this.http.get<any>(URL + params);
   }
 
-  public agregar(newEstudiante: any ): Observable<any> {
+  public agregar(newEstudiante: any): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE;
 
     return this.http.post(URL, newEstudiante);
@@ -41,7 +54,7 @@ export class EstudianteService {
     return this.http.put<any>(URL, actualizarEst);
   }
 
-  public eliminar(estudiante: any ): Observable<any>{
+  public eliminar(estudiante: any): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE;
     const options = {
       headers: new HttpHeaders({
