@@ -17,6 +17,12 @@ export class EstudianteService {
     return this.http.get<any>(URL);
   }
 
+  public listarEstudiantes(): Observable<any> {
+    const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE_LISTAR;
+
+    return this.http.get<any>(URL);
+  }
+
   public filtrarEstudiante(nombre: any, fechaEntrega: any): Observable<any> {
 
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE_FILTRO;

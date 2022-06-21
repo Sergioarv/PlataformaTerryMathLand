@@ -39,9 +39,6 @@ export class RespuestaService {
       }
     }
 
-    // params = estudiante ? (params.length > 0 ? params.concat('&estudiante=').concat(estudiante) : params.concat('?estudiante=').concat(estudiante)) : params;
-    // params = fecha ? (params.length > 0 ? params.concat('&fecha=').concat(fecha) : params.concat('?fecha=').concat(fecha)) : params;
-
     return this.http.get<any>(URL + params);
   }
 

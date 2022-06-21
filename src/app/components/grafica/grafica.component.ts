@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { IDatosPromedioNotas } from 'src/app/models/datosPromedioNotas';
 import { Estudiante } from 'src/app/models/estudiante';
 import { Respuesta } from 'src/app/models/respuesta';
+import { IDatosPromedioEstudiante } from 'src/app/models/satosPromedioEstudiante';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { RespuestaService } from 'src/app/services/respuesta.service';
 declare var google: any;
@@ -16,10 +18,14 @@ export class GraficaComponent implements OnInit {
 
   listaEstudiantes: Estudiante[];
   listaRespuestas: Respuesta[];
+  listaPromedioEstudiantes: IDatosPromedioEstudiante[];
+  listaPromedioNotas: IDatosPromedioNotas[]
 
   cargando = false;
 
   fechaActual: Date = new Date();
+
+  total = 0.0;
 
   filtrarForm = new FormGroup({
     estudiantes: new FormControl(''),
@@ -33,6 +39,8 @@ export class GraficaComponent implements OnInit {
   ) {
     this.listaEstudiantes = [];
     this.listaRespuestas = [];
+    this.listaPromedioNotas = [];
+    this.listaPromedioEstudiantes = [];
   }
 
   ngOnInit(): void {
@@ -40,9 +48,6 @@ export class GraficaComponent implements OnInit {
     google.charts.load('current', { packages: ['corechart'] });
 
     this.filtrar(true);
-
-    google.charts.setOnLoadCallback(this.drawChartPie);
-
   }
 
   filtrar(inicio?: boolean) {
@@ -52,37 +57,61 @@ export class GraficaComponent implements OnInit {
     const estudiante = this.filtrarForm.controls['estudiantes'].value;
     const fecha = this.filtrarForm.controls['fecha'].value;
 
-    this.respuestaService.filtrarRespuesta(estudiante ? estudiante : null, fecha ? fecha : null).subscribe(resp => {
-      this.listaRespuestas = resp.data;
+    this.respuestaService.filtrarRespuestasGrafico(estudiante ? estudiante : null, fecha ? fecha : null).subscribe(resp => {
+
+      this.total = 0;
+      this.listaPromedioNotas = resp.data.listaPromedioNotas;
+      this.listaPromedioEstudiantes = resp.data.listaPromedioEstudiantes;
 
       if (resp.success) {
-        this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true });
-        this.cargando = false;
+        if (this.verificarPromedioEstudiantes()) {
+          this.toastrService.warning(resp.message, 'Proceso exitoso');
+        } else {
+          this.toastrService.success(resp.message, 'Proceso exitoso');
+        }
+        
         if (inicio) {
           this.obtenerEstudiantes();
-        } else {
-          this.drawChartLine();
         }
+        this.cargando = false;
       } else {
-        this.toastrService.warning(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+        console.log(this.total);
+        this.toastrService.warning(resp.message, 'Proceso fallido');
+        this.listaPromedioEstudiantes = [];
+        this.listaPromedioNotas = [];
         this.cargando = false;
       }
+      this.drawChartLine();
+      this.drawChartPie();
     }, error => {
-      this.toastrService.error(error.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+      this.toastrService.error(error.message, 'Proceso fallido');
       this.cargando = false;
     });
+  }
+
+  verificarPromedioEstudiantes(): boolean {
+
+    this.listaPromedioEstudiantes.forEach(dato => {
+      this.total += dato.promedioestudiantes;
+    });
+
+    if (this.total == 0) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   obtenerEstudiantes() {
     this.cargando = true;
 
-    this.estudianteService.obtenerEstudiantes().subscribe(resp => {
+    this.estudianteService.listarEstudiantes().subscribe(resp => {
       this.listaEstudiantes = resp.data;
 
       if (resp.success) {
-        //this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
         this.cargando = false;
         this.drawChartLine();
+        this.drawChartPie();
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
         this.cargando = false;
@@ -97,22 +126,22 @@ export class GraficaComponent implements OnInit {
 
     // Create the data table.
     var data = new google.visualization.DataTable();
-    data.addColumn('string', 'fecha');
-    this.listaRespuestas.forEach(item => {
-      data.addColumn('number', item.idrespuesta) + ','
-    });
+    data.addColumn('string', 'Fecha');
+    data.addColumn('number', 'Promedio de notas');
 
-    for (var i = 0; i < this.listaRespuestas.length; i++) {
+    this.listaPromedioNotas.forEach(element => {
       data.addRows([
-
+        [element.fecha, element.promedionotas],
       ]);
-    }
+    })
 
     // Set chart options
     var options = {
-      chart: {
-        title: 'Notas por fechas',
-        subtitle: 'in millions of dollars (USD)',
+      title: 'Promedio de notas por fechas',
+      titleTextStyle: {
+        color: '000000',
+        fontName: 'Arial',
+        fontSize: 18
       },
       height: 480,
       chartArea: { width: '90%' },
@@ -136,22 +165,38 @@ export class GraficaComponent implements OnInit {
   }
 
   drawChartPie() {
+
+    const tam = this.listaPromedioEstudiantes.length;
+
+    const encabezados: any[] = ['Nota de 5.0', 'Nota entre 4. a 4.9', 'Nota entre 3.0 a 3.9', 'Nota inferior a 3.0'];
+
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Nota');
     data.addColumn('number', 'Promedio');
-    data.addRows([
-      ['Nota de 5.0', 3.0],
-      ['Nota entre 4.9 a 4.0', 1.0],
-      ['Nota entre 3.9 a 3.0', 10.0],
-      ['Nota inferior a 3.0', 5],
-    ]);
+    for (let i = 0; i < tam; i++) {
+      data.addRows([
+        [encabezados[i], this.listaPromedioEstudiantes[i].promedioestudiantes],
+      ]);
+    }
+
+    if (this.total == 0 || this.listaPromedioNotas.length == 0) {
+      data.addRows([
+        ['Sin registros', 100],
+      ]);
+    }
 
     // Set chart options
     var options = {
-      title: 'How Much Pizza I Ate Last Night',
+      title: 'Promedio de estudintes por rangos de notas',
+      titleTextStyle: {
+        color: '000000',
+        fontName: 'Arial',
+        fontSize: 18
+      },
       height: 480,
       is3D: true,
+      // tooltip: { text: 'percentage' },
       chartArea: { width: '90%' },
       legend: { position: 'top', alignment: 'center', maxLines: 2 },
     };
