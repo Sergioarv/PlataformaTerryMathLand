@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { IDatosPromedioNotas } from 'src/app/models/datosPromedioNotas';
 import { Estudiante } from 'src/app/models/estudiante';
 import { Respuesta } from 'src/app/models/respuesta';
-import { IDatosPromedioEstudiante } from 'src/app/models/satosPromedioEstudiante';
+import { IDatosPromedioEstudiante } from 'src/app/models/datosPromedioEstudiante';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { RespuestaService } from 'src/app/services/respuesta.service';
 declare var google: any;
