@@ -24,7 +24,7 @@ export class CartillaComponent implements OnInit {
   listaPreguntasAgregar: Pregunta[];
   // Boleano para crear una nueva cartilla
   creacionCartilla: boolean;
-  // cartilla a guardar o editada
+  
   mensajeEliminar = '';
 
   cargando = false;

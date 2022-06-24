@@ -10,6 +10,7 @@ export class GlobalConstant {
     //Pregunta
     public static URL_PREGUNTA = '/pregunta';
     public static URL_PREGUNTA_FILTRO = '/pregunta/filtrar';
+    public static URL_PREGUNTA_EDITAR = '/pregunta/editarPregunta';
 
     //Respuesta
     public static URL_RESPUESTA = '/respuesta';

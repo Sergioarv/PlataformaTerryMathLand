@@ -1,26 +1,32 @@
-import { ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Pregunta } from 'src/app/models/pregunta';
 import { PreguntaService } from 'src/app/services/pregunta.service';
 import { ToastrService } from 'ngx-toastr';
-import { Opcion } from 'src/app/models/opcion';
 import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Opcion } from 'src/app/models/opcion';
 
 @Component({
   selector: 'app-pregunta',
   templateUrl: './pregunta.component.html',
-  styleUrls: ['./pregunta.component.css']
+  styleUrls: ['./pregunta.component.css'],
 })
 export class PreguntaComponent implements OnInit {
 
   listPregunta: Pregunta[];
-  seleccionEditar: Pregunta;
+
+  imagen: any = null;
+  imagenMin: any;
+  imagenPregunta: any;
 
   regNumeros = '^[0-9]|[1-2][0-9]$';
   regNombre = '^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ]$';
   regTextoUnaLinea = '^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1].[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1]$';
 
   cargando = false;
+
+  opcionCheck: string[] = ["", "", "", ""];
+  opcionList: string[] = ["opcionA", "opcionB", "opcionC", "opcionD"];
 
   closeResult = '';
 
@@ -44,7 +50,6 @@ export class PreguntaComponent implements OnInit {
     opcionB: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
     opcionC: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
     opcionD: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
-    urlImg: new FormControl({ value: '' })
   });
 
   constructor(
@@ -55,11 +60,6 @@ export class PreguntaComponent implements OnInit {
     private changeDetectorRef: ChangeDetectorRef
   ) {
     this.listPregunta = [];
-    this.seleccionEditar = new Pregunta();
-    this.seleccionEditar.opciones[0] = new Opcion();
-    this.seleccionEditar.opciones[1] = new Opcion();
-    this.seleccionEditar.opciones[2] = new Opcion();
-    this.seleccionEditar.opciones[3] = new Opcion();
     config.backdrop = 'static';
     config.keyboard = false;
   }
@@ -96,35 +96,157 @@ export class PreguntaComponent implements OnInit {
   }
 
   crearPregunta() {
+    const preguntaCrear = new Pregunta();
+    const opciones: Opcion[] = [];
 
+    preguntaCrear.idpregunta = '0';
+    preguntaCrear.enunciado = this.crearPreguntaForm.controls['enumPregunta'].value;
+
+    for (let i = 0; i < 4; i++) {
+      const opcion = new Opcion();
+      opcion.idopcion = '0';
+      opcion.enunciadoopcion = this.crearPreguntaForm.controls[this.opcionList[i]].value;
+      opcion.respuesta = this.opcionCheck[i] == "checked" ? true : false;
+      preguntaCrear.opciones.push(opcion);
+    }
+
+    this.preguntaService.crearPregunta(this.imagen, preguntaCrear).subscribe( resp => {
+      if (resp.success) {
+        this.toastrService.success(resp.message, 'Proceso exitoso');
+        this.cargando = false;
+        this.filtrar();
+        this.modalService.dismissAll('Save click');
+      } else {
+        this.toastrService.error(resp.message, 'Proceso fallido');
+        this.cargando = false;
+      }
+    }, error => {
+      this.toastrService.error(error.message, 'Proceso exitoso');
+      this.cargando = false;
+    });
   }
 
   guardarPregunta() {
 
+    this.cargando = true;
+
+    const idPregunta = this.editarPreguntaForm.controls['numePregunta'].value;
+
+    const seleccionEditar = this.listPregunta.find((pregunta: Pregunta) =>
+      pregunta.idpregunta == idPregunta);
+
+    const preguntaEditada = new Pregunta();
+
+    preguntaEditada.idpregunta = idPregunta;
+    preguntaEditada.enunciado = this.editarPreguntaForm.controls['enumPregunta'].value;
+    preguntaEditada.opciones = seleccionEditar == undefined ? [] : seleccionEditar?.opciones;
+    preguntaEditada.urlImg = seleccionEditar == undefined ? '' : seleccionEditar?.urlImg;
+    preguntaEditada.idImg = seleccionEditar == undefined ? '' : seleccionEditar?.idImg;
+    preguntaEditada.nombreImg = seleccionEditar == undefined ? '' : seleccionEditar?.nombreImg;
+
+    let index = this.listPregunta.findIndex((element: Pregunta) => element.idpregunta == idPregunta);
+
+    for (let i = 0; i < this.listPregunta[index].opciones.length; i++) {
+      preguntaEditada.opciones[i].enunciadoopcion = this.editarPreguntaForm.controls[this.opcionList[i]].value;
+      preguntaEditada.opciones[i].respuesta = this.opcionCheck[i] == "checked" ? true : false;
+    }
+
+    if (this.imagenPregunta == '') {
+      preguntaEditada.urlImg = '';
+    }
+
+    this.preguntaService.editarPregunta(this.imagen, preguntaEditada).subscribe(resp => {
+      if (resp.success) {
+        this.toastrService.success(resp.message, 'Proceso exitoso');
+        this.cargando = false;
+        this.filtrar();
+        this.modalService.dismissAll('Save click');
+      } else {
+        this.toastrService.error(resp.message, 'Proceso fallido');
+        this.cargando = false;
+      }
+    }, error => {
+      this.toastrService.error(error.message, 'Proceso exitoso');
+      this.cargando = false;
+    });
   }
 
   seleccionarEditar(pregunta: Pregunta, contentEdit?: any) {
 
-    this.editarPreguntaForm.get('numePregunta')?.disable();
-    this.editarPreguntaForm.get('numePregunta')?.setValue(pregunta.idpregunta);
-    this.editarPreguntaForm.get('enumPregunta')?.setValue(pregunta.enunciado);
-    this.editarPreguntaForm.get('opcionA')?.setValue(pregunta.opciones[0].enunciadoopcion);
-    this.editarPreguntaForm.get('opcionB')?.setValue(pregunta.opciones[1].enunciadoopcion);
-    this.editarPreguntaForm.get('opcionC')?.setValue(pregunta.opciones[2].enunciadoopcion);
-    this.editarPreguntaForm.get('opcionD')?.setValue(pregunta.opciones[3].enunciadoopcion);
+    const preguntaSelect = pregunta;
 
-    this.seleccionEditar = pregunta;
+    this.editarPreguntaForm.get('numePregunta')?.disable();
+    this.editarPreguntaForm.get('numePregunta')?.setValue(preguntaSelect.idpregunta);
+    this.editarPreguntaForm.get('enumPregunta')?.setValue(preguntaSelect.enunciado);
+    this.imagenPregunta = preguntaSelect.urlImg;
+
+    for (let i = 0; i < preguntaSelect.opciones.length; i++) {
+      const element = preguntaSelect.opciones[i];
+
+      this.editarPreguntaForm.get(this.opcionList[i])?.setValue(element.enunciadoopcion);
+      this.opcionCheck[i] = element.respuesta ? "checked" : "";
+    }
     this.open(contentEdit, 'xl');
   }
 
-  seleccionarImagen(event: any){
-    const imagenCapturada = event.target.files;
-console.log(event.target.files);
+  seleccionarImagen(event: any): any {
+    if (event.target.files && event.target.files[0]) {
+      this.imagen = event.target.files[0];
+      const fr = new FileReader();
+      fr.onload = (evento: any) => {
+        this.imagenMin = evento.target.result;
+      };
+      fr.readAsDataURL(this.imagen);
+    } else {
+      this.resetearImagenSeleccionada();
+    }
+  }
+
+  quitarImagen() {
+    this.imagenPregunta = "";
+    this.resetearImagenSeleccionada();
+  }
+
+  resetearImagenSeleccionada() {
+    this.imagen = null;
+    this.imagenMin = null;
   }
 
   resetearcrearPreguntaForm() {
-    this.crearPreguntaForm.reset();
+    this.crearPreguntaForm.get('enumPregunta')?.setValue("");
+    this.crearPreguntaForm.get('opcionA')?.setValue("");
+    this.crearPreguntaForm.get('opcionB')?.setValue("");
+    this.crearPreguntaForm.get('opcionC')?.setValue("");
+    this.crearPreguntaForm.get('opcionD')?.setValue("");
+    this.opcionCheck = ["", "", "", ""];
+    this.resetearImagenSeleccionada();
     this.modalService.dismissAll('Close click')
+  }
+
+  resetearEditarPreguntaForm() {
+    this.resetearImagenSeleccionada();
+    this.editarPreguntaForm.reset();
+    this.opcionCheck = ["", "", "", ""];
+    this.modalService.dismissAll('Close click');
+  }
+
+  seleccionarCheck(index: any) {
+    for (let i = 0; i < this.opcionCheck.length; i++) {
+      this.opcionCheck[i] = i == index ? "checked" : "";
+    }
+  }
+
+  verificarCheck(): boolean {
+
+    let verificar = false;
+
+    for (const item of this.opcionCheck) {
+      if (item == 'checked') {
+        verificar = true;
+        return verificar;
+      }
+    }
+    return verificar;
   }
 
   /** Funciones para abrir y cerrar modal ng **/
