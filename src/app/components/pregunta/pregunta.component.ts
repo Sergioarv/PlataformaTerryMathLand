@@ -99,12 +99,10 @@ export class PreguntaComponent implements OnInit {
     const preguntaCrear = new Pregunta();
     const opciones: Opcion[] = [];
 
-    preguntaCrear.idpregunta = '0';
     preguntaCrear.enunciado = this.crearPreguntaForm.controls['enumPregunta'].value;
 
     for (let i = 0; i < 4; i++) {
       const opcion = new Opcion();
-      opcion.idopcion = '0';
       opcion.enunciadoopcion = this.crearPreguntaForm.controls[this.opcionList[i]].value;
       opcion.respuesta = this.opcionCheck[i] == "checked" ? true : false;
       preguntaCrear.opciones.push(opcion);
