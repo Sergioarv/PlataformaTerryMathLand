@@ -14,13 +14,12 @@
                         <label>Numero de pregunta:</label>
                         <input type="text" class="form-control" formControlName="numPregunta"
                             placeholder="Ingrese el numero de pregunta a buscar" [pattern]="regNumeros">
-                        <div class="invalid-feedback">Ingresar solo números de dos digitas hasta el 25 </div>
+                        <div class="invalid-feedback">Ingresar solo números que estan relacionados a la pregunta existentes</div>
                     </div>
                     <div class="col-s-12 col-lg-6">
                         <label>Enunciado:</label>
                         <input type="text" class="form-control" formControlName="enunciado"
                             placeholder="Ingrese el enunciado a buscar" [pattern]="regTextoUnaLinea">
-                        <div class="invalid-feedback">Ingresar solo números de dos digitas hasta el 25 </div>
                     </div>
                 </div>
                 <br>
@@ -98,8 +97,7 @@
                                 'Opcion Incorrecta' }}</p>
                         </td>
                         <td style="width: 896px;">
-                            <div *ngIf="pregunta.urlImg != ''"
-                                style="text-align: center;">
+                            <div *ngIf="pregunta.urlImg != ''" style="text-align: center;">
                                 <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
                                     alt="{{ pregunta.urlImg }}" style="width: 100%;">
                             </div>
@@ -108,7 +106,7 @@
                                 (click)="seleccionarEditar(pregunta, contentEdit)" style="width: fit-content;">
                                 <em class="far fa-edit"></em> Editar
                             </button><br><br />
-                            <button type="button" class="btn btn-danger" style="width: fit-content;">
+                            <button type="button" class="btn btn-danger" style="width: fit-content;" (click)="seleccionarEliminar(pregunta, contentEliminar)">
                                 <em class="far fa-trash-can"></em> Eliminar
                             </button>
                         </td>
@@ -137,7 +135,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Enunciado:</label>
-                            <span class="contador">{{crearPreguntaForm.controls['enumPregunta'].value.length || 0}}/{{255}}</span>
+                            <span class="contador">{{crearPreguntaForm.controls['enumPregunta'].value.length ||
+                                0}}/{{255}}</span>
                         </div>
                         <textarea type="text" class="form-control" formControlName="enumPregunta" required
                             ng-pattern="regTextoUnaLinea"
@@ -152,7 +151,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion A:</label>
-                            <span class="contador">{{crearPreguntaForm.controls['opcionA'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionA'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionA" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -164,7 +164,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion B:</label>
-                            <span class="contador">{{crearPreguntaForm.controls['opcionB'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionB'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionB" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -176,7 +177,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion C:</label>
-                            <span class="contador">{{crearPreguntaForm.controls['opcionC'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionC'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionC" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -188,7 +190,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion D:</label>
-                            <span class="contador">{{crearPreguntaForm.controls['opcionD'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{crearPreguntaForm.controls['opcionD'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionD" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -240,15 +243,15 @@
                         <div class="group-label-contador">
                             <label>Imagen:</label>
                             <button type="button" class="btn btn-danger" style="margin-bottom: 10px;"
-                               (click)="quitarImagen()" *ngIf="imagenPregunta || imagenMin">Quitar Imagen</button>
+                                (click)="quitarImagen()" *ngIf="imagenPregunta || imagenMin">Quitar Imagen</button>
                         </div>
-                        <input type="file" accept=".png, .jpg" class="form-control"
-                            (change)="seleccionarImagen($event)" id="input-file-imagen">
-                            <label for="input-file-imagen">Seleccione una imagen</label>
+                        <input type="file" accept=".png, .jpg" class="form-control" (change)="seleccionarImagen($event)"
+                            id="input-file-imagen">
+                        <label for="input-file-imagen">Seleccione una imagen</label>
                         <br>
                         <div *ngIf="imagenMin != null" style="text-align: center;">
-                            <img src="{{ imagenMin }}" class="rounded img-thumbnail"
-                            alt="{{ imagenMin }}" style="height: 400px;">
+                            <img src="{{ imagenMin }}" class="rounded img-thumbnail" alt="{{ imagenMin }}"
+                                style="height: 400px;">
                         </div>
                     </div>
                 </div>
@@ -280,8 +283,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Enunciado:</label>
-                            <span
-                                class="contador">{{editarPreguntaForm.controls['enumPregunta'].value.length || 0}}/{{255}}</span>
+                            <span class="contador">{{editarPreguntaForm.controls['enumPregunta'].value.length ||
+                                0}}/{{255}}</span>
                         </div>
                         <textarea type="text" class="form-control" formControlName="enumPregunta" required
                             ng-pattern="regTextoUnaLinea"
@@ -296,7 +299,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion A:</label>
-                            <span class="contador">{{editarPreguntaForm.controls['opcionA'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionA'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionA" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -308,7 +312,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion B:</label>
-                            <span class="contador">{{editarPreguntaForm.controls['opcionB'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionB'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionB" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -320,7 +325,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion C:</label>
-                            <span class="contador">{{editarPreguntaForm.controls['opcionC'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionC'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionC" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -332,7 +338,8 @@
                     <div class="col-12">
                         <div class="group-label-contador">
                             <label>Opcion D:</label>
-                            <span class="contador">{{editarPreguntaForm.controls['opcionD'].value.length || 0}}/{{80}}</span>
+                            <span class="contador">{{editarPreguntaForm.controls['opcionD'].value.length ||
+                                0}}/{{80}}</span>
                         </div>
                         <input type="text" class="form-control" formControlName="opcionD" required
                             [pattern]="regTextoUnaLinea" maxlength="80">
@@ -381,20 +388,19 @@
                         <div class="group-label-contador">
                             <label>Imagen:</label>
                             <button type="button" class="btn btn-danger" style="margin-bottom: 10px;"
-                               (click)="quitarImagen()" *ngIf="imagenPregunta || imagenMin">Quitar Imagen</button>
+                                (click)="quitarImagen()" *ngIf="imagenPregunta || imagenMin">Quitar Imagen</button>
                         </div>
-                        <input type="file" accept=".png, .jpg" class="form-control"
-                            (change)="seleccionarImagen($event)" id="input-file-imagen">
-                            <label for="input-file-imagen">Seleccione una imagen</label>
+                        <input type="file" accept=".png, .jpg" class="form-control" (change)="seleccionarImagen($event)"
+                            id="input-file-imagen">
+                        <label for="input-file-imagen">Seleccione una imagen</label>
                         <br>
                         <div *ngIf="imagenMin != null" style="text-align: center;">
-                            <img src="{{ imagenMin }}" class="rounded img-thumbnail"
-                            alt="{{ imagenMin }}" style="height: 400px;">
+                            <img src="{{ imagenMin }}" class="rounded img-thumbnail" alt="{{ imagenMin }}"
+                                style="height: 400px;">
                         </div>
-                        <div *ngIf="imagenMin == null && imagenPregunta != ''"
-                            style="text-align: center;">
-                            <img src="{{ imagenPregunta }}" class="rounded img-thumbnail"
-                                alt="{{ imagenPregunta }}" style="height: 400px;">
+                        <div *ngIf="imagenMin == null && imagenPregunta != ''" style="text-align: center;">
+                            <img src="{{ imagenPregunta }}" class="rounded img-thumbnail" alt="{{ imagenPregunta }}"
+                                style="height: 400px;">
                         </div>
                     </div>
                 </div>
@@ -403,7 +409,27 @@
         <div class="modal-footer">
             <button type="button" class="btn btn-success" [disabled]="!editarPreguntaForm.valid"
                 (click)="guardarPregunta()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
-            <button type="button" class="btn btn-danger" (click)="resetearEditarPreguntaForm()"><em class="fa-solid fa-ban"></em>
+            <button type="button" class="btn btn-danger" (click)="resetearEditarPreguntaForm()"><em
+                    class="fa-solid fa-ban"></em>
+                Cancelar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal de Confirmación eliminar -->
+    <ng-template #contentEliminar letc="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basi-tittle">Eliminar Pregunta</h5>
+        </div>
+        <div class="modal-body">
+            <h6>¿Está seguro que desea eliminar la pregunta?</h6><br/>
+            <h6>Se eliminará la siguiente regunta:<br />
+               No. {{ preguntaEliminar.idpregunta}}.&nbsp;
+                {{ preguntaEliminar.enunciado }}</h6>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="eliminarPregunta()"><em
+                    class="fa-regular fa-circle-check"></em> Confirmar</button>
+            <button type="button" class="btn btn-danger" (click)="d('Close click')"><em class="fa-solid fa-ban"></em>
                 Cancelar</button>
         </div>
     </ng-template>

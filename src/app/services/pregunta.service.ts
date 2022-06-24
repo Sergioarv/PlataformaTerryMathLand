@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { Observable } from 'rxjs';
 import { GlobalConstant } from '../utils/constants/global.constants';
 import { Pregunta } from '../models/pregunta';
@@ -8,7 +8,7 @@ import { Pregunta } from '../models/pregunta';
   providedIn: 'root'
 })
 export class PreguntaService {
-
+  
   constructor(
     private http: HttpClient
   ) { }
@@ -61,6 +61,18 @@ export class PreguntaService {
     formData.append('pregunta', preguntaEditadaJson);
 
     return this.http.post<any>(URL, formData);
+  }
+
+  eliminarPregunta(preguntaEliminar: Pregunta) {
+    const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_PREGUNTA;
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: preguntaEliminar,
+    };
+
+    return this.http.delete<any>(URL, options);
   }
 
 }

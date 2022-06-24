@@ -19,7 +19,7 @@ export class PreguntaComponent implements OnInit {
   imagenMin: any;
   imagenPregunta: any;
 
-  regNumeros = '^[0-9]|[1-2][0-9]$';
+  regNumeros = '[0-9]+';
   regNombre = '^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ]$';
   regTextoUnaLinea = '^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1].[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1]$';
 
@@ -29,6 +29,8 @@ export class PreguntaComponent implements OnInit {
   opcionList: string[] = ["opcionA", "opcionB", "opcionC", "opcionD"];
 
   closeResult = '';
+
+  preguntaEliminar: Pregunta = new Pregunta();
 
   filtrarForm = new FormGroup({
     numPregunta: new FormControl('', [Validators.pattern(this.regNumeros)]),
@@ -70,19 +72,20 @@ export class PreguntaComponent implements OnInit {
 
   filtrar(): void {
 
+    this.cargando = true;
+
     const idPregunta = this.filtrarForm.controls['numPregunta'].value;
     const enunciado = this.filtrarForm.controls['enunciado'].value;
-
-    this.cargando = true;
 
     this.preguntaService.filtrarPregunta(idPregunta ? idPregunta : null, enunciado ? enunciado : null).subscribe(resp => {
       this.listPregunta = resp.data;
       if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 5000, closeButton: true });
+        this.cargando = false;
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
+        this.cargando = false;
       }
-      this.cargando = false;
     }, error => {
       this.toastrService.error(error.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
       this.cargando = false;
@@ -96,6 +99,9 @@ export class PreguntaComponent implements OnInit {
   }
 
   crearPregunta() {
+
+    this.cargando = true;
+
     const preguntaCrear = new Pregunta();
     const opciones: Opcion[] = [];
 
@@ -108,12 +114,13 @@ export class PreguntaComponent implements OnInit {
       preguntaCrear.opciones.push(opcion);
     }
 
-    this.preguntaService.crearPregunta(this.imagen, preguntaCrear).subscribe( resp => {
+    this.preguntaService.crearPregunta(this.imagen, preguntaCrear).subscribe(resp => {
       if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso');
+        this.resetearcrearPreguntaForm();
+        this.modalService.dismissAll('Save click');
         this.cargando = false;
         this.filtrar();
-        this.modalService.dismissAll('Save click');
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido');
         this.cargando = false;
@@ -157,8 +164,8 @@ export class PreguntaComponent implements OnInit {
       if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso');
         this.cargando = false;
-        this.filtrar();
         this.modalService.dismissAll('Save click');
+        this.filtrar();
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido');
         this.cargando = false;
@@ -187,16 +194,25 @@ export class PreguntaComponent implements OnInit {
     this.open(contentEdit, 'xl');
   }
 
+  seleccionarEliminar(pregunta: any, contentEliminar?: any) {
+
+    this.preguntaEliminar = pregunta;
+    this.open(contentEliminar, '');
+  }
+
   seleccionarImagen(event: any): any {
+    this.cargando = true;
     if (event.target.files && event.target.files[0]) {
       this.imagen = event.target.files[0];
       const fr = new FileReader();
       fr.onload = (evento: any) => {
         this.imagenMin = evento.target.result;
+        this.cargando = false;
       };
       fr.readAsDataURL(this.imagen);
     } else {
       this.resetearImagenSeleccionada();
+      this.cargando = false;
     }
   }
 
@@ -232,6 +248,24 @@ export class PreguntaComponent implements OnInit {
     for (let i = 0; i < this.opcionCheck.length; i++) {
       this.opcionCheck[i] = i == index ? "checked" : "";
     }
+  }
+
+  eliminarPregunta() {
+    this.cargando = true;
+
+    this.preguntaService.eliminarPregunta(this.preguntaEliminar).subscribe( resp => {
+      if(resp.success){
+        this.toastrService.success(resp.message, 'Proceso exitoso');
+        this.cargando = false;
+        this.filtrar();
+      }else{
+        this.toastrService.error(resp.message, 'Proceso fallido');
+        this.cargando = false;
+      }
+    }, error => {
+      this.toastrService.error(error.message, 'Proceso fallido');
+      this.cargando = false;
+    });
   }
 
   verificarCheck(): boolean {
