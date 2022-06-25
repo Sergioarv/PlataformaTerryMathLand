@@ -257,6 +257,7 @@ export class PreguntaComponent implements OnInit {
       if(resp.success){
         this.toastrService.success(resp.message, 'Proceso exitoso');
         this.cargando = false;
+        this.modalService.dismissAll('Save click');
         this.filtrar();
       }else{
         this.toastrService.error(resp.message, 'Proceso fallido');
