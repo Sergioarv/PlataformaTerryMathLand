@@ -25,12 +25,14 @@
                 <br>
                 <div class="row">
                     <div class="col-s-12 col-lg-6">
-                        <button class="btn btn-primary" (click)="filtrar()"
-                            [disabled]="!filtrarForm.valid"><em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
+                        <button class="btn btn-primary" (click)="filtrar()" [disabled]="!filtrarForm.valid"><em
+                                class="fa-solid fa-magnifying-glass"></em> Buscar</button>
                         &nbsp;
-                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em> Limpiar</button>
+                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em>
+                            Limpiar</button>
                         &nbsp;
-                        <button class="btn btn-info" (click)="borrarFecha()"><em class="fa-regular fa-calendar-xmark"></em> Borrar fecha</button>
+                        <button class="btn btn-info" (click)="borrarFecha()"><em
+                                class="fa-regular fa-calendar-xmark"></em> Borrar fecha</button>
                     </div>
                 </div>
             </form>
@@ -94,6 +96,41 @@
                         <td colspan="8">
                             <p style="text-align: center; font-size: x-large; color: red;">
                                 {{"Lista vacia"}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" [class.disabled]="esPrimero">
+                                        <a class="page-link" (click)="rebobinar(true)">Primero</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esPrimero">
+                                        <a class="page-link" (click)="rebobinar()">Anterior</a>
+                                    </li>
+                                    <li class="page-item" *ngFor="let p of totalPaginas; let i = index"
+                                        [ngClass]="{'active': i === pagina}">
+                                        <a class="page-link" (click)="setearPagina(i)">{{ i + 1 }}</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esUltimo">
+                                        <a class="page-link" (click)="avanzar()">Siguiente</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esUltimo">
+                                        <a class="page-link" (click)="avanzar(true)">Ultimo</a>
+                                    </li>
+                                    &nbsp;&nbsp;
+                                    <li class="page-item">
+                                        <select class="custom-select" #cantidadP
+                                            (change)="setearCantida(cantidadP.value)">
+                                            <option value="5">{{ 5 }}</option>
+                                            <option selected value="10">{{ 10 }}</option>
+                                            <option value="15">{{ 15 }}</option>
+                                            <option value="20">{{ 20 }}</option>
+                                            <option value="25">{{ 25 }}</option>
+                                        </select>
+                                    </li>
+                                </ul>
+                            </nav>
                         </td>
                     </tr>
                 </tbody>
@@ -208,8 +245,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-success"
-                (click)="eliminarEstudiante(seleccionEliminar)"><em class="fa-regular fa-circle-check"></em> Confirmar</button>
+            <button type="button" class="btn btn-success" (click)="eliminarEstudiante(seleccionEliminar)"><em
+                    class="fa-regular fa-circle-check"></em> Confirmar</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal"
                 (click)="resetearEliminarEstudianteForm()"><em class="fa-solid fa-ban"></em> Cancelar</button>
         </div>

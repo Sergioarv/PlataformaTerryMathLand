@@ -27,6 +27,12 @@ export class RespuestaComponent implements OnInit {
 
   closeResult = '';
 
+  esPrimero = false;
+  esUltimo = false;
+  pagina = 0;
+  cantPagina = 10;
+  totalPaginas: number[] = [];
+
   filtrarForm = new FormGroup({
     estudiantes: new FormControl(''),
     fecha: new FormControl(null)
@@ -75,9 +81,12 @@ export class RespuestaComponent implements OnInit {
     const fecha = this.filtrarForm.controls['fecha'].value;
 
     this.respuestaService.filtrarRespuesta(estudiante ? estudiante : null, fecha ? fecha : null).subscribe(resp => {
-      this.listaRespuestas = resp.data;
+      this.listaRespuestas = resp.data.content;
 
       if (resp.success) {
+        this.esPrimero = resp.data.first;
+        this.esUltimo = resp.data.last;
+        this.totalPaginas = new Array(resp.data['totalPages']);
         this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true });
         this.cargando = false;
         if (inicio) {
@@ -145,5 +154,39 @@ export class RespuestaComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  rebobinar(primero?: any) {
+    if (primero) {
+      this.pagina = 0;
+    } else {
+      if (!this.esPrimero) {
+        this.pagina--;
+      }
+    }
+    this.filtrar();
+  }
+
+  avanzar(ultimo?: any) {
+    if (ultimo) {
+      this.pagina = this.totalPaginas.length-1;
+    } else {
+      if (!this.esUltimo) {
+        this.pagina++;
+        
+      }
+    }
+    this.filtrar();
+  }
+
+  setearPagina(pag: number): void {
+    this.pagina = pag;
+    this.filtrar();
+  }
+
+  setearCantida(cant: any): void {
+    this.cantPagina = cant;
+    this.pagina = 0;
+    this.filtrar();
   }
 }
