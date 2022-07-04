@@ -33,13 +33,15 @@
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
+              "src/assets/TerryMathLand/TemplateData/style.css",
               "src/styles.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.slim.min.js",
               "node_modules/@popperjs/core/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
-              "node_modules/@fortawesome/fontawesome-free/js/all.js"
+              "node_modules/@fortawesome/fontawesome-free/js/all.js",
+              "src/assets/TerryMathLand/Build/UnityLoader.js"
             ]
           },
           "configurations": {

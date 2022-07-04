@@ -1,3 +1,12 @@
 <!-- <iframe class="contenedor-juego" frameborder="0" 
 src="https://v6p9d9t4.ssl.hwcdn.net/html/5993362/TerryMathLand/index.html">
 <a href="https://sarodriguezv.itch.io/terrymathland">TerryMathLand by sarodriguezv</a></iframe> -->
+
+<div class="contenedor">
+    <ngx-loading [show]="cargando"
+        [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff', fullScreenBackdrop: true }">
+    </ngx-loading>
+
+    <div #unityEl id = "gameContainer"  
+     style = "display: block; width: 100%; min-height: 0px; margin: auto"></div>
+</div>
