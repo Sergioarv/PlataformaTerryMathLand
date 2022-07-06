@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class JuegoComponent implements OnInit {
 
+  gameInstance: any;
+  cargando = false;
+  progress = 0;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.cargando = true;
+    const loader = (window as any).UnityLoader;
+    this.gameInstance = loader.instantiate(
+      'gameContainer',
+      '/assets/TerryMathLand/Build/TerryMathLand.json', {
+        onProgress: (gameInstance: any, progress: number) => {
+          this.progress = progress;
+          if(progress == 1){
+            this.cargando = false;
+          }
+        }
+      }
+    );
   }
 
 }
