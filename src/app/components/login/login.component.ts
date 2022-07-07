@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
 
   cargando = false;
 
-  islogged = false;
+  isLogged = false;
   loginUsuario!: LoginUsuario;
 
   nombreUsuario = '';
@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.tokenService.getToken()) {
-      this.islogged = true;
+      this.isLogged = true;
       this.roles = this.tokenService.getAuthorities();
     }
   }
@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
     this.loginUsuario.documento = this.loginForm.controls['documento'].value;
 
     this.authService.login(this.loginUsuario).subscribe(resp => {
-      this.islogged = true;
+      this.isLogged = true;
 
       this.tokenService.setToken(resp.data.token);
       this.tokenService.setUserName(resp.data.nombreUsuario);
@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit {
       this.roles = resp.data.authorities;
       this.router.navigate(['/']);
     }, error => {
-      this.islogged = false;
+      this.isLogged = false;
       this.toastrService.error('Error en el login', 'Proceso fallido');
     });
   }
