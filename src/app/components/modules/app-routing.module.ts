@@ -7,17 +7,19 @@ import { EstudianteComponent } from '../estudiante/estudiante.component';
 import { RespuestaComponent } from '../respuesta/respuesta.component';
 import { GraficaComponent } from '../grafica/grafica.component';
 import { CartillaComponent } from '../cartilla/cartilla.component';
+import { LoginComponent } from '../login/login.component';
 
 const routes: Routes = [
-  { path: 'inicio', component: InicioComponent},
-  { path: '', redirectTo: 'inicio', pathMatch: 'full'},
+  { path: 'inicio', component: InicioComponent },
   { path: 'juego', component: JuegoComponent },
   { path: 'pregunta', component: PreguntaComponent },
   { path: 'estudiante', component: EstudianteComponent },
   { path: 'respuesta', component: RespuestaComponent },
   { path: 'grafica', component: GraficaComponent },
-  { path: 'cartilla', component: CartillaComponent},
-  { path: '**', redirectTo: 'inicio', pathMatch: 'full'}
+  { path: 'cartilla', component: CartillaComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
+  { path: '**', redirectTo: 'inicio', pathMatch: 'full' }
 ];
 
 @NgModule({

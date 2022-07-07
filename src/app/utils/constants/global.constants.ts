@@ -25,4 +25,7 @@ export class GlobalConstant {
     //Cartilla
     public static URL_CARTILLA = '/cartilla';
     public static URL_CARTILLA_FILTRO = '/cartilla/filtrarPreguntas';
+
+    //Auth
+    public static URL_AUTH_LOGIN = '/auth/login';
 }
