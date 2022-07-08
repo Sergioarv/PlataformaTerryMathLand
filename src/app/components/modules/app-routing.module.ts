@@ -8,18 +8,20 @@ import { RespuestaComponent } from '../respuesta/respuesta.component';
 import { GraficaComponent } from '../grafica/grafica.component';
 import { CartillaComponent } from '../cartilla/cartilla.component';
 import { LoginComponent } from '../login/login.component';
+import { EstGuardService as guard } from 'src/app/guards/est-guard.service';
+
 
 const routes: Routes = [
-  { path: 'inicio', component: InicioComponent },
-  { path: 'juego', component: JuegoComponent },
-  { path: 'pregunta', component: PreguntaComponent },
-  { path: 'estudiante', component: EstudianteComponent },
-  { path: 'respuesta', component: RespuestaComponent },
-  { path: 'grafica', component: GraficaComponent },
-  { path: 'cartilla', component: CartillaComponent },
-  { path: 'login', component: LoginComponent },
-  { path: '', redirectTo: 'inicio', pathMatch: 'full' },
-  { path: '**', redirectTo: 'inicio', pathMatch: 'full' }
+  { path: 'inicio', component: InicioComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'juego', component: JuegoComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'pregunta', component: PreguntaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente']}},
+  { path: 'estudiante', component: EstudianteComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente']}},
+  { path: 'respuesta', component: RespuestaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'grafica', component: GraficaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'cartilla', component: CartillaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente']}},
+  { path: 'login', component: LoginComponent},
+  { path: '', redirectTo: 'inicio', pathMatch: 'full'},
+  { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];
 
 @NgModule({

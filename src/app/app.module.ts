@@ -11,6 +11,7 @@ import { NgxLoadingModule } from 'ngx-loading';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { DatePipe } from '@angular/common';
+import { interceptorProvider } from './interceptors/est-interceptor.service';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { InicioComponent } from './components/inicio/inicio.component';
@@ -21,6 +22,7 @@ import { RespuestaComponent } from './components/respuesta/respuesta.component';
 import { GraficaComponent } from './components/grafica/grafica.component';
 import { CartillaComponent } from './components/cartilla/cartilla.component';
 import { LoginComponent } from './components/login/login.component';
+
 
 @NgModule({
   declarations: [
@@ -54,7 +56,8 @@ import { LoginComponent } from './components/login/login.component';
     })
   ],
   providers: [
-    DatePipe
+    DatePipe,
+    interceptorProvider
   ],
   exports: [
     AppComponent

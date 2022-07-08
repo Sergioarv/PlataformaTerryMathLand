@@ -40,7 +40,7 @@ roles: Array<string> = [];
     this.roles = [];
     if(sessionStorage.getItem(AUTHORITIES_KEY)){
       let authoKey: any = sessionStorage.getItem(AUTHORITIES_KEY) == null ? [] : sessionStorage.getItem(AUTHORITIES_KEY);
-      JSON.parse(authoKey).array.forEach( (authority: { authority: string; }) => {
+      JSON.parse(authoKey).forEach( (authority: { authority: string; }) => {
          this.roles.push(authority.authority);
       });
     }

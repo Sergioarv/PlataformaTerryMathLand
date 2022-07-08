@@ -7,6 +7,7 @@ import { Respuesta } from 'src/app/models/respuesta';
 import { IDatosPromedioEstudiante } from 'src/app/models/datosPromedioEstudiante';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { RespuestaService } from 'src/app/services/respuesta.service';
+import { TokenService } from 'src/app/services/token.service';
 declare var google: any;
 
 @Component({
@@ -27,6 +28,9 @@ export class GraficaComponent implements OnInit {
 
   total = 0.0;
 
+  roles: string[];
+  authority: string;
+
   filtrarForm = new FormGroup({
     estudiantes: new FormControl(''),
     fecha: new FormControl(null)
@@ -35,18 +39,33 @@ export class GraficaComponent implements OnInit {
   constructor(
     private estudianteService: EstudianteService,
     private respuestaService: RespuestaService,
-    private toastrService: ToastrService
+    private toastrService: ToastrService,
+    private tokenService: TokenService
   ) {
     this.listaEstudiantes = [];
     this.listaRespuestas = [];
     this.listaPromedioNotas = [];
     this.listaPromedioEstudiantes = [];
+    this.roles = [];
+    this.authority = '';
   }
 
   ngOnInit(): void {
 
-    google.charts.load('current', { packages: ['corechart'] });
+    this.roles = this.tokenService.getAuthorities();
+    this.roles.forEach(rol => {
+      if (rol === 'ROLE_ADMIN') {
+        this.authority = 'admin';
+      } else if (rol === 'ROLE_DOCENTE') {
+        this.authority = 'docente';
+      } else if (rol === 'ROLE_ESTUDIANTE') {
+        this.authority = 'estudiante';
+      }
+    });
+    if (this.authority === 'estudiante')
+      this.filtrarForm.get('estudiantes')?.disable();
 
+    google.charts.load('current', { packages: ['corechart'] });
     this.filtrar(true);
   }
 
@@ -69,7 +88,7 @@ export class GraficaComponent implements OnInit {
         } else {
           this.toastrService.success(resp.message, 'Proceso exitoso');
         }
-        
+
         if (inicio) {
           this.obtenerEstudiantes();
         }

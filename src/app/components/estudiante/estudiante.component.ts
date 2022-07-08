@@ -18,7 +18,7 @@ export class EstudianteComponent implements OnInit {
   listaEstudiante: Estudiante[];
   listaRespuesta: Respuesta[];
 
-  regNumeros = '^[0-9]|[1-2][0-9]$';
+  regNumeros = '[0-9]+';
   regTextoUnaLinea = '^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1].[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1]$';
   regNombre = '^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ]$';
 
@@ -42,6 +42,7 @@ export class EstudianteComponent implements OnInit {
   editarEstudianteForm = new FormGroup({
     idEstudiante: new FormControl(''),
     nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
+    documento: new FormControl('', Validators.pattern(this.regNumeros)),
     respuesta: new FormControl(''),
     nota: new FormControl(0),
     fecha: new FormControl()
@@ -49,6 +50,7 @@ export class EstudianteComponent implements OnInit {
 
   agregarEstudianteForm = new FormGroup({
     nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
+    documento: new FormControl('', [Validators.pattern(this.regNumeros)])
   });
 
   eliminarEstudianteForm = new FormGroup({
@@ -108,6 +110,8 @@ export class EstudianteComponent implements OnInit {
 
     const newEstudiante = new Estudiante();
     newEstudiante.nombre = this.agregarEstudianteForm.controls['nombre'].value;
+    newEstudiante.documento = this.agregarEstudianteForm.controls['documento'].value;
+    newEstudiante.contrasenia = this.agregarEstudianteForm.controls['documento'].value;
     newEstudiante.idusuario = '-1';
 
     this.estudianteService.agregar(newEstudiante).subscribe(resp => {
@@ -133,6 +137,9 @@ export class EstudianteComponent implements OnInit {
 
     actualizarEst.idusuario = this.editarEstudianteForm.controls['idEstudiante'].value;
     actualizarEst.nombre = this.editarEstudianteForm.controls['nombre'].value;
+    actualizarEst.documento = this.editarEstudianteForm.controls['documento'].value;
+    actualizarEst.contrasenia = this.editarEstudianteForm.controls['documento'].value;
+    actualizarEst.roles = this.seleccionEditar.roles;
 
     this.estudianteService.actualizar(actualizarEst).subscribe( (resp:any) => {
       if(resp.success){
@@ -179,6 +186,7 @@ export class EstudianteComponent implements OnInit {
 
     this.editarEstudianteForm.get('idEstudiante')?.setValue(this.seleccionEditar.idusuario);
     this.editarEstudianteForm.get('nombre')?.setValue(this.seleccionEditar.nombre);
+    this.editarEstudianteForm.get('documento')?.setValue(this.seleccionEditar.documento);
 
     this.open(contentEdit);
   }

@@ -19,6 +19,8 @@ export class GlobalConstant {
 
     //Estudiante
     public static URL_ESTUDIANTE = '/estudiante';
+    public static URL_ESTUDIANTE_AGREGAR = '/agregarEstudiante';
+    public static URL_ESTUDIANTE_EDITAR = '/editarEstudiante';
     public static URL_ESTUDIANTE_FILTRO = '/estudiante/filtrar';
     public static URL_ESTUDIANTE_LISTAR = '/estudiante/listarEstudiantes';
 
@@ -27,5 +29,6 @@ export class GlobalConstant {
     public static URL_CARTILLA_FILTRO = '/cartilla/filtrarPreguntas';
 
     //Auth
+    public static URL_AUTH = '/auth';
     public static URL_AUTH_LOGIN = '/auth/login';
 }

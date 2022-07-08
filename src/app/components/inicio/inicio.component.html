@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <div class="contenedor">
   <div class="row">
-    <div class="col-sm-6 col-md-3" *ngIf="isLogged">
+    <div class="col-sm-6 col-md-3" *ngIf="isLogged && authority !== 'estudiante'">
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/estudiante']">
           <div class="card-header">
@@ -10,7 +10,7 @@
               alt="flaticon">
           </div>
         </a>
-        <div class="card-body" *ngIf="isLogged">
+        <div class="card-body">
           <h5 class="card-title">Gestionar Estudiantes</h5>
           <p class="card-text">Agregar, listar y modificar los estudiantes.</p>
           <a [routerLink]="['/estudiante']" class="btn btn-primary"><em class="fa-solid fa-user"></em> Estudiantes</a>
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="col-sm-6 col-md-3" *ngIf="isLogged">
+    <div class="col-sm-6 col-md-3" *ngIf="isLogged && authority !== 'estudiante'">
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/estudiante']">
           <div class="card-header">
@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <div class="col-sm-6 col-md-3" *ngIf="isLogged">
+    <div class="col-sm-6 col-md-3" *ngIf="isLogged && authority !== 'estudiante'">
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/pregunta']">
           <div class="card-header">

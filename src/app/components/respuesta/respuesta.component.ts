@@ -7,6 +7,7 @@ import { Respuesta } from 'src/app/models/respuesta';
 import { Solucion } from 'src/app/models/solucion';
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { RespuestaService } from 'src/app/services/respuesta.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-respuesta',
@@ -27,6 +28,9 @@ export class RespuestaComponent implements OnInit {
 
   closeResult = '';
 
+  roles: string[];
+  authority: string;
+
   filtrarForm = new FormGroup({
     estudiantes: new FormControl(''),
     fecha: new FormControl(null)
@@ -36,6 +40,7 @@ export class RespuestaComponent implements OnInit {
     private respuestaService: RespuestaService,
     private toastrService: ToastrService,
     private estudianteService: EstudianteService,
+    private tokenService: TokenService,
     private modalService: NgbModal,
     private config: NgbModalConfig
   ) {
@@ -45,11 +50,26 @@ export class RespuestaComponent implements OnInit {
 
     this.seleccionRespuesta = new Respuesta();
 
+    this.roles = [];
+    this.authority = '';
+
     config.backdrop = 'static';
     config.keyboard = false;
   }
 
   ngOnInit(): void {
+    this.roles = this.tokenService.getAuthorities();
+    this.roles.forEach(rol => {
+      if (rol === 'ROLE_ADMIN') {
+        this.authority = 'admin';
+      } else if (rol === 'ROLE_DOCENTE') {
+        this.authority = 'docente';
+      } else if (rol === 'ROLE_ESTUDIANTE') {
+        this.authority = 'estudiante';
+      }
+    });
+    if (this.authority === 'estudiante')
+      this.filtrarForm.get('estudiantes')?.disable();
     this.filtrar(true);
   }
 
@@ -100,7 +120,6 @@ export class RespuestaComponent implements OnInit {
       this.listaEstudiantes = resp.data;
 
       if (resp.success) {
-        //this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true});
         this.cargando = false;
         this.verificarEstudianteId();
       } else {
