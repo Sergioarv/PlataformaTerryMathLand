@@ -1,6 +1,23 @@
 <app-navbar></app-navbar>
 <div class="contenedor">
   <div class="row">
+    <div class="col-sm-6 col-md-3" *ngIf="isLogged && authority === 'admin'">
+      <div class="card" style="text-align: center;">
+        <a [routerLink]="['/docente']">
+          <div class="card-header">
+            <img
+              src="https://cdn-icons.flaticon.com/png/512/2995/premium/2995620.png?token=exp=1654377294~hmac=b03863e4b2a436f6fa16db815a31b6d9"
+              alt="flaticon">
+          </div>
+        </a>
+        <div class="card-body">
+          <h5 class="card-title">Gestionar Docentes</h5>
+          <p class="card-text">Agregar, listar y modificar los docentes.</p>
+          <a [routerLink]="['/docente']" class="btn btn-primary"><em class="fa-solid fa-chalkboard-user"></em> Docentes</a>
+        </div>
+      </div>
+    </div>
+
     <div class="col-sm-6 col-md-3" *ngIf="isLogged && authority !== 'estudiante'">
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/estudiante']">

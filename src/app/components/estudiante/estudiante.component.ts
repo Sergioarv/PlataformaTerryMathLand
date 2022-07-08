@@ -271,8 +271,8 @@ export class EstudianteComponent implements OnInit {
   }
 
   resetearEliminarEstudianteForm(){
-    this.agregarEstudianteForm.get('idEstudiante')?.setValue('');
-    this.agregarEstudianteForm.get('nombre')?.setValue('');
+    this.eliminarEstudianteForm.get('idEstudiante')?.setValue('');
+    this.eliminarEstudianteForm.get('nombre')?.setValue('');
     this.modalService.dismissAll('Close click');
   }
 

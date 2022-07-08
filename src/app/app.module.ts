@@ -22,6 +22,7 @@ import { RespuestaComponent } from './components/respuesta/respuesta.component';
 import { GraficaComponent } from './components/grafica/grafica.component';
 import { CartillaComponent } from './components/cartilla/cartilla.component';
 import { LoginComponent } from './components/login/login.component';
+import { DocenteComponent } from './components/docente/docente.component';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { LoginComponent } from './components/login/login.component';
     RespuestaComponent,
     GraficaComponent,
     CartillaComponent,
-    LoginComponent
+    LoginComponent,
+    DocenteComponent
   ],
   imports: [
     BrowserModule,

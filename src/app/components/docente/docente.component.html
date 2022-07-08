@@ -1,0 +1,228 @@
+<div class="contenedor">
+    <ngx-loading [show]="cargando"
+        [config]="{ backdropBorderRadius: '3px', primaryColour: '#00ff66', secondaryColour: '#ff6600', tertiaryColour: '#6600ff', fullScreenBackdrop: true }">
+    </ngx-loading>
+
+    <div class="card">
+        <div class="card-header">
+            <h5>Busqueda Avanzada</h5>
+        </div>
+        <div class="card-body">
+            <form class="form-group" [formGroup]="filtrarForm" class="was-validated">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-6">
+                        <label>Nombre:</label>
+                        <input type="text" class="form-control" formControlName="nombre" [pattern]="regNombre"
+                            placeholder="Ingrese el nombre a buscar">
+                        <div class="invalid-feedback">Por favor verifique el nombre</div>
+                    </div>
+                    <div class="col-sm-12 col-lg-6">
+                        <label>Correo:</label>
+                        <input type="text" class="form-control" formControlName="correo"
+                            placeholder="Ingrese el correo a buscar" [pattern]="regCorreo">
+                        <div class="invalid-feedback">Por favor verifique el correo</div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-s-12 col-lg-6">
+                        <button class="btn btn-primary" (click)="filtrar()"
+                            [disabled]="!filtrarForm.valid"><em class="fa-solid fa-magnifying-glass"></em> Buscar</button>
+                        &nbsp;
+                        <button class="btn btn-secondary" (click)="limpiar()"><em class="fa-solid fa-eraser"></em> Limpiar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br>
+    <!-- Tabla del listado -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-4">
+                    <h5 class="card-title">Lista de docentes</h5>
+                </div>
+                <div class="col-8">
+                    <button type="button" class="btn btn-primary" (click)="open(content)" style="float: right;">
+                        <em class="fa-solid fa-person-circle-plus"></em>&nbsp;Agregar Docente</button>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered table-hover table-responsive" style="overflow-x: scroll;">
+                <caption>Lista de docentes</caption>
+                <thead class="thead-col">
+                    <tr>
+                        <th scope="col" style="max-width: 40px;">Id</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Documento</th>
+                        <th scope="col">Correo</th>
+                        <th scope="col">Funciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let docente of listaDocente">
+                        <td>{{ docente.idusuario }}</td>
+                        <td>{{ docente.nombre }}</td>
+                        <td>{{ docente.documento }}</td>
+                        <td>{{ docente.correo }}</td>
+                        <td>
+                            <button type="button" class="btn btn-edit" data-toggle="modal" style="width: fit-content;"
+                                data-target="#editarDocente" (click)="seleccionarEditar(docente, contentEdit)">
+                                <em class="far fa-edit"></em> Editar
+                            </button>
+                            &nbsp;
+                            <button type="button" class="btn btn-danger" data-toggle="modal" style="width: fit-content;"
+                                data-target="#eliminarDocente"
+                                (click)="seleccionarEliminar(docente, contentEliminar)">
+                                <em class="fas fa-trash-alt"></em> Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                    <tr *ngIf="listaDocente.length == 0">
+                        <td colspan="8">
+                            <p style="text-align: center; font-size: x-large; color: red;">
+                                {{"Lista vacia"}}</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <!-- Modal agregar -->
+    <ng-template #content let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Agregar Docente</h5>
+        </div>
+        <div class="modal-body">
+            <form class="form-group was-validated" [formGroup]="agregarDocenteForm" novalidate>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Nombre:</label>
+                        <input type="text" class="form-control" formControlName="nombre" required [pattern]="regNombre">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Documento:</label>
+                        <input type="text" class="form-control" formControlName="documento" required [pattern]="regNumeros">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el documento</div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Correo:</label>
+                        <input type="text" class="form-control" formControlName="correo" required [pattern]="regCorreo">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el correo</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="agregarDocente()"
+                [disabled]="!agregarDocenteForm.valid"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+            <button type="button" class="btn btn-danger" (click)="resetearAgregarDocenteForm()">
+                <em class="fa-solid fa-ban"></em> Cancelar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal editar -->
+    <ng-template #contentEdit let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Editar Docente</h5>
+        </div>
+        <div class="modal-body">
+            <form class="form-group" [formGroup]="editarDocenteForm" class="was-validated" novalidate>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Id Docente:</label>
+                        <input type="text" class="form-control" formControlName="idDocente"
+                            value="{{ seleccionEditar.idusuario }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label>Nombre:</label>
+                        <input type="text" class="form-control" formControlName="nombre" required [pattern]="regNombre"
+                            value="{{ seleccionEditar.nombre }}">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label>Documento:</label>
+                        <input type="text" class="form-control" formControlName="documento" required [pattern]="regNumeros">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el documento</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label>Correo:</label>
+                        <input type="email" class="form-control" formControlName="correo" required>
+                        <div class="invalid-feedback">Por favor ingrese o verifique el correo</div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="editarDocente()"
+                [disabled]="!editarDocenteForm.valid"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+            <button type="button" class="btn btn-danger" (click)="resetearEditarDocenteForm()">
+                <em class="fa-solid fa-ban"></em> Cancelar</button>
+        </div>
+    </ng-template>
+
+    <!-- Modal Eliminar -->
+    <ng-template #contentEliminar let-c="close" let-d="dismiss">
+        <div class="modal-header">
+            <h5 class="modal-tittle" id="modal-basic-tittle">Eliminar Docente</h5>
+        </div>
+        <div class="modal-body">
+            <form class="form-group" [formGroup]="eliminarDocenteForm">
+                <div class="row">
+                    <div class="col-12">
+                        <label>Id Docente:</label>
+                        <input type="text" class="form-control" formControlName="idDocente"
+                            value="{{ seleccionEliminar.idusuario }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Nombre:</label>
+                        <input type="text" class="form-control" formControlName="nombre"
+                            value="{{ seleccionEliminar.nombre }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label>Documento:</label>
+                        <input type="text" class="form-control" formControlName="documento"
+                            value="{{ seleccionEliminar.documento }}">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <label>Correo:</label>
+                        <input type="email" class="form-control" formControlName="correo"
+                            value="{{ seleccionEliminar.correo }}">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success"
+                (click)="eliminarDocente(seleccionEliminar)"><em class="fa-regular fa-circle-check"></em> Confirmar</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal"
+                (click)="resetearEliminarDocenteForm()"><em class="fa-solid fa-ban"></em> Cancelar</button>
+        </div>
+    </ng-template>
+</div>

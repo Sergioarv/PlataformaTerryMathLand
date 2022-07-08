@@ -31,4 +31,10 @@ export class GlobalConstant {
     //Auth
     public static URL_AUTH = '/auth';
     public static URL_AUTH_LOGIN = '/auth/login';
+
+    //Docente
+    public static URL_DOCENTE = '/docente';
+    public static URL_DOCENTE_AGREGAR = '/agregarDocente';
+    public static URL_DOCENTE_EDITAR = '/editarDocente';
+    public static URL_DOCENTE_FILTRO = '/docente/filtrar';
 }
