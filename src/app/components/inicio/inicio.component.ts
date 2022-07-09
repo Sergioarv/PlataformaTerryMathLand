@@ -9,7 +9,6 @@ import { TokenService } from 'src/app/services/token.service';
 })
 export class InicioComponent implements OnInit {
 
-  isLogged = false;
   authority: string = '';
 
   constructor(
@@ -19,7 +18,6 @@ export class InicioComponent implements OnInit {
 
   ngOnInit(): void {
     this.authority = this.tokenService.getRoles();
-    console.log(this.authority);
   }
 
 }

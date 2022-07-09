@@ -85,7 +85,6 @@ export class GraficaComponent implements OnInit {
         }
         this.cargando = false;
       } else {
-        console.log(this.total);
         this.toastrService.warning(resp.message, 'Proceso fallido');
         this.listaPromedioEstudiantes = [];
         this.listaPromedioNotas = [];

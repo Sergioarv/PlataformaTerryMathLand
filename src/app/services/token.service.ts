@@ -64,7 +64,6 @@ export class TokenService {
         this.rolReal = 'estudiante';
       }  
     });
-    console.log(this.rolReal);
     return this.rolReal;
   }
 
