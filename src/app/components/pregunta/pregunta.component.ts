@@ -30,6 +30,12 @@ export class PreguntaComponent implements OnInit {
 
   closeResult = '';
 
+  esPrimero = false;
+  esUltimo = false;
+  pagina = 0;
+  cantPagina = 10;
+  totalPaginas: number[] = [];
+
   preguntaEliminar: Pregunta = new Pregunta();
 
   filtrarForm = new FormGroup({
@@ -77,9 +83,12 @@ export class PreguntaComponent implements OnInit {
     const idPregunta = this.filtrarForm.controls['numPregunta'].value;
     const enunciado = this.filtrarForm.controls['enunciado'].value;
 
-    this.preguntaService.filtrarPregunta(idPregunta ? idPregunta : null, enunciado ? enunciado : null).subscribe(resp => {
-      this.listPregunta = resp.data;
+    this.preguntaService.filtrarPregunta(idPregunta ? idPregunta : null, enunciado ? enunciado : null, this.pagina, this.cantPagina).subscribe(resp => {
+      this.listPregunta = resp.data.content;
       if (resp.success) {
+        this.esPrimero = resp.data.first;
+        this.esUltimo = resp.data.last;
+        this.totalPaginas = new Array(resp.data['totalPages']);
         this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 5000, closeButton: true });
         this.cargando = false;
       } else {
@@ -253,13 +262,13 @@ export class PreguntaComponent implements OnInit {
   eliminarPregunta() {
     this.cargando = true;
 
-    this.preguntaService.eliminarPregunta(this.preguntaEliminar).subscribe( resp => {
-      if(resp.success){
+    this.preguntaService.eliminarPregunta(this.preguntaEliminar).subscribe(resp => {
+      if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso');
         this.cargando = false;
         this.modalService.dismissAll('Save click');
         this.filtrar();
-      }else{
+      } else {
         this.toastrService.error(resp.message, 'Proceso fallido');
         this.cargando = false;
       }
@@ -300,5 +309,39 @@ export class PreguntaComponent implements OnInit {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  rebobinar(primero?: any) {
+    if (primero) {
+      this.pagina = 0;
+    } else {
+      if (!this.esPrimero) {
+        this.pagina--;
+      }
+    }
+    this.filtrar();
+  }
+
+  avanzar(ultimo?: any) {
+    if (ultimo) {
+      this.pagina = this.totalPaginas.length-1;
+    } else {
+      if (!this.esUltimo) {
+        this.pagina++;
+        
+      }
+    }
+    this.filtrar();
+  }
+
+  setearPagina(pag: number): void {
+    this.pagina = pag;
+    this.filtrar();
+  }
+
+  setearCantida(cant: any): void {
+    this.cantPagina = cant;
+    this.pagina = 0;
+    this.filtrar();
   }
 }

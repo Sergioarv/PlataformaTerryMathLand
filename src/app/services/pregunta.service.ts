@@ -19,7 +19,7 @@ export class PreguntaService {
     return this.http.get<any>(URL);
   }
 
-  filtrarPregunta(idPregunta: any, enunciado: any): Observable<any> {
+  filtrarPregunta(idPregunta: any, enunciado: any, pagina: any, cantPagina: any): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_PREGUNTA_FILTRO;
 
     let params = '';
@@ -40,6 +40,13 @@ export class PreguntaService {
       }
     }
 
+    if(params.length > 0){
+      params = params.concat('&pagina=').concat(pagina);
+      params = params.concat('&cantPagina=').concat(cantPagina);
+    }else{
+      params = params.concat('?pagina=').concat(pagina);
+      params = params.concat('&cantPagina=').concat(cantPagina);
+    }
     return this.http.get<any>(URL + params);
   }
 

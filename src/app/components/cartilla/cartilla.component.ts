@@ -68,17 +68,10 @@ export class CartillaComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerCartillas();
-    this.obtenerPreguntas();
   }
 
   ngAfterViewChecked(): void {
     this.changeDetectorRef.detectChanges();
-  }
-
-  obtenerPreguntas() {
-    this.preguntaService.obtenerPreguntas().subscribe(resp => {
-      this.listaPreguntas = resp.data;
-    });
   }
 
   obtenerCartillas() {
@@ -113,9 +106,14 @@ export class CartillaComponent implements OnInit {
     if (cartillaF != null && cartillaF != '') {
 
       this.cartillaService.filtrarPreguntasCartilla(cartillaF ? cartillaF : null).subscribe(resp => {
-        this.listaPreguntasCartilla = resp.data;
+        this.listaPreguntasCartilla = resp.data.content;
         if (resp.success) {
           this.toastrService.success(resp.message, 'Proceso exitoso');
+          this.listaPreguntasCartilla.sort(function (a, b) {
+            if (a.idpregunta > b.idpregunta) { return 1; }
+            if (a.idpregunta < b.idpregunta) { return -1; }
+            return 0;
+          });
           this.cargando = false;
         } else {
           this.toastrService.error(resp.message, 'Proceso fallido');

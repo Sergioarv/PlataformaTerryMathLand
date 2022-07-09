@@ -23,7 +23,7 @@ export class EstudianteService {
     return this.http.get<any>(URL);
   }
 
-  public filtrarEstudiante(nombre: any, fechaEntrega: any): Observable<any> {
+  public filtrarEstudiante(nombre: any, fechaEntrega: any, pagina: any, cantPagina: any): Observable<any> {
 
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_ESTUDIANTE_FILTRO;
 
@@ -42,6 +42,22 @@ export class EstudianteService {
         params = params.concat('&fecha=').concat(fechaEntrega);
       } else {
         params = params.concat('?fecha=').concat(fechaEntrega);
+      }
+    }
+
+    if (pagina) {
+      if (params.length > 0) {
+        params = params.concat('&pagina=').concat(pagina);
+      } else {
+        params = params.concat('?pagina=').concat(pagina);
+      }
+    }
+
+    if (cantPagina) {
+      if (params.length > 0) {
+        params = params.concat('&cantPagina=').concat(cantPagina);
+      } else {
+        params = params.concat('?cantPagina=').concat(cantPagina);
       }
     }
 

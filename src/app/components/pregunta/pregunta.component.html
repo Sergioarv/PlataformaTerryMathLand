@@ -14,7 +14,8 @@
                         <label>Numero de pregunta:</label>
                         <input type="text" class="form-control" formControlName="numPregunta"
                             placeholder="Ingrese el numero de pregunta a buscar" [pattern]="regNumeros">
-                        <div class="invalid-feedback">Ingresar solo números que estan relacionados a la pregunta existentes</div>
+                        <div class="invalid-feedback">Ingresar solo números que estan relacionados a la pregunta
+                            existentes</div>
                     </div>
                     <div class="col-s-12 col-lg-6">
                         <label>Enunciado:</label>
@@ -106,7 +107,8 @@
                                 (click)="seleccionarEditar(pregunta, contentEdit)" style="width: fit-content;">
                                 <em class="far fa-edit"></em> Editar
                             </button><br><br />
-                            <button type="button" class="btn btn-danger" style="width: fit-content;" (click)="seleccionarEliminar(pregunta, contentEliminar)">
+                            <button type="button" class="btn btn-danger" style="width: fit-content;"
+                                (click)="seleccionarEliminar(pregunta, contentEliminar)">
                                 <em class="far fa-trash-can"></em> Eliminar
                             </button>
                         </td>
@@ -116,6 +118,41 @@
                         <td colspan="8">
                             <p style="text-align: center; font-size: x-large; color: red;">
                                 {{"Lista vacia"}}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" [class.disabled]="esPrimero">
+                                        <a class="page-link" (click)="rebobinar(true)">Primero</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esPrimero">
+                                        <a class="page-link" (click)="rebobinar()">Anterior</a>
+                                    </li>
+                                    <li class="page-item" *ngFor="let p of totalPaginas; let i = index"
+                                        [ngClass]="{'active': i === pagina}">
+                                        <a class="page-link" (click)="setearPagina(i)">{{ i + 1 }}</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esUltimo">
+                                        <a class="page-link" (click)="avanzar()">Siguiente</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esUltimo">
+                                        <a class="page-link" (click)="avanzar(true)">Ultimo</a>
+                                    </li>
+                                    &nbsp;&nbsp;
+                                    <li class="page-item">
+                                        <select class="custom-select" #cantidadP
+                                            (change)="setearCantida(cantidadP.value)">
+                                            <option value="5">{{ 5 }}</option>
+                                            <option selected value="10">{{ 10 }}</option>
+                                            <option value="15">{{ 15 }}</option>
+                                            <option value="20">{{ 20 }}</option>
+                                            <option value="25">{{ 25 }}</option>
+                                        </select>
+                                    </li>
+                                </ul>
+                            </nav>
                         </td>
                     </tr>
                 </tbody>
@@ -421,9 +458,9 @@
             <h5 class="modal-tittle" id="modal-basi-tittle">Eliminar Pregunta</h5>
         </div>
         <div class="modal-body">
-            <h6>¿Está seguro que desea eliminar la pregunta?</h6><br/>
+            <h6>¿Está seguro que desea eliminar la pregunta?</h6><br />
             <h6>Se eliminará la siguiente regunta:<br />
-               No. {{ preguntaEliminar.idpregunta}}.&nbsp;
+                No. {{ preguntaEliminar.idpregunta}}.&nbsp;
                 {{ preguntaEliminar.enunciado }}</h6>
         </div>
         <div class="modal-footer">

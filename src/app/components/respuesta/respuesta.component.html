@@ -84,6 +84,41 @@
                                 {{"Lista vacia"}}</p>
                         </td>
                     </tr>
+                    <tr>
+                        <td colspan="8">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" [class.disabled]="esPrimero">
+                                        <a class="page-link" (click)="rebobinar(true)">Primero</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esPrimero">
+                                        <a class="page-link" (click)="rebobinar()">Anterior</a>
+                                    </li>
+                                    <li class="page-item" *ngFor="let p of totalPaginas; let i = index"
+                                        [ngClass]="{'active': i === pagina}">
+                                        <a class="page-link" (click)="setearPagina(i)">{{ i + 1 }}</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esUltimo">
+                                        <a class="page-link" (click)="avanzar()">Siguiente</a>
+                                    </li>
+                                    <li class="page-item" [class.disabled]="esUltimo">
+                                        <a class="page-link" (click)="avanzar(true)">Ultimo</a>
+                                    </li>
+                                    &nbsp;&nbsp;
+                                    <li class="page-item">
+                                        <select class="custom-select" #cantidadP
+                                            (change)="setearCantida(cantidadP.value)">
+                                            <option value="5">{{ 5 }}</option>
+                                            <option selected value="10">{{ 10 }}</option>
+                                            <option value="15">{{ 15 }}</option>
+                                            <option value="20">{{ 20 }}</option>
+                                            <option value="25">{{ 25 }}</option>
+                                        </select>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

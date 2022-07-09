@@ -34,6 +34,12 @@ export class EstudianteComponent implements OnInit {
 
   closeResult = '';
 
+  esPrimero = false;
+  esUltimo = false;
+  pagina = 0;
+  cantPagina = 10;
+  totalPaginas: number[] = [];
+
   filtrarForm = new FormGroup({
     nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
     fechaEntrega: new FormControl()
@@ -89,9 +95,12 @@ export class EstudianteComponent implements OnInit {
     const nombre = this.filtrarForm.controls['nombre'].value;
     const fechaEntrega = this.filtrarForm.controls['fechaEntrega'].value;
 
-    this.estudianteService.filtrarEstudiante(nombre ? nombre : null, fechaEntrega).subscribe(resp => {
-      this.listaEstudiante = resp.data;
+    this.estudianteService.filtrarEstudiante(nombre ? nombre : null, fechaEntrega, this.pagina, this.cantPagina).subscribe(resp => {
+      this.listaEstudiante = resp.data.content;
       if (resp.success) {
+        this.esPrimero = resp.data.first;
+        this.esUltimo = resp.data.last;
+        this.totalPaginas = new Array(resp.data['totalPages']);
         this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true });
         this.cargando = false;
       } else {
@@ -274,6 +283,40 @@ export class EstudianteComponent implements OnInit {
     this.eliminarEstudianteForm.get('idEstudiante')?.setValue('');
     this.eliminarEstudianteForm.get('nombre')?.setValue('');
     this.modalService.dismissAll('Close click');
+  }
+
+  rebobinar(primero?: any) {
+    if (primero) {
+      this.pagina = 0;
+    } else {
+      if (!this.esPrimero) {
+        this.pagina--;
+      }
+    }
+    this.filtrar();
+  }
+
+  avanzar(ultimo?: any) {
+    if (ultimo) {
+      this.pagina = this.totalPaginas.length-1;
+    } else {
+      if (!this.esUltimo) {
+        this.pagina++;
+        
+      }
+    }
+    this.filtrar();
+  }
+
+  setearPagina(pag: number): void {
+    this.pagina = pag;
+    this.filtrar();
+  }
+
+  setearCantida(cant: any): void {
+    this.cantPagina = cant;
+    this.pagina = 0;
+    this.filtrar();
   }
 
 }
