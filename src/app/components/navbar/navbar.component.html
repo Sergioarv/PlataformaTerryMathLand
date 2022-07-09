@@ -1,46 +1,57 @@
-<nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark navbar-inverse">
     <div class="nav" style="margin: 3px;">
         <ul class="nav nav-pills" role="tablist">
             <li class="nav-item" role="presntation">
                 <a class="nav-link logo" [routerLink]="['/']"><em class="far fa-paper-plane">
-                </em> &nbsp;Terry math Land</a>
+                    </em> &nbsp;Terry math Land</a>
             </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{exact:true}">
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged">
                 <button class="btn btn-primary" [routerLink]="['/inicio']">Inicio</button>
-            </li>&nbsp;
+            </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{exact:true}">
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged && authority === 'admin'">
+                <button class="btn btn-primary" [routerLink]="['/docente']">
+                    <em class="fa-solid fa-chalkboard-user"></em> Docente</button>
+            </li>
+            <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged && authority !== 'estudiante'">
                 <button class="btn btn-primary" [routerLink]="['/estudiante']">
                     <em class="fa-solid fa-user"></em> Estudiantes</button>
-            </li>&nbsp;
+            </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{exact:true}">
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged && authority !== 'estudiante'">
                 <button class="btn btn-primary" [routerLink]="['/cartilla']">
                     <em class="fa-solid fa-newspaper"></em> Cartillas</button>
-            </li>&nbsp;
+            </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{exact:true}">
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged && authority !== 'estudiante'">
                 <button class="btn btn-primary" [routerLink]="['/pregunta']">
                     <em class="fa-solid fa-clipboard-question"></em> Preguntas</button>
-            </li>&nbsp;
+            </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{exact:true}">
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged">
                 <button class="btn btn-primary" [routerLink]="['/respuesta']">
                     <em class="fa-solid fa-comment-dots"></em> Respuestas</button>
-            </li>&nbsp;
+            </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{exact:true}">
-                <button class="btn btn-primary" [routerLink]="['/grafica']"><em class="fa-solid fa-chart-area"></em> Graficas</button>
-            </li>&nbsp;
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged">
+                <button class="btn btn-primary" [routerLink]="['/grafica']"><em class="fa-solid fa-chart-area"></em>
+                    Graficas</button>
+            </li>
             <li class="nav-item" role="presentation" [routerLinkActive]="['active']"
-                [routerLinkActiveOptions]="{exact:true}">
+                [routerLinkActiveOptions]="{exact:true}" *ngIf="isLogged">
                 <button class="btn btn-primary" [routerLink]="['/juego']">
                     <em class="fa-solid fa-puzzle-piece"></em> Juego</button>
             </li>
         </ul>
     </div>
-    <div>
-        <button class="btn btn-primary" [routerLink]="['/']">Iniciar Sesión</button>
+    <div *ngIf="!isLogged">
+        <button class="btn btn-primary" [routerLink]="['/login']" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact:true}">Iniciar Sesión</button>
+    </div>
+    <div *ngIf="isLogged">
+        <button class="btn btn-primary-sesion" [routerLinkActive]="['active']"
+        [routerLinkActiveOptions]="{exact:true}" (click)="onLogOut()">Cerrar Sesión</button>
     </div>
 </nav>

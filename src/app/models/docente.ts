@@ -1,10 +1,8 @@
-import { Respuesta } from "./respuesta";
-
-export class Estudiante {
+export class Docente{
     idusuario = '';
     nombre = '';
-    respuestas: Respuesta[] = [];
     roles: string[] = [];
     documento: string = '';
     contrasenia: string = '';
+    correo: string = '';
 }

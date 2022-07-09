@@ -19,10 +19,23 @@ export class GlobalConstant {
 
     //Estudiante
     public static URL_ESTUDIANTE = '/estudiante';
+    public static URL_ESTUDIANTE_AGREGAR = '/agregarEstudiante';
+    public static URL_ESTUDIANTE_EDITAR = '/editarEstudiante';
     public static URL_ESTUDIANTE_FILTRO = '/estudiante/filtrar';
     public static URL_ESTUDIANTE_LISTAR = '/estudiante/listarEstudiantes';
 
     //Cartilla
     public static URL_CARTILLA = '/cartilla';
     public static URL_CARTILLA_FILTRO = '/cartilla/filtrarPreguntas';
+
+    //Auth
+    public static URL_AUTH = '/auth';
+    public static URL_AUTH_LOGIN = '/auth/login';
+    public static URL_AUTH_REFRESH = '/auth/refresh';
+
+    //Docente
+    public static URL_DOCENTE = '/docente';
+    public static URL_DOCENTE_AGREGAR = '/agregarDocente';
+    public static URL_DOCENTE_EDITAR = '/editarDocente';
+    public static URL_DOCENTE_FILTRO = '/docente/filtrar';
 }

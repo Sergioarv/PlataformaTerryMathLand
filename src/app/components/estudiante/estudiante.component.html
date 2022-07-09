@@ -153,6 +153,13 @@
                         <div class="invalid-feedback">Por favor ingrese o verifique el nombre</div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Documento:</label>
+                        <input type="text" class="form-control" formControlName="documento" required [pattern]="regNumeros">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el documento</div>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -175,6 +182,13 @@
                         <label>id Estudiante:</label>
                         <input type="text" class="form-control" formControlName="idEstudiante"
                             value="{{ seleccionEditar.idusuario }}">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <label>Documento:</label>
+                        <input type="text" class="form-control" formControlName="documento" required [pattern]="regNumeros">
+                        <div class="invalid-feedback">Por favor ingrese o verifique el documento</div>
                     </div>
                 </div>
                 <div class="row">
