@@ -10,7 +10,6 @@ import { TokenService } from 'src/app/services/token.service';
 export class InicioComponent implements OnInit {
 
   isLogged = false;
-  roles: string[] = [];
   authority: string = '';
 
   constructor(
@@ -19,21 +18,8 @@ export class InicioComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.roles = this.tokenService.getAuthorities();
-    this.roles.forEach(rol => {
-      if (rol === 'ROLE_ADMIN') {
-        this.authority = 'admin';
-      } else if (rol === 'ROLE_DOCENTE') {
-        this.authority = 'docente';
-      } else if (rol === 'ROLE_ESTUDIANTE') {
-        this.authority = 'estudiante';
-      }
-    });
-    if (this.tokenService.getToken()) {
-      this.isLogged = true;
-    } else {
-      this.isLogged = false;
-    }
+    this.authority = this.tokenService.getRoles();
+    console.log(this.authority);
   }
 
 }

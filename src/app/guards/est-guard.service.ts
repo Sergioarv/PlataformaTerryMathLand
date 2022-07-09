@@ -17,17 +17,10 @@ export class EstGuardService implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const expectedRol = route.data['expectedRol'];
-    const roles = this.tokenService.getAuthorities();
-    this.realRol = 'estudiante';
-
-    roles.forEach((rol: any) => {
-      if (rol === 'ROLE_ADMIN') {
-        this.realRol = 'admin';
-      } else if (rol === 'ROLE_DOCENTE') {
-        this.realRol = 'docente';
-      }
-    });
-    if (!this.tokenService.getToken() || expectedRol.indexOf(this.realRol) === -1) {
+    
+    this.realRol = this.tokenService.getRoles();
+    
+    if (!this.tokenService.getToken() || expectedRol.indexOf(this.realRol) < 0 ) {
       this.router.navigate(['/login']);
       return false;
     }

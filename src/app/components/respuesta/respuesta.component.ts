@@ -58,16 +58,7 @@ export class RespuestaComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.roles = this.tokenService.getAuthorities();
-    this.roles.forEach(rol => {
-      if (rol === 'ROLE_ADMIN') {
-        this.authority = 'admin';
-      } else if (rol === 'ROLE_DOCENTE') {
-        this.authority = 'docente';
-      } else if (rol === 'ROLE_ESTUDIANTE') {
-        this.authority = 'estudiante';
-      }
-    });
+    this.authority = this.tokenService.getRoles();
     if (this.authority === 'estudiante')
       this.filtrarForm.get('estudiantes')?.disable();
     this.filtrar(true);

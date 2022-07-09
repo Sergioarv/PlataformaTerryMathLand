@@ -11,18 +11,19 @@ import { CartillaComponent } from '../cartilla/cartilla.component';
 import { LoginComponent } from '../login/login.component';
 import { DocenteComponent } from '../docente/docente.component';
 
-import { EstGuardService as guard } from 'src/app/guards/est-guard.service';
+import { EstGuardService } from 'src/app/guards/est-guard.service';
+import { LoginGuard } from 'src/app/guards/login.guard';
 
 const routes: Routes = [
-  { path: 'inicio', component: InicioComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
-  { path: 'juego', component: JuegoComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
-  { path: 'pregunta', component: PreguntaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente']}},
-  { path: 'docente', component: DocenteComponent, canActivate: [guard], data: {expectedRol: ['admin']}},
-  { path: 'estudiante', component: EstudianteComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente']}},
-  { path: 'respuesta', component: RespuestaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
-  { path: 'grafica', component: GraficaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
-  { path: 'cartilla', component: CartillaComponent, canActivate: [guard], data: {expectedRol: ['admin', 'docente']}},
-  { path: 'login', component: LoginComponent},
+  { path: 'inicio', component: InicioComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'juego', component: JuegoComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'pregunta', component: PreguntaComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin', 'docente']}},
+  { path: 'docente', component: DocenteComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin']}},
+  { path: 'estudiante', component: EstudianteComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin', 'docente']}},
+  { path: 'respuesta', component: RespuestaComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'grafica', component: GraficaComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin', 'docente', 'estudiante']}},
+  { path: 'cartilla', component: CartillaComponent, canActivate: [EstGuardService], data: {expectedRol: ['admin', 'docente']}},
+  { path: 'login', component: LoginComponent, canActivate: [LoginGuard]},
   { path: '', redirectTo: 'inicio', pathMatch: 'full'},
   { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];

@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+
 
 const TOKEN_KEY = 'AuthToken';
-const USERNAME_KEY = 'AuthUserName';
-const AUTHORITIES_KEY = 'AuthAuthorities';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenService {
 
-roles: Array<string> = [];
+  roles: Array<string> = [];
+  rolReal = '';
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   setToken(token: string): void {
     window.sessionStorage.removeItem(TOKEN_KEY);
@@ -22,32 +25,51 @@ roles: Array<string> = [];
     return sessionStorage.getItem(TOKEN_KEY);
   }
 
-  setUserName(userName: string): void {
-    window.sessionStorage.removeItem(USERNAME_KEY);
-    window.sessionStorage.setItem(USERNAME_KEY, userName);
-  }
-
-  getUserName(): any {
-    return sessionStorage.getItem(USERNAME_KEY);
-  }
-
-  setAuthorities(authorities: string[]): void {
-    window.sessionStorage.removeItem(AUTHORITIES_KEY);
-    window.sessionStorage.setItem(AUTHORITIES_KEY, JSON.stringify(authorities));
-  }
-
-  getAuthorities(): any {
-    this.roles = [];
-    if(sessionStorage.getItem(AUTHORITIES_KEY)){
-      let authoKey: any = sessionStorage.getItem(AUTHORITIES_KEY) == null ? [] : sessionStorage.getItem(AUTHORITIES_KEY);
-      JSON.parse(authoKey).forEach( (authority: { authority: string; }) => {
-         this.roles.push(authority.authority);
-      });
+  isLogged(): boolean {
+    if (this.getToken()) {
+      return true;
     }
-    return this.roles;
+    return false;
+  }
+
+  getUserName(): string | null {
+    if (!this.isLogged()) {
+      return null;
+    }
+    const token = this.getToken();
+    const values = this.decodePayload(token);
+    return values.sub;
+  }
+
+  private decodePayload(token: string): any {
+    const payload = token.split(".")[1];
+    const payloadDecoded = atob(payload);
+    return JSON.parse(payloadDecoded);
+  }
+
+  public getRoles(): string {
+    if (!this.isLogged()) {
+      return '';
+    }
+    const token = this.getToken();
+    const values = this.decodePayload(token);
+    this.roles = values.roles;
+
+    this.roles.forEach(rol => {
+      if (rol === 'ROLE_ADMIN') {
+        this.rolReal = 'admin';
+      } else if (rol === 'ROLE_DOCENTE') {
+        this.rolReal = 'docente';
+      } else if (rol === 'ROLE_ESTUDIANTE') {
+        this.rolReal = 'estudiante';
+      }  
+    });
+    console.log(this.rolReal);
+    return this.rolReal;
   }
 
   logOut(): void {
     window.sessionStorage.clear();
+    this.router.navigate(['/login'])
   }
 }

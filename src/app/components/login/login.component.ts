@@ -15,7 +15,6 @@ export class LoginComponent implements OnInit {
 
   cargando = false;
 
-  isLogged = false;
   loginUsuario!: LoginUsuario;
 
   roles: string[] = [];
@@ -36,11 +35,6 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (this.tokenService.getToken()) {
-      this.isLogged = true;
-      this.roles = this.tokenService.getAuthorities();
-      this.router.navigate(['/inicio']);
-    }
   }
 
   onLogin(): void {
@@ -49,15 +43,11 @@ export class LoginComponent implements OnInit {
     this.loginUsuario.contrasenia = this.loginForm.controls['contrasenia'].value;
 
     this.authService.login(this.loginUsuario).subscribe(resp => {
-      this.isLogged = true;
 
       this.tokenService.setToken(resp.data.token);
-      this.tokenService.setUserName(resp.data.nombreUsuario);
-      this.tokenService.setAuthorities(resp.data.authorities);
       this.roles = resp.data.authorities;
       this.router.navigate(['/inicio']);
     }, error => {
-      this.isLogged = false;
       this.toastrService.error('Error en el login', 'Proceso fallido');
     });
   }
