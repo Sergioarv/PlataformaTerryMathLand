@@ -1,3 +1,61 @@
+@media(max-width: 375.98px) {
+    .contenedor .card .card-body {
+        height: calc((100vw/(16/9))/1.2);
+    }
+}
+
+@media (min-width: 376px) and (max-width: 414.98px) {
+    .contenedor .card .card-body {
+        height: calc((100vw/(16/9))/1.4);
+    }
+}
+
+@media (min-width: 415px) and (max-width: 575.98px) {
+    .contenedor .card .card-body {
+        height: calc((100vw/(16/9))/1.86);
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .contenedor .card .card-body {
+        height: calc(100vh/2.1);
+        min-height: calc((100vw/(16/9))/2.22);
+        min-height: calc((100vw/(16/9))/1.98);
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .contenedor .card .card-body {
+        height: calc((100vw/(16/9))/2.75);
+        min-height: calc((100vw/(16/9))/2.91);
+        min-height: calc((100vw/(16/9))/1.86);
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .contenedor .card .card-body {
+        height: calc((100vw/(16/9))/3.42);
+        min-height: calc((100vw/(16/9))/3.62);
+        min-height: calc((100vw/(16/9))/3.2);
+    }
+}
+
+@media (min-width: 1200px) and (max-width: 1365.98px) {
+    .contenedor .card .card-body {
+        height: calc((100vw/(16/9))/4);
+        min-height: calc((100vw/(16/9))/4.2);
+        min-height: calc((100vw/(16/9))/3.8);
+    }
+}
+
+@media (min-width: 1366px) {
+    .contenedor .card .card-body {
+        height: calc((100vw/(16/9))/4);
+        min-height: calc((100vw/(16/9))/4.2);
+        min-height: calc((100vw/(16/9))/3.8);
+    }
+}
+
 .contenedor a {
     color: black;
 }
@@ -9,8 +67,6 @@
 .contenedor .card {
     margin-top: 5px;
     margin-bottom: 5px;
-    /* min-height: calc(100vh/(16/9));
-    max-height: calc(100vh/(6/5)); */
 }
 
 .contenedor .card-header img {
@@ -18,6 +74,9 @@
     width: 70%;
 }
 
-.contenedor .card .card-header, .card-body {
-    padding: 6px;
+.contenedor .card .card-body .a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

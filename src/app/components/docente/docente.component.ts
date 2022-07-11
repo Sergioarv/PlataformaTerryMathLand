@@ -27,6 +27,12 @@ export class DocenteComponent implements OnInit {
 
   closeResult = '';
 
+  esPrimero = false;
+  esUltimo = false;
+  pagina = 0;
+  cantPagina = 10;
+  totalPaginas: number[] = [];
+
   filtrarForm = new FormGroup({
     nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
     correo: new FormControl('', [Validators.pattern(this.regCorreo)])
@@ -40,9 +46,9 @@ export class DocenteComponent implements OnInit {
   });
 
   agregarDocenteForm = new FormGroup({
-    nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
-    documento: new FormControl('', [Validators.pattern(this.regNumeros)]),
-    correo: new FormControl('')
+    nombre: new FormControl('', [Validators.pattern(this.regNombre), Validators.required]),
+    documento: new FormControl('', [Validators.pattern(this.regNumeros), Validators.required]),
+    correo: new FormControl('', [Validators.required])
   });
 
   eliminarDocenteForm = new FormGroup({
@@ -68,6 +74,7 @@ export class DocenteComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.filtrar();
   }
 
   filtrar(): void {
@@ -78,8 +85,11 @@ export class DocenteComponent implements OnInit {
     const correo = this.filtrarForm.controls['correo'].value;
 
     this.docenteService.filtrarDocente(nombre ? nombre : null, correo).subscribe(resp => {
-      this.listaDocente = resp.data;
+      this.listaDocente = resp.data.content;
       if (resp.success) {
+        this.esPrimero = resp.data.first;
+        this.esUltimo = resp.data.last;
+        this.totalPaginas = new Array(resp.data['totalPages']);
         this.toastrService.success(resp.message, 'Proceso exitoso');
         this.cargando = false;
       } else {
@@ -189,8 +199,8 @@ export class DocenteComponent implements OnInit {
 
     this.eliminarDocenteForm.get('idDocente')?.setValue(this.seleccionEliminar.idusuario);
     this.eliminarDocenteForm.get('nombre')?.setValue(this.seleccionEliminar.nombre);
-    this.eliminarDocenteForm.get('documento')?.setValue(this.seleccionEliminar.idusuario);
-    this.eliminarDocenteForm.get('correo')?.setValue(this.seleccionEliminar.nombre);
+    this.eliminarDocenteForm.get('documento')?.setValue(this.seleccionEliminar.documento);
+    this.eliminarDocenteForm.get('correo')?.setValue(this.seleccionEliminar.correo);
 
     this.open(contentEliminar);
   }
@@ -247,5 +257,40 @@ export class DocenteComponent implements OnInit {
     this.eliminarDocenteForm.get('documento')?.setValue('');
     this.eliminarDocenteForm.get('correo')?.setValue('');
     this.modalService.dismissAll('Close click');
+  }
+
+  
+  rebobinar(primero?: any) {
+    if (primero) {
+      this.pagina = 0;
+    } else {
+      if (!this.esPrimero) {
+        this.pagina--;
+      }
+    }
+    this.filtrar();
+  }
+
+  avanzar(ultimo?: any) {
+    if (ultimo) {
+      this.pagina = this.totalPaginas.length-1;
+    } else {
+      if (!this.esUltimo) {
+        this.pagina++;
+        
+      }
+    }
+    this.filtrar();
+  }
+
+  setearPagina(pag: number): void {
+    this.pagina = pag;
+    this.filtrar();
+  }
+
+  setearCantida(cant: any): void {
+    this.cantPagina = cant;
+    this.pagina = 0;
+    this.filtrar();
   }
 }

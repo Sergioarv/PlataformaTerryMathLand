@@ -55,8 +55,8 @@ export class EstudianteComponent implements OnInit {
   });
 
   agregarEstudianteForm = new FormGroup({
-    nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
-    documento: new FormControl('', [Validators.pattern(this.regNumeros)])
+    nombre: new FormControl('', [Validators.pattern(this.regNombre), Validators.required]),
+    documento: new FormControl('', [Validators.pattern(this.regNumeros), Validators.required])
   });
 
   eliminarEstudianteForm = new FormGroup({
