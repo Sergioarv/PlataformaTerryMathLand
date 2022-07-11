@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, NgModule, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Pregunta } from 'src/app/models/pregunta';
 import { PreguntaService } from 'src/app/services/pregunta.service';
@@ -45,7 +45,7 @@ export class PreguntaComponent implements OnInit {
 
   editarPreguntaForm = new FormGroup({
     numePregunta: new FormControl(''),
-    enumPregunta: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(255)]),
+    enumPregunta: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(255), Validators.required]),
     opcionA: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
     opcionB: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
     opcionC: new FormControl('', [Validators.pattern(this.regTextoUnaLinea), Validators.maxLength(80)]),
@@ -74,6 +74,10 @@ export class PreguntaComponent implements OnInit {
 
   ngOnInit(): void {
     this.filtrar();
+  }
+
+  ngAfterViewChecked(){
+    
   }
 
   filtrar(): void {

@@ -176,11 +176,11 @@
                             <span class="contador">{{crearPreguntaForm.controls['enumPregunta'].value.length ||
                                 0}}/{{255}}</span>
                         </div>
-                        <textarea type="text" class="form-control" formControlName="enumPregunta" required
+                        <textarea type="text" class="form-control" formControlName="enumPregunta"
                             ng-pattern="regTextoUnaLinea"
-                            [ngClass]="{'invalid': !crearPreguntaForm.controls['enumPregunta'].valid }"
+                            [ngClass]="{'invalid': !crearPreguntaForm.controls['enumPregunta'].valid || !crearPreguntaForm.controls['enumPregunta'].value }"
                             maxlength="255"></textarea>
-                        <div class="feedback-invalid" *ngIf="!crearPreguntaForm.controls['enumPregunta'].valid">Por
+                        <div class="feedback-invalid" *ngIf="!crearPreguntaForm.controls['enumPregunta'].valid || !crearPreguntaForm.controls['enumPregunta'].value">Por
                             favor no deje el campo vacio, ingrese una pregunta sin espacios al inicio ni al final del
                             texto</div>
                     </div>
