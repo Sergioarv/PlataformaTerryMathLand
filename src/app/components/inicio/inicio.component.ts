@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { TokenService } from 'src/app/services/token.service';
+import { GlobalConstant } from 'src/app/utils/constants/global.constants';
 
 @Component({
   selector: 'app-inicio',
@@ -10,6 +11,7 @@ import { TokenService } from 'src/app/services/token.service';
 export class InicioComponent implements OnInit {
 
   authority: string = '';
+  url_Cloudinary = GlobalConstant.URL_CLOUDINARY;
 
   constructor(
     private toastrService: ToastrService,

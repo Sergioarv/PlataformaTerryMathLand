@@ -6,7 +6,7 @@
         <a [routerLink]="['/docente']">
           <div class="card-header">
             <img
-              src="https://cdn-icons.flaticon.com/png/512/2995/premium/2995620.png?token=exp=1654377294~hmac=b03863e4b2a436f6fa16db815a31b6d9"
+              src="{{url_Cloudinary}}v1657560622/Docente_biwwka.png"
               alt="flaticon">
           </div>
         </a>
@@ -23,7 +23,7 @@
         <a [routerLink]="['/estudiante']">
           <div class="card-header">
             <img
-              src="https://cdn-icons.flaticon.com/png/512/2995/premium/2995620.png?token=exp=1654377294~hmac=b03863e4b2a436f6fa16db815a31b6d9"
+              src="{{url_Cloudinary}}v1657560622/Estudiante_c1sy3f.png"
               alt="flaticon">
           </div>
         </a>
@@ -37,10 +37,10 @@
 
     <div class="col-sm-6 col-md-3" *ngIf="authority !== 'estudiante'">
       <div class="card" style="text-align: center;">
-        <a [routerLink]="['/estudiante']">
+        <a [routerLink]="['/cartilla']">
           <div class="card-header">
             <img
-              src="https://cdn-icons.flaticon.com/png/512/2995/premium/2995620.png?token=exp=1654377294~hmac=b03863e4b2a436f6fa16db815a31b6d9"
+              src="{{url_Cloudinary}}v1657560622/Cartillas_xnpngq.png"
               alt="flaticon">
           </div>
         </a>
@@ -57,7 +57,7 @@
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/pregunta']">
           <div class="card-header">
-            <img src="https://cdn-icons-png.flaticon.com/512/4470/4470846.png" alt="flaticon">
+            <img src="{{url_Cloudinary}}v1657560622/Pregunta_l5zam5.png" alt="flaticon">
           </div>
         </a>
         <div class="card-body">
@@ -71,9 +71,9 @@
 
     <div class="col-sm-6 col-md-3">
       <div class="card" style="text-align: center;">
-        <a [routerLink]="['/pregunta']">
+        <a [routerLink]="['/respuesta']">
           <div class="card-header">
-            <img src="https://cdn-icons-png.flaticon.com/512/3063/3063525.png" alt="flaticon">
+            <img src="{{url_Cloudinary}}v1657560622/Respuetas_bvzwbq.png" alt="flaticon">
           </div>
         </a>
         <div class="card-body">
@@ -87,17 +87,17 @@
 
     <div class="col-sm-6 col-md-3">
       <div class="card" style="text-align: center;">
-        <a [routerLink]="['/estudiante']">
+        <a [routerLink]="['/grafica']">
           <div class="card-header">
             <img
-              src="https://cdn-icons-png.flaticon.com/512/3063/3063525.png"
+              src="{{url_Cloudinary}}v1657560622/Graficas_kqqpec.png"
               alt="flaticon">
           </div>
         </a>
         <div class="card-body">
           <h5 class="card-title">Gestionar Graficas</h5>
           <p class="card-text">Visualizar y filtrar graficas de pomedios de respuestas.</p>
-          <a [routerLink]="['/cartilla']" class="btn btn-primary"><em class="fa-solid fa-chart-area"></em> Graficas</a>
+          <a [routerLink]="['/grafica']" class="btn btn-primary"><em class="fa-solid fa-chart-area"></em> Graficas</a>
         </div>
       </div>
     </div>
@@ -106,7 +106,7 @@
       <div class="card" style="text-align: center;">
         <a [routerLink]="['/juego']">
           <div class="card-header">
-            <img src="https://cdn-icons-png.flaticon.com/512/1924/1924432.png" alt="flaticon">
+            <img src="{{url_Cloudinary}}v1657560622/Juego_g6rjjj.png" alt="flaticon">
           </div>
         </a>
         <div class="card-body">

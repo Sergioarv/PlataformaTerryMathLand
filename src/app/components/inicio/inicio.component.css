@@ -6,7 +6,18 @@
     color: whitesmoke;
 }
 
+.contenedor .card {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    /* min-height: calc(100vh/(16/9));
+    max-height: calc(100vh/(6/5)); */
+}
+
 .contenedor .card-header img {
     text-align: center;
     width: 70%;
+}
+
+.contenedor .card .card-header, .card-body {
+    padding: 6px;
 }

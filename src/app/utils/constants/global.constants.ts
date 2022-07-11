@@ -38,4 +38,7 @@ export class GlobalConstant {
     public static URL_DOCENTE_AGREGAR = '/agregarDocente';
     public static URL_DOCENTE_EDITAR = '/editarDocente';
     public static URL_DOCENTE_FILTRO = '/docente/filtrar';
+
+    //Cloudinary
+    public static URL_CLOUDINARY = 'https://res.cloudinary.com/dj8sqmb8n/image/upload/';
 }
