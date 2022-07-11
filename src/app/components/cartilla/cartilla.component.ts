@@ -68,6 +68,7 @@ export class CartillaComponent implements OnInit {
 
   ngOnInit(): void {
     this.obtenerCartillas();
+    this.obtenerPreguntas();
   }
 
   ngAfterViewChecked(): void {
@@ -95,6 +96,12 @@ export class CartillaComponent implements OnInit {
     }, error => {
       this.toastrService.error(error.message, 'Proceso fallido');
       this.cargando = false;
+    });
+  }
+
+  obtenerPreguntas(){
+    this.preguntaService.obtenerPreguntas().subscribe( resp => {
+      this.listaPreguntas = resp.data;
     });
   }
 

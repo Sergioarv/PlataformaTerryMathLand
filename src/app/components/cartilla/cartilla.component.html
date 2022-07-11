@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <div class="contenedor">
     <!-- Animacion de carga -->
     <ngx-loading [show]="cargando"
@@ -132,7 +133,7 @@
         </div>
     </div>
 
-    <!-- Modal editar -->
+    <!-- Modal editar Y Crear -->
     <ng-template #content let-c="close" let-d="dismiss">
         <div class="modal-header" *ngIf="creacionCartilla">
             <h5 class="modal-tittle" id="modal-basic-tittle">Crear Cartilla</h5>
