@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://bk-terrymathland.herokuapp.com/'
+  baseUrl: 'https://bk-terrymathland.herokuapp.com'
 };
