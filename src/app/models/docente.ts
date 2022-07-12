@@ -4,5 +4,4 @@ export class Docente{
     roles: string[] = [];
     documento: string = '';
     contrasenia: string = '';
-    correo: string = '';
 }

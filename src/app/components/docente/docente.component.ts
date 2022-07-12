@@ -18,7 +18,6 @@ export class DocenteComponent implements OnInit {
   regNumeros = '[0-9]+';
   regTextoUnaLinea = '^[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1].[a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ\u00f1\u00d1\u0021-\u003f\u00bf\u00a1]$';
   regNombre = '^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ]$';
-  regCorreo = '^[a-z][a-z0-9._%+-]+@[a-z0-9.-]+[\.]([a-z]){2,3}$';
 
   cargando = false;
 
@@ -35,27 +34,24 @@ export class DocenteComponent implements OnInit {
 
   filtrarForm = new FormGroup({
     nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
-    correo: new FormControl('', [Validators.pattern(this.regCorreo)])
+    documento: new FormControl('', [Validators.pattern(this.regNumeros)])
   });
 
   editarDocenteForm = new FormGroup({
     idDocente: new FormControl(''),
     nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
     documento: new FormControl('', Validators.pattern(this.regNumeros)),
-    correo: new FormControl('', [Validators.pattern(this.regCorreo)])
   });
 
   agregarDocenteForm = new FormGroup({
     nombre: new FormControl('', [Validators.pattern(this.regNombre), Validators.required]),
     documento: new FormControl('', [Validators.pattern(this.regNumeros), Validators.required]),
-    correo: new FormControl('', [Validators.required])
   });
 
   eliminarDocenteForm = new FormGroup({
     idDocente: new FormControl(''),
     nombre: new FormControl('', [Validators.pattern(this.regNombre)]),
     documento: new FormControl('', [Validators.pattern(this.regNumeros)]),
-    correo: new FormControl('')
   });
 
   constructor(
@@ -82,9 +78,9 @@ export class DocenteComponent implements OnInit {
     this.cargando = true;
 
     const nombre = this.filtrarForm.controls['nombre'].value;
-    const correo = this.filtrarForm.controls['correo'].value;
+    const documento = this.filtrarForm.controls['documento'].value;
 
-    this.docenteService.filtrarDocente(nombre ? nombre : null, correo).subscribe(resp => {
+    this.docenteService.filtrarDocente(nombre ? nombre : null, documento ? documento : null).subscribe(resp => {
       this.listaDocente = resp.data.content;
       if (resp.success) {
         this.esPrimero = resp.data.first;
@@ -110,7 +106,6 @@ export class DocenteComponent implements OnInit {
     newDocente.nombre = this.agregarDocenteForm.controls['nombre'].value;
     newDocente.documento = this.agregarDocenteForm.controls['documento'].value;
     newDocente.contrasenia = this.agregarDocenteForm.controls['documento'].value;
-    newDocente.correo = this.agregarDocenteForm.controls['correo'].value;
     newDocente.idusuario = '-1';
 
     this.docenteService.agregar(newDocente).subscribe(resp => {
@@ -138,7 +133,6 @@ export class DocenteComponent implements OnInit {
     actualizarDoc.nombre = this.editarDocenteForm.controls['nombre'].value;
     actualizarDoc.documento = this.editarDocenteForm.controls['documento'].value;
     actualizarDoc.contrasenia = this.editarDocenteForm.controls['documento'].value;
-    actualizarDoc.correo = this.editarDocenteForm.controls['correo'].value;
     actualizarDoc.roles = this.seleccionEditar.roles;
 
     this.docenteService.actualizar(actualizarDoc).subscribe( (resp:any) => {
@@ -185,7 +179,6 @@ export class DocenteComponent implements OnInit {
     this.editarDocenteForm.get('idDocente')?.setValue(this.seleccionEditar.idusuario);
     this.editarDocenteForm.get('nombre')?.setValue(this.seleccionEditar.nombre);
     this.editarDocenteForm.get('documento')?.setValue(this.seleccionEditar.documento);
-    this.editarDocenteForm.get('correo')?.setValue(this.seleccionEditar.correo);
 
     this.open(contentEdit);
   }
@@ -195,19 +188,17 @@ export class DocenteComponent implements OnInit {
     this.eliminarDocenteForm.get('idDocente')?.disable();
     this.eliminarDocenteForm.get('nombre')?.disable();
     this.eliminarDocenteForm.get('documento')?.disable();
-    this.eliminarDocenteForm.get('correo')?.disable();
 
     this.eliminarDocenteForm.get('idDocente')?.setValue(this.seleccionEliminar.idusuario);
     this.eliminarDocenteForm.get('nombre')?.setValue(this.seleccionEliminar.nombre);
     this.eliminarDocenteForm.get('documento')?.setValue(this.seleccionEliminar.documento);
-    this.eliminarDocenteForm.get('correo')?.setValue(this.seleccionEliminar.correo);
 
     this.open(contentEliminar);
   }
 
   limpiar(): void {
     this.filtrarForm.get('nombre')?.setValue('');
-    this.filtrarForm.get('correo')?.setValue('');
+    this.filtrarForm.get('documento')?.setValue('');
     this.filtrar();
   }
 
@@ -232,14 +223,13 @@ export class DocenteComponent implements OnInit {
 
   resetearFiltrarForm(){
     this.filtrarForm.get('nombre')?.setValue('');
-    this.filtrarForm.get('correo')?.setValue('');
+    this.filtrarForm.get('documento')?.setValue('');
   }
 
   resetearEditarDocenteForm(){
     this.editarDocenteForm.get('idDocente')?.setValue('');
     this.editarDocenteForm.get('nombre')?.setValue('');
     this.editarDocenteForm.get('documento')?.setValue('');
-    this.editarDocenteForm.get('correo')?.setValue('');
     this.seleccionEditar = new Docente();
     this.modalService.dismissAll('Close click');
   }
@@ -247,7 +237,6 @@ export class DocenteComponent implements OnInit {
   resetearAgregarDocenteForm(){
     this.agregarDocenteForm.get('nombre')?.setValue('');
     this.agregarDocenteForm.get('documento')?.setValue('');
-    this.agregarDocenteForm.get('correo')?.setValue('');
     this.modalService.dismissAll('Close click');
   }
 
@@ -255,7 +244,6 @@ export class DocenteComponent implements OnInit {
     this.eliminarDocenteForm.get('idDocente')?.setValue('');
     this.eliminarDocenteForm.get('nombre')?.setValue('');
     this.eliminarDocenteForm.get('documento')?.setValue('');
-    this.eliminarDocenteForm.get('correo')?.setValue('');
     this.modalService.dismissAll('Close click');
   }
 
