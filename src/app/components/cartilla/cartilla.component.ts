@@ -24,7 +24,7 @@ export class CartillaComponent implements OnInit {
   listaPreguntasAgregar: Pregunta[];
   // Boleano para crear una nueva cartilla
   creacionCartilla: boolean;
-  
+
   mensajeEliminar = '';
 
   cargando = false;
@@ -99,8 +99,8 @@ export class CartillaComponent implements OnInit {
     });
   }
 
-  obtenerPreguntas(){
-    this.preguntaService.obtenerPreguntas().subscribe( resp => {
+  obtenerPreguntas() {
+    this.preguntaService.obtenerPreguntas().subscribe(resp => {
       this.listaPreguntas = resp.data;
     });
   }
@@ -111,9 +111,8 @@ export class CartillaComponent implements OnInit {
     const cartillaF = this.filtrarForm.controls['numcartilla'].value;
 
     if (cartillaF != null && cartillaF != '') {
-
       this.cartillaService.filtrarPreguntasCartilla(cartillaF ? cartillaF : null).subscribe(resp => {
-        this.listaPreguntasCartilla = resp.data.content;
+        this.listaPreguntasCartilla = resp.data;
         if (resp.success) {
           this.toastrService.success(resp.message, 'Proceso exitoso');
           this.listaPreguntasCartilla.sort(function (a, b) {
@@ -157,8 +156,8 @@ export class CartillaComponent implements OnInit {
 
   seleccionarEliminar(contentEliminar?: any) {
     const seleccionarEliminarCartilla = this.filtrarForm.controls['numcartilla'].value;
-    const cartillaE = this.listaCartillas.find((cart: Cartilla) => 
-    cart.idcartilla == seleccionarEliminarCartilla);
+    const cartillaE = this.listaCartillas.find((cart: Cartilla) =>
+      cart.idcartilla == seleccionarEliminarCartilla);
     this.mensajeEliminar = cartillaE?.nombre == undefined ? '' : cartillaE?.nombre;
     this.open(contentEliminar, '');
   }
@@ -283,7 +282,7 @@ export class CartillaComponent implements OnInit {
   }
 
   eliminarCartilla() {
-    
+
     this.cargando = true;
 
     const cartillaD = this.filtrarForm.controls['numcartilla'].value;
