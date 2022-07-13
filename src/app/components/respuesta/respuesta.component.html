@@ -73,7 +73,7 @@
                         <td>{{ respuesta.acertadas }} de {{ respuesta.cantidadPreguntas }} preguntas</td>
                         <td>{{ respuesta.intentos }}</td>
                         <td>{{ respuesta.nota | number : '1.1' }}</td>
-                        <td>{{ respuesta.fecha | date : 'yyyy-MM-dd' }}</td>
+                        <td>{{ respuesta.fecha | date : 'yyyy-MM-dd' : 'utc' }}</td>
                         <td>
                             <button type="button" class="btn btn-edit" data-toggle="modal"
                                 data-target="#solucionesModal" (click)="seleccionarRespuesta(respuesta)">
