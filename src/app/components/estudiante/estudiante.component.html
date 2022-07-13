@@ -58,21 +58,23 @@
                 <caption>Lista de estudiantes</caption>
                 <thead class="thead-col">
                     <tr>
-                        <th scope="col" style="max-width: 40px;">Id</th>
+                        <th scope="col" style="max-width: 40px;" [hidden] = "authority === 'docente'">Id</th>
+                        <th scope="col">Documento</th>
                         <th scope="col">Nombre</th>
-                        <th scope="col">Ultima nota</th>
-                        <th scope="col">Fecha ultima nota</th>
+                        <th scope="col">Nota de última respuesta</th>
+                        <th scope="col">Fecha de última respuesta</th>
                         <th scope="col">Respuestas</th>
                         <th scope="col">Funciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let estudiante of listaEstudiante">
-                        <td>{{ estudiante.idusuario }}</td>
+                        <td [hidden] = "authority === 'docente'">{{ estudiante.idusuario }}</td>
+                        <td>{{ estudiante.documento }}</td>
                         <td>{{ estudiante.nombre }}</td>
-                        <td>{{ estudiante.respuestas[0] ? estudiante.respuestas[0].nota : 'Aun no ha jugado' }}</td>
-                        <td>{{ estudiante.respuestas[0] == null ? 'No ha jugado' : estudiante.respuestas[0].fecha | date
-                            : 'yyyy-MM-dd' }}</td>
+                        <td>{{ estudiante.respuestas[estudiante.respuestas.length-1] ? estudiante.respuestas[estudiante.respuestas.length-1].nota : 'Aun no ha jugado' }}</td>
+                        <td>{{ !estudiante.respuestas[estudiante.respuestas.length-1] ? 'No ha jugado' : estudiante.respuestas[estudiante.respuestas.length-1].fecha | date
+                            : 'yyyy-MM-dd':'utc' }}</td>
                         <td>
                             <button type="button" class="btn btn-secondary" style="width: fit-content;"
                                 [hidden]="estudiante.respuestas.length == 0" (click)="verRespuesta(estudiante)">

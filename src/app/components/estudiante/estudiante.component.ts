@@ -7,6 +7,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Estudiante } from 'src/app/models/estudiante';
 import { Respuesta } from 'src/app/models/respuesta';
 import { EstudianteService } from 'src/app/services/estudiante.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-estudiante',
@@ -33,6 +34,8 @@ export class EstudianteComponent implements OnInit {
   fechaActual!: Date;
 
   closeResult = '';
+
+  authority = '';
 
   esPrimero = false;
   esUltimo = false;
@@ -70,6 +73,7 @@ export class EstudianteComponent implements OnInit {
     private dateFormat: DatePipe,
     private route: Router,
     private modalService: NgbModal,
+    private tokenService: TokenService,
     config: NgbModalConfig
   ) {
     this.listaEstudiante = [];
@@ -84,6 +88,7 @@ export class EstudianteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authority = this.tokenService.getRoles();
     this.filtrar();
     this.fechaActual = new Date();
   }

@@ -66,24 +66,26 @@ export class RespuestaComponent implements OnInit {
     this.authority = this.tokenService.getRoles();
     if (this.authority === 'estudiante')
       this.filtrarForm.get('estudiantes')?.disable();
-    this.filtrar(true);
+    this.obtenerEstudiantes();
   }
 
+
   verificarEstudianteId() {
+    this.cargando = true;
     const idEstudiante = localStorage.getItem('idEstudiante');
     if (idEstudiante != null) {
       this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
-
       this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe(resp => {
-        this.listaRespuestas = resp.data;
-
+        this.listaRespuestas = resp.data.content;
         localStorage.removeItem('idEstudiante');
+        this.cargando = false;
       });
-
+    }else{
+      this.filtrar();
     }
   }
 
-  filtrar(inicio?: boolean) {
+  filtrar() {
 
     this.cargando = true;
 
@@ -99,9 +101,6 @@ export class RespuestaComponent implements OnInit {
         this.totalPaginas = new Array(resp.data['totalPages']);
         this.toastrService.success(resp.message, 'Proceso exitoso', { timeOut: 4000, closeButton: true });
         this.cargando = false;
-        if (inicio) {
-          this.obtenerEstudiantes();
-        }
       } else {
         this.toastrService.warning(resp.message, 'Proceso fallido', { timeOut: 5000, closeButton: true });
         this.cargando = false;
@@ -178,11 +177,11 @@ export class RespuestaComponent implements OnInit {
 
   avanzar(ultimo?: any) {
     if (ultimo) {
-      this.pagina = this.totalPaginas.length-1;
+      this.pagina = this.totalPaginas.length - 1;
     } else {
       if (!this.esUltimo) {
         this.pagina++;
-        
+
       }
     }
     this.filtrar();
