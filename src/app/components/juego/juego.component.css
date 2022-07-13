@@ -1,0 +1,8 @@
+.fullscreen {
+    height: 100%;
+    padding: 2px;
+    float: right;
+    line-height: 38px;
+    font-size: 18px;
+    font-family: Arial, Helvetica, sans-serif;
+}

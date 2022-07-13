@@ -13,6 +13,9 @@ export class InicioComponent implements OnInit {
   authority: string = '';
   url_Cloudinary = GlobalConstant.URL_CLOUDINARY;
 
+  gameInstance: any;
+  progress = 0;
+
   constructor(
     private toastrService: ToastrService,
     private tokenService: TokenService
@@ -21,5 +24,4 @@ export class InicioComponent implements OnInit {
   ngOnInit(): void {
     this.authority = this.tokenService.getRoles();
   }
-
 }

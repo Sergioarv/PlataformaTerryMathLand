@@ -17,7 +17,7 @@ export class JuegoComponent implements OnInit {
     this.cargando = true;
     const loader = (window as any).UnityLoader;
     this.gameInstance = loader.instantiate(
-      'gameContainer',
+      'unityContainer',
       '/assets/TerryMathLand/Build/TerryMathLand.json', {
         onProgress: (gameInstance: any, progress: number) => {
           this.progress = progress;
@@ -27,6 +27,14 @@ export class JuegoComponent implements OnInit {
         }
       }
     );
+  }
+
+  setFullscreen(number? : number){
+    this.gameInstance.SetFullscreen(1)
+  }
+
+  ngOnDestroy(){
+    this.gameInstance.Quit();
   }
 
 }
