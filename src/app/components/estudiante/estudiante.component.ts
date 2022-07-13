@@ -27,7 +27,7 @@ export class EstudianteComponent implements OnInit {
   seleccionEditar: Estudiante;
   seleccionEliminar: Estudiante;
   seleccionRespuesta: Respuesta;
-  notaRespuesta: string = '0.0';
+  notaRespuesta: number = 0.0;
   fechaRespuesta: Date;
 
   fechaActual!: Date;
@@ -51,7 +51,7 @@ export class EstudianteComponent implements OnInit {
     documento: new FormControl('', Validators.pattern(this.regNumeros)),
     respuesta: new FormControl(''),
     nota: new FormControl(0),
-    fecha: new FormControl()
+    fecha: new FormControl(new Date())
   });
 
   agregarEstudianteForm = new FormGroup({
@@ -214,11 +214,12 @@ export class EstudianteComponent implements OnInit {
   seleccionarRespuesta() {
     const resp = this.editarEstudianteForm.get('respuesta')?.value;
     if (resp == '') {
-      this.notaRespuesta = '0';
-      this.fechaRespuesta = new Date();
+      this.editarEstudianteForm.get('nota')?.setValue(0.0);
+      this.editarEstudianteForm.get('fecha')?.setValue(null);
     } else {
-      this.notaRespuesta = this.seleccionEditar.respuestas[resp].nota;
-      this.fechaRespuesta = this.seleccionEditar.respuestas[resp].fecha;
+      let fechaR = this.dateFormat.transform(this.seleccionEditar.respuestas[resp].fecha, 'yyyy-MM-dd');
+      this.editarEstudianteForm.get('nota')?.setValue(this.seleccionEditar.respuestas[resp].nota);
+      this.editarEstudianteForm.get('fecha')?.setValue(fechaR);
     }
   }
 
@@ -265,10 +266,10 @@ export class EstudianteComponent implements OnInit {
     this.editarEstudianteForm.get('idEstudiante')?.setValue('');
     this.editarEstudianteForm.get('nombre')?.setValue('');
     this.editarEstudianteForm.get('respuesta')?.setValue('');
-    this.editarEstudianteForm.get('nota')?.setValue('0');
+    this.editarEstudianteForm.get('nota')?.setValue(0);
     this.editarEstudianteForm.get('fecha')?.setValue(null);
     this.seleccionEditar = new Estudiante();
-    this.notaRespuesta = '0';
+    this.notaRespuesta = 0.0;
     this.fechaRespuesta = new Date();
     this.seleccionEditar = new Estudiante();
     this.modalService.dismissAll('Close click');

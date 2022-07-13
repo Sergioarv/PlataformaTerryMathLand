@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgxLoadingModule } from 'ngx-loading';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-import { DatePipe } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { interceptorProvider } from './interceptors/est-interceptor.service';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -59,6 +59,7 @@ import { DocenteComponent } from './components/docente/docente.component';
   ],
   providers: [
     DatePipe,
+    DecimalPipe,
     interceptorProvider
   ],
   exports: [

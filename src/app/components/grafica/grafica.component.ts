@@ -8,6 +8,7 @@ import { IDatosPromedioEstudiante } from 'src/app/models/datosPromedioEstudiante
 import { EstudianteService } from 'src/app/services/estudiante.service';
 import { RespuestaService } from 'src/app/services/respuesta.service';
 import { TokenService } from 'src/app/services/token.service';
+import { DecimalPipe } from '@angular/common';
 declare var google: any;
 
 @Component({
@@ -40,7 +41,8 @@ export class GraficaComponent implements OnInit {
     private estudianteService: EstudianteService,
     private respuestaService: RespuestaService,
     private toastrService: ToastrService,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private decimalPipe: DecimalPipe,
   ) {
     this.listaEstudiantes = [];
     this.listaRespuestas = [];
@@ -142,7 +144,13 @@ export class GraficaComponent implements OnInit {
       data.addRows([
         [element.fecha, element.promedionotas],
       ]);
-    })
+    });
+
+    var formatNumber = new google.visualization.NumberFormat({
+      pattern: '0.0'
+    });
+
+    formatNumber.format(data, 1);
 
     // Set chart options
     var options = {
@@ -153,7 +161,7 @@ export class GraficaComponent implements OnInit {
         fontSize: 18
       },
       height: 480,
-      chartArea: { width: '90%' },
+      chartArea: { width: '80%' },
       legend: { position: 'top', alignment: 'center', maxLines: 2 },
       tooltip: { trigger: 'focused' },
       focusTarget: 'category',
@@ -164,6 +172,11 @@ export class GraficaComponent implements OnInit {
       vAxis: {
         title: 'Nota',
         format: 'decimal',
+        viewWindow: {
+          max: 5,
+          min: 0,
+        },
+        // ticks: this.calcIntTicks(data, 1)
         ticks: [0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5],
       },
     };
@@ -171,6 +184,16 @@ export class GraficaComponent implements OnInit {
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.LineChart(document.getElementById('chartLine_div'));
     chart.draw(data, options);
+  }
+
+  calcIntTicks(dataTable: any, step: any) {
+    var min = Math.floor(dataTable.getColumnRange(1).min);
+    var max = Math.ceil(dataTable.getColumnRange(1).max);
+    var vals = [];
+    for (var cur = min; cur <= max; cur += step) {
+      vals.push(cur);
+    }
+    return vals;
   }
 
   drawChartPie() {
