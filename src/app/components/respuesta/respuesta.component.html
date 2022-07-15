@@ -16,8 +16,7 @@
                         <select class="form-control" formControlName="estudiantes" (change)="filtrar()">
                             <option selected value=''>{{ listaEstudiantes.length == 0 ? 'No hay estudiantes' :
                                 'Seleccione un estudiante' }}</option>
-                            <option *ngFor="let estudiante of listaEstudiantes" value="{{ estudiante.idusuario }}">{{
-                                estudiante.nombre }}</option>
+                            <option *ngFor="let estudiante of listaEstudiantes" value="{{ estudiante.idusuario }}">{{estudiante.nombre }} - {{ estudiante.documento}}</option>
                         </select>
                     </div>
                     <div class="col-sm-12 col-lg-6">

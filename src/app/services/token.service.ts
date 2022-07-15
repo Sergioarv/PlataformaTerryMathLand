@@ -32,13 +32,13 @@ export class TokenService {
     return false;
   }
 
-  getUserName(): string | null {
+  getId(): string {
     if (!this.isLogged()) {
-      return null;
+      return '';
     }
     const token = this.getToken();
     const values = this.decodePayload(token);
-    return values.sub;
+    return values.id;
   }
 
   private decodePayload(token: string): any {

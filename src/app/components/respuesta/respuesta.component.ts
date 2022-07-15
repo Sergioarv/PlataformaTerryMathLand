@@ -69,7 +69,6 @@ export class RespuestaComponent implements OnInit {
     this.obtenerEstudiantes();
   }
 
-
   verificarEstudianteId() {
     this.cargando = true;
     const idEstudiante = localStorage.getItem('idEstudiante');
@@ -80,8 +79,17 @@ export class RespuestaComponent implements OnInit {
         localStorage.removeItem('idEstudiante');
         this.cargando = false;
       });
-    }else{
-      this.filtrar();
+    } else {
+      if (this.authority === 'estudiante') {
+        const idEstudiante = this.tokenService.getId();
+        this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
+        this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe(resp => {
+          this.listaRespuestas = resp.data.content;
+          this.cargando = false;
+        });
+      } else {
+        this.filtrar();
+      }
     }
   }
 
@@ -114,7 +122,7 @@ export class RespuestaComponent implements OnInit {
   obtenerEstudiantes() {
     this.cargando = true;
 
-    this.estudianteService.obtenerEstudiantes().subscribe(resp => {
+    this.estudianteService.listarEstudiantes().subscribe(resp => {
       this.listaEstudiantes = resp.data;
 
       if (resp.success) {

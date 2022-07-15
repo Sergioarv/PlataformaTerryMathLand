@@ -38,17 +38,20 @@ export class LoginComponent implements OnInit {
   }
 
   onLogin(): void {
+    this.cargando = true;
     this.loginUsuario = new LoginUsuario();
     this.loginUsuario.nombre = this.loginForm.controls['usuario'].value;
     this.loginUsuario.contrasenia = this.loginForm.controls['contrasenia'].value;
 
     this.authService.login(this.loginUsuario).subscribe(resp => {
-
+      
       this.tokenService.setToken(resp.data.token);
       this.roles = resp.data.authorities;
       this.router.navigate(['/inicio']);
+      this.cargando = false;
     }, error => {
       this.toastrService.error('Error en el login', 'Proceso fallido');
+      this.cargando = false;
     });
   }
 

@@ -57,19 +57,18 @@ export class GraficaComponent implements OnInit {
     this.authority = this.tokenService.getRoles();
     if (this.authority === 'estudiante')
       this.filtrarForm.get('estudiantes')?.disable();
-
+    this.obtenerEstudiantes()
     google.charts.load('current', { packages: ['corechart'] });
-    this.filtrar(true);
   }
 
-  filtrar(inicio?: boolean) {
+  filtrar(idEstudiante?: any) {
 
     this.cargando = true;
 
     const estudiante = this.filtrarForm.controls['estudiantes'].value;
     const fecha = this.filtrarForm.controls['fecha'].value;
 
-    this.respuestaService.filtrarRespuestasGrafico(estudiante ? estudiante : null, fecha ? fecha : null).subscribe(resp => {
+    this.respuestaService.filtrarRespuestasGrafico(estudiante ? estudiante : idEstudiante ? idEstudiante : null, fecha ? fecha : null).subscribe(resp => {
 
       this.total = 0;
       this.listaPromedioNotas = resp.data.listaPromedioNotas;
@@ -80,10 +79,6 @@ export class GraficaComponent implements OnInit {
           this.toastrService.warning(resp.message, 'Proceso exitoso');
         } else {
           this.toastrService.success(resp.message, 'Proceso exitoso');
-        }
-
-        if (inicio) {
-          this.obtenerEstudiantes();
         }
         this.cargando = false;
       } else {
@@ -121,8 +116,7 @@ export class GraficaComponent implements OnInit {
 
       if (resp.success) {
         this.cargando = false;
-        this.drawChartLine();
-        this.drawChartPie();
+        this.verificarEstudianteId();
       } else {
         this.toastrService.error(resp.message, 'Proceso fallido', { timeOut: 4000, closeButton: true });
         this.cargando = false;
@@ -133,12 +127,28 @@ export class GraficaComponent implements OnInit {
     });
   }
 
-  drawChartLine() {
+  verificarEstudianteId() {
+    this.cargando = true;
+    if (this.authority === 'estudiante') {
+      const idEstudiante = this.tokenService.getId();
+      this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
+      this.filtrar(idEstudiante);
+    } else {
+      this.filtrar();
+    }
+  }
 
+  drawChartLine() {
     // Create the data table.
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Fecha');
     data.addColumn('number', 'Promedio de notas');
+
+    this.listaPromedioNotas.sort(function (a, b) {
+      if (a.fecha > b.fecha) { return 1; }
+      if (a.fecha < b.fecha) { return -1; }
+      return 0;
+    });
 
     this.listaPromedioNotas.forEach(element => {
       data.addRows([
