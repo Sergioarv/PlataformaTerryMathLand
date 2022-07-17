@@ -115,11 +115,11 @@ export class CartillaComponent implements OnInit {
         this.listaPreguntasCartilla = resp.data.content;
         if (resp.success) {
           this.toastrService.success(resp.message, 'Proceso exitoso');
-          this.listaPreguntasCartilla.sort(function (a, b) {
-            if (a.idpregunta > b.idpregunta) { return 1; }
-            if (a.idpregunta < b.idpregunta) { return -1; }
-            return 0;
-          });
+          // this.listaPreguntasCartilla.sort(function (a, b) {
+          //   if (a.idpregunta > b.idpregunta) { return 1; }
+          //   if (a.idpregunta < b.idpregunta) { return -1; }
+          //   return 0;
+          // });
           this.cargando = false;
         } else {
           this.toastrService.error(resp.message, 'Proceso fallido');
@@ -180,12 +180,6 @@ export class CartillaComponent implements OnInit {
       if (verificar == null) {
         this.listaPreguntasAgregar.push(preguntaAdd);
         this.toastrService.info('La pregunta se encuentra en la lista para ser guardada', 'Proceso pendiente');
-
-        this.listaPreguntasAgregar.sort(function (a, b) {
-          if (a.idpregunta > b.idpregunta) { return 1; }
-          if (a.idpregunta < b.idpregunta) { return -1; }
-          return 0;
-        });
       } else {
         this.toastrService.warning('La pregunta ya ha sido agregada', 'Proceso fallido');
       }
@@ -193,16 +187,21 @@ export class CartillaComponent implements OnInit {
   }
 
   quitarPregunta(preguntaC: any) {
-    const indice = this.listaPreguntasAgregar.indexOf(preguntaC);
-    this.listaPreguntasAgregar.splice(indice, 1);
-
-    const verificar = this.listaPreguntasCartilla.find((preg: Pregunta) =>
-      preg.idpregunta == preguntaC.idpregunta);
-
-    if (verificar == null) {
-      this.toastrService.warning('La pregunta ya no se agregara a la cartilla', 'Proceso fallido');
+    if (this.listaPreguntasAgregar.length == 5) {
+      this.toastrService.info('La capacidad minima (5 preguntas por cartilla) no se ha cumplido, por favor agrega más preguntas', 'Proceso exitoso');
     } else {
-      this.toastrService.warning('La pregunta será borrada de la cartilla', 'Proceso fallido');
+      
+      const indice = this.listaPreguntasAgregar.indexOf(preguntaC);
+      this.listaPreguntasAgregar.splice(indice, 1);
+
+      const verificar = this.listaPreguntasCartilla.find((preg: Pregunta) =>
+        preg.idpregunta == preguntaC.idpregunta);
+
+      if (verificar == null) {
+        this.toastrService.warning('La pregunta ya no se agregara a la cartilla', 'Proceso fallido');
+      } else {
+        this.toastrService.warning('La pregunta será borrada de la cartilla', 'Proceso fallido');
+      }
     }
   }
 

@@ -44,13 +44,17 @@ export class LoginComponent implements OnInit {
     this.loginUsuario.contrasenia = this.loginForm.controls['contrasenia'].value;
 
     this.authService.login(this.loginUsuario).subscribe(resp => {
-      
-      this.tokenService.setToken(resp.data.token);
-      this.roles = resp.data.authorities;
-      this.router.navigate(['/inicio']);
-      this.cargando = false;
+      if (resp.success) {
+        this.tokenService.setToken(resp.data.token);
+        this.roles = resp.data.authorities;
+        this.router.navigate(['/inicio']);
+        this.cargando = false;
+      }else{
+        this.toastrService.error('Error, datos de login no validos ', 'Proceso fallido');
+        this.cargando = false;
+      }
     }, error => {
-      this.toastrService.error('Error en el login', 'Proceso fallido');
+      this.toastrService.error('Error en el servidor', 'Proceso fallido');
       this.cargando = false;
     });
   }
