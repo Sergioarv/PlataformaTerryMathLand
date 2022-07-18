@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
@@ -230,7 +231,7 @@ export class CartillaComponent implements OnInit {
     } else {
 
       const newCartilla = new Cartilla();
-
+      console.log("Crear/Guardar",this.listaPreguntasAgregar);
       if (this.creacionCartilla) {
         const nombreCartilla = this.editarCartillaForm.controls['nomCartillaI'].value;
         newCartilla.idcartilla = '-1';
@@ -261,6 +262,7 @@ export class CartillaComponent implements OnInit {
         newCartilla.nombre = cartilla == undefined ? '' : cartilla.nombre;
 
         newCartilla.preguntas = this.listaPreguntasAgregar;
+        console.log("Guardar", newCartilla.preguntas);
 
         this.cartillaService.actualizarCartilla(newCartilla).subscribe(resp => {
           if (resp.success) {
@@ -308,6 +310,10 @@ export class CartillaComponent implements OnInit {
       this.toastrService.error(error.message, 'Proceso fallido');
       this.cargando = false;
     });
+  }
+
+  onDrop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.listaPreguntasAgregar, event.previousIndex, event.currentIndex);
   }
 
   /** Funciones para abrir y cerrar modal ng **/

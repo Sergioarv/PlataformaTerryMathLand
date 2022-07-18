@@ -37,6 +37,9 @@ export class EstInterceptorService implements HttpInterceptor {
         }));
       } else {
         this.tokenService.logOut();
+        setTimeout(() => {
+          window.location.reload();
+        }, 2500);
         return throwError(err);
       }
     }));

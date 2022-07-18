@@ -72,7 +72,7 @@
                         <td [hidden] = "authority === 'docente'">{{ estudiante.idusuario }}</td>
                         <td>{{ estudiante.documento }}</td>
                         <td>{{ estudiante.nombre }}</td>
-                        <td>{{ estudiante.respuestas[estudiante.respuestas.length-1] ? estudiante.respuestas[estudiante.respuestas.length-1].nota : 'Aun no ha jugado' }}</td>
+                        <td>{{ !estudiante.respuestas[estudiante.respuestas.length-1] ? 'Aun no ha jugado' : estudiante.respuestas[estudiante.respuestas.length-1].nota | number : '1.1' }}</td>
                         <td>{{ !estudiante.respuestas[estudiante.respuestas.length-1] ? 'No ha jugado' : estudiante.respuestas[estudiante.respuestas.length-1].fecha | date
                             : 'yyyy-MM-dd':'utc' }}</td>
                         <td>

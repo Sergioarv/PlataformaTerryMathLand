@@ -9,6 +9,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxLoadingModule } from 'ngx-loading';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { interceptorProvider } from './interceptors/est-interceptor.service';
@@ -47,6 +48,7 @@ import { DocenteComponent } from './components/docente/docente.component';
     HttpClientModule,
     NgxLoadingModule,
     NgbModule,
+    DragDropModule,
     ToastrModule.forRoot({
       maxOpened: 2,
       timeOut: 3000,

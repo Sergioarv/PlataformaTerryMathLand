@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
         this.router.navigate(['/inicio']);
         this.cargando = false;
       }else{
-        this.toastrService.error('Error, datos de login no validos ', 'Proceso fallido');
+        this.toastrService.error(resp.message, 'Proceso fallido');
         this.cargando = false;
       }
     }, error => {

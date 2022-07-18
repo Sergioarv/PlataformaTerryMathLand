@@ -42,9 +42,13 @@ export class TokenService {
   }
 
   private decodePayload(token: string): any {
-    const payload = token.split(".")[1];
-    const payloadDecoded = atob(payload);
-    return JSON.parse(payloadDecoded);
+    try {
+      const payload = token.split(".")[1];
+      const payloadDecoded = atob(payload);
+      return JSON.parse(payloadDecoded);
+    }catch(e){
+      window.sessionStorage.removeItem(TOKEN_KEY);
+    }
   }
 
   public getRoles(): string {
@@ -62,7 +66,7 @@ export class TokenService {
         this.rolReal = 'docente';
       } else if (rol === 'ROLE_ESTUDIANTE') {
         this.rolReal = 'estudiante';
-      }  
+      }
     });
     return this.rolReal;
   }

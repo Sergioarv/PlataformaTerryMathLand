@@ -150,6 +150,7 @@ export class RespuestaComponent implements OnInit {
   limpiar(): void {
     this.filtrarForm.get('estudiantes')?.setValue("");
     this.filtrarForm.get('fecha')?.setValue(null);
+    this.verificarEstudianteId();
     this.filtrar();
   }
 

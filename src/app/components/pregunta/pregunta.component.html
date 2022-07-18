@@ -14,8 +14,8 @@
                     <div class="col-s-12 col-lg-6">
                         <label>Numero de pregunta:</label>
                         <input type="text" class="form-control" formControlName="numPregunta"
-                            placeholder="Ingrese el numero de pregunta a buscar" [pattern]="regNumeros">
-                        <div class="invalid-feedback">Ingresar solo números que estan relacionados a la pregunta
+                            placeholder="Ingrese el código de la pregunta a buscar" [pattern]="regNumeros">
+                        <div class="invalid-feedback">Ingresar solo números que estan relacionados a las preguntas
                             existentes</div>
                     </div>
                     <div class="col-s-12 col-lg-6">
@@ -98,7 +98,7 @@
                                 {{ pregunta.opciones[3].respuesta ? 'Opcion Correcta' :
                                 'Opcion Incorrecta' }}</p>
                         </td>
-                        <td style="width: 896px;">
+                        <td style="width: 1024px">
                             <div *ngIf="pregunta.urlImg != ''" style="text-align: center;">
                                 <img src="{{ pregunta.urlImg }}" class="rounded img-thumbnail"
                                     alt="{{ pregunta.urlImg }}" style="width: 100%;">
