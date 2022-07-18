@@ -12,7 +12,7 @@ export class DocenteService {
     private http: HttpClient
   ) { }
 
-  public filtrarDocente(nombre: any, correo: any): Observable<any> {
+  public filtrarDocente(nombre: any, documento: any): Observable<any> {
 
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_DOCENTE_FILTRO;
 
@@ -26,11 +26,11 @@ export class DocenteService {
       }
     }
 
-    if (correo) {
+    if (documento) {
       if (params.length > 0) {
-        params = params.concat('&correo=').concat(correo);
+        params = params.concat('&documento=').concat(documento);
       } else {
-        params = params.concat('?correo=').concat(correo);
+        params = params.concat('?documento=').concat(documento);
       }
     }
 

@@ -115,11 +115,6 @@ export class CartillaComponent implements OnInit {
         this.listaPreguntasCartilla = resp.data.content;
         if (resp.success) {
           this.toastrService.success(resp.message, 'Proceso exitoso');
-          // this.listaPreguntasCartilla.sort(function (a, b) {
-          //   if (a.idpregunta > b.idpregunta) { return 1; }
-          //   if (a.idpregunta < b.idpregunta) { return -1; }
-          //   return 0;
-          // });
           this.cargando = false;
         } else {
           this.toastrService.error(resp.message, 'Proceso fallido');
