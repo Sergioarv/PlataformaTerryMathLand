@@ -74,7 +74,7 @@ export class RespuestaComponent implements OnInit {
     const idEstudiante = localStorage.getItem('idEstudiante');
     if (idEstudiante != null) {
       this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
-      this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe(resp => {
+      this.respuestaService.filtrarRespuesta(idEstudiante, null, this.pagina, this.cantPagina).subscribe(resp => {
         this.listaRespuestas = resp.data.content;
         localStorage.removeItem('idEstudiante');
         this.cargando = false;
@@ -83,7 +83,7 @@ export class RespuestaComponent implements OnInit {
       if (this.authority === 'estudiante') {
         const idEstudiante = this.tokenService.getId();
         this.filtrarForm.get('estudiantes')?.setValue(idEstudiante);
-        this.respuestaService.filtrarRespuesta(idEstudiante, null).subscribe(resp => {
+        this.respuestaService.filtrarRespuesta(idEstudiante, null, this.pagina, this.cantPagina).subscribe(resp => {
           this.listaRespuestas = resp.data.content;
           this.cargando = false;
         });
@@ -100,7 +100,7 @@ export class RespuestaComponent implements OnInit {
     const estudiante = this.filtrarForm.controls['estudiantes'].value;
     const fecha = this.filtrarForm.controls['fecha'].value;
 
-    this.respuestaService.filtrarRespuesta(estudiante ? estudiante : null, fecha ? fecha : null).subscribe(resp => {
+    this.respuestaService.filtrarRespuesta(estudiante ? estudiante : null, fecha ? fecha : null, this.pagina, this.cantPagina).subscribe(resp => {
       this.listaRespuestas = resp.data.content;
 
       if (resp.success) {

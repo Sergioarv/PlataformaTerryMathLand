@@ -18,7 +18,7 @@ export class RespuestaService {
     return this.http.get<any>(URL);
   }
 
-  filtrarRespuesta(estudiante: any, fecha: any): Observable<any> {
+  filtrarRespuesta(estudiante: any, fecha: any, pagina: any, cantPagina: any): Observable<any> {
     const URL = GlobalConstant.URL_ENDPOINT + GlobalConstant.URL_RESPUESTA_FILTRO;
 
     let params = '';
@@ -37,6 +37,14 @@ export class RespuestaService {
       }else{
         params = params.concat('?fecha=').concat(fecha);
       }
+    }
+
+    if(params.length > 0){
+      params = params.concat('&pagina=').concat(pagina);
+      params = params.concat('&cantPagina=').concat(cantPagina);
+    }else{
+      params = params.concat('?pagina=').concat(pagina);
+      params = params.concat('&cantPagina=').concat(cantPagina);
     }
 
     return this.http.get<any>(URL + params);

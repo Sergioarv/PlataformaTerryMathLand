@@ -210,7 +210,7 @@ export class GraficaComponent implements OnInit {
 
     const tam = this.listaPromedioEstudiantes.length;
 
-    const encabezados: any[] = ['Nota de 5.0', 'Nota entre 4. a 4.9', 'Nota entre 3.0 a 3.9', 'Nota inferior a 3.0'];
+    const encabezados: any[] = ['Nota de 5.0', 'Nota entre 4.0 a 4.9', 'Nota entre 3.0 a 3.9', 'Nota inferior a 3.0'];
 
     // Create the data table.
     var data = new google.visualization.DataTable();
