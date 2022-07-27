@@ -150,6 +150,8 @@ export class RespuestaComponent implements OnInit {
   limpiar(): void {
     this.filtrarForm.get('estudiantes')?.setValue("");
     this.filtrarForm.get('fecha')?.setValue(null);
+    this.pagina = 0;
+    this.cantPagina = 10;
     this.verificarEstudianteId();
   }
 
