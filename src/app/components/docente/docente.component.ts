@@ -200,7 +200,6 @@ export class DocenteComponent implements OnInit {
     this.filtrarForm.get('nombre')?.setValue('');
     this.filtrarForm.get('documento')?.setValue('');
     this.pagina = 0;
-    this.cantPagina = 10;
     this.filtrar();
   }
 

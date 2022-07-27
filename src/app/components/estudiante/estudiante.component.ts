@@ -241,7 +241,6 @@ export class EstudianteComponent implements OnInit {
     this.filtrarForm.get('nombre')?.setValue('');
     this.filtrarForm.get('fechaEntrega')?.setValue(null);
     this.pagina = 0;
-    this.cantPagina = 10;
     this.filtrar();
   }
 

@@ -109,7 +109,6 @@ export class PreguntaComponent implements OnInit {
     this.filtrarForm.get('numPregunta')?.setValue("");
     this.filtrarForm.get('enunciado')?.setValue("");
     this.pagina = 0;
-    this.cantPagina = 10;
     this.filtrar();
   }
 
