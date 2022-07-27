@@ -257,6 +257,6 @@ export class GraficaComponent implements OnInit {
   limpiar(): void {
     this.filtrarForm.get('estudiantes')?.setValue("");
     this.filtrarForm.get('fecha')?.setValue(null);
-    this.filtrar();
+    this.verificarEstudianteId();
   }
 }
