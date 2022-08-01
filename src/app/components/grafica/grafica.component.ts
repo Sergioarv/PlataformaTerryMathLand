@@ -230,7 +230,7 @@ export class GraficaComponent implements OnInit {
 
     // Set chart options
     var options = {
-      title: 'Promedio de estudintes por rangos de notas',
+      title: 'Promedio de estudiantes por rangos de notas',
       titleTextStyle: {
         color: '000000',
         fontName: 'Arial',
