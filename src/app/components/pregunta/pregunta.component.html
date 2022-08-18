@@ -77,26 +77,26 @@
                         <td>{{ pregunta.opciones[0].enunciadoopcion}}
                             <p [ngClass]="{ 'correcto': pregunta.opciones[0].respuesta,
                             'incorrecto': !pregunta.opciones[0].respuesta }">
-                                {{ pregunta.opciones[0].respuesta ? 'Opcion Correcta' :
-                                'Opcion Incorrecta' }}</p>
+                                {{ pregunta.opciones[0].respuesta ? 'Opción Correcta' :
+                                'Opción Incorrecta' }}</p>
                         </td>
                         <td>{{ pregunta.opciones[1].enunciadoopcion}}
                             <p [ngClass]="{ 'correcto': pregunta.opciones[1].respuesta,
                             'incorrecto': !pregunta.opciones[1].respuesta }">
-                                {{ pregunta.opciones[1].respuesta ? 'Opcion Correcta' :
-                                'Opcion Incorrecta' }}</p>
+                                {{ pregunta.opciones[1].respuesta ? 'Opción Correcta' :
+                                'Opción Incorrecta' }}</p>
                         </td>
                         <td>{{ pregunta.opciones[2].enunciadoopcion}}
                             <p [ngClass]="{ 'correcto': pregunta.opciones[2].respuesta,
                             'incorrecto': !pregunta.opciones[2].respuesta }">
-                                {{ pregunta.opciones[2].respuesta ? 'Opcion Correcta' :
-                                'Opcion Incorrecta' }}</p>
+                                {{ pregunta.opciones[2].respuesta ? 'Opción Correcta' :
+                                'Opción Incorrecta' }}</p>
                         </td>
                         <td>{{ pregunta.opciones[3].enunciadoopcion}}
                             <p [ngClass]="{ 'correcto': pregunta.opciones[3].respuesta,
                             'incorrecto': !pregunta.opciones[3].respuesta }">
-                                {{ pregunta.opciones[3].respuesta ? 'Opcion Correcta' :
-                                'Opcion Incorrecta' }}</p>
+                                {{ pregunta.opciones[3].respuesta ? 'Opción Correcta' :
+                                'Opción Incorrecta' }}</p>
                         </td>
                         <td style="width: 896px;">
                             <div *ngIf="pregunta.urlImg != ''" style="text-align: center;">
@@ -299,7 +299,7 @@
             <button type="button" class="btn btn-success" (click)="crearPregunta()"
                 [disabled]="!crearPreguntaForm.valid || verificarCheck() == false">
                 <em class="fa-regular fa-floppy-disk"></em> Guardar</button>
-            <button type="button" class="btn btn-danger" (click)="resetearcrearPreguntaForm()">
+            <button type="button" class="btn btn-danger" (click)="resetearCrearPreguntaForm()">
                 <em class="fa-solid fa-ban"></em> Cancelar</button>
         </div>
     </ng-template>
@@ -446,7 +446,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-success" [disabled]="!editarPreguntaForm.valid"
-                (click)="guardarPregunta()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
+                (click)="editarPregunta()"><em class="fa-regular fa-floppy-disk"></em> Guardar</button>
             <button type="button" class="btn btn-danger" (click)="resetearEditarPreguntaForm()"><em
                     class="fa-solid fa-ban"></em>
                 Cancelar</button>

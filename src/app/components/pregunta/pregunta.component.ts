@@ -5,6 +5,7 @@ import { PreguntaService } from 'src/app/services/pregunta.service';
 import { ToastrService } from 'ngx-toastr';
 import { ModalDismissReasons, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { Opcion } from 'src/app/models/opcion';
+import { GlobalConstant } from 'src/app/utils/constants/global.constants';
 
 @Component({
   selector: 'app-pregunta',
@@ -18,6 +19,7 @@ export class PreguntaComponent implements OnInit {
   imagen: any = null;
   imagenMin: any;
   imagenPregunta: any;
+  imagenMax = GlobalConstant.MAX_SIZE_FILE;
 
   regNumeros = '[0-9]+';
   regNombre = '^[a-zA-ZÀ-ÿ][a-zA-ZÀ-ÿ\u00f1\u00d1\u0020-\u003f\u00bf\u00a1]+[a-zA-ZÀ-ÿ]$';
@@ -76,10 +78,6 @@ export class PreguntaComponent implements OnInit {
     this.filtrar();
   }
 
-  ngAfterViewChecked(){
-    
-  }
-
   filtrar(): void {
 
     this.cargando = true;
@@ -131,7 +129,8 @@ export class PreguntaComponent implements OnInit {
     this.preguntaService.crearPregunta(this.imagen, preguntaCrear).subscribe(resp => {
       if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso');
-        this.resetearcrearPreguntaForm();
+        this.quitarImagen();
+        this.resetearCrearPreguntaForm();
         this.modalService.dismissAll('Save click');
         this.cargando = false;
         this.filtrar();
@@ -145,7 +144,7 @@ export class PreguntaComponent implements OnInit {
     });
   }
 
-  guardarPregunta() {
+  editarPregunta() {
 
     this.cargando = true;
 
@@ -178,6 +177,8 @@ export class PreguntaComponent implements OnInit {
       if (resp.success) {
         this.toastrService.success(resp.message, 'Proceso exitoso');
         this.cargando = false;
+        this.quitarImagen();
+        this.resetearEditarPreguntaForm();
         this.modalService.dismissAll('Save click');
         this.filtrar();
       } else {
@@ -191,7 +192,7 @@ export class PreguntaComponent implements OnInit {
   }
 
   seleccionarEditar(pregunta: Pregunta, contentEdit?: any) {
-
+    this.quitarImagen();
     const preguntaSelect = pregunta;
 
     this.editarPreguntaForm.get('numePregunta')?.disable();
@@ -209,7 +210,6 @@ export class PreguntaComponent implements OnInit {
   }
 
   seleccionarEliminar(pregunta: any, contentEliminar?: any) {
-
     this.preguntaEliminar = pregunta;
     this.open(contentEliminar, '');
   }
@@ -218,14 +218,19 @@ export class PreguntaComponent implements OnInit {
     this.cargando = true;
     if (event.target.files && event.target.files[0]) {
       this.imagen = event.target.files[0];
-      const fr = new FileReader();
-      fr.onload = (evento: any) => {
-        this.imagenMin = evento.target.result;
-        this.cargando = false;
-      };
-      fr.readAsDataURL(this.imagen);
+      if (this.imagen.size < this.imagenMax) {
+        const fr = new FileReader();
+        fr.onload = (evento: any) => {
+          this.imagenMin = evento.target.result;
+        };
+        fr.readAsDataURL(this.imagen);
+      }else{
+        this.quitarImagen();
+        this.toastrService.info('Ha superado el tamaño de la imagen, debe pesar menos de ' + this.imagenMax/1000000 + 'Mb', 'Atención')
+      }
+      this.cargando = false;
     } else {
-      this.resetearImagenSeleccionada();
+      this.quitarImagen();
       this.cargando = false;
     }
   }
@@ -240,7 +245,7 @@ export class PreguntaComponent implements OnInit {
     this.imagenMin = null;
   }
 
-  resetearcrearPreguntaForm() {
+  resetearCrearPreguntaForm() {
     this.crearPreguntaForm.get('enumPregunta')?.setValue("");
     this.crearPreguntaForm.get('opcionA')?.setValue("");
     this.crearPreguntaForm.get('opcionB')?.setValue("");
@@ -329,11 +334,11 @@ export class PreguntaComponent implements OnInit {
 
   avanzar(ultimo?: any) {
     if (ultimo) {
-      this.pagina = this.totalPaginas.length-1;
+      this.pagina = this.totalPaginas.length - 1;
     } else {
       if (!this.esUltimo) {
         this.pagina++;
-        
+
       }
     }
     this.filtrar();

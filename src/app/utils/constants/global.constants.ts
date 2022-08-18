@@ -6,6 +6,7 @@ export class GlobalConstant {
     //public static URL_ENDPOINT = 'http://localhost:8080';
     //public static URL_ENDPOINT = 'https://bk-terrymathland.herokuapp.com';
     public static URL_ENDPOINT = environment.baseUrl;
+    public static MAX_SIZE_FILE = 1500000;
 
     //Pregunta
     public static URL_PREGUNTA = '/pregunta';
